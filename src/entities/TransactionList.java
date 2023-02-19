@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import java.util.Calendar;
+
 /**
  * TransactionList class represents a whole list of recorded Transactions and a
  * suite of tools to present them.
@@ -425,107 +427,109 @@ public class TransactionList {
         return resultList.listIterator();
     }
 
-//	public static void main(String[] args) {
-//
-//		Transaction t;
-//		Calendar c;  // import java.util.Calendar;
-//		TransactionList l = new TransactionList();
-//		ListIterator<Transaction> i;
-//
-//		c = Transaction.returnCalendarFromOFX("20220415120000");
-//		t = new Transaction(c, "ABCDEF123456XYZ", "CUB Foods 1379", "Big Shopping Today", -241.15,
-//				Transaction.ESSENTIALS);
-//		l.add(t);
-//		c = Transaction.returnCalendarFromOFX("20220417120000");
-//		t = new Transaction(c, "F1234BF1556XYZA", "CUB Foods 1378", "Big Shopping Again!", -211.54,
-//				Transaction.ESSENTIALS);
-//		l.add(t);
-//		c = Transaction.returnCalendarFromOFX("20220420120000");
-//		t = new Transaction(c, "CDEF123456XYZAB", "XFinity Monthly", "Acct 23514470A9    ", -73.00,
-//				Transaction.ENTERTAINMENT);
-//		l.add(t);
-//		c = Transaction.returnCalendarFromOFX("20220428120000");
-//		t = new Transaction(c, "OBCDEF123456XYZ", "BP Petrol", "12.56gal.         ", -44.89, Transaction.TRANSPORT);
-//		l.add(t);
-//		c = Transaction.returnCalendarFromOFX("20220501120000");
-//		t = new Transaction(c, "AB12CDEF123456X", "CUB Foods 1378", "Small bag of Stuff", -22.38,
-//				Transaction.ESSENTIALS);
-//		l.add(t);
-//		c = Transaction.returnCalendarFromOFX("20220525120000");
-//		t = new Transaction(c, "KJVDFNSSE5A6XYZ", "ONLINE PAYMENT", "THANK YOU        ", 400.00, Transaction.INCOME);
-//		l.add(t);
-//		c = Transaction.returnCalendarFromOFX("20220525120000");
-//		t = new Transaction(c, "ABCDDEF12456XYZ", "Netflix.com", "                ", -21.04, Transaction.ENTERTAINMENT);
-//		l.add(t);
-//		c = Transaction.returnCalendarFromOFX("20220525120000");
-//		t = new Transaction(c, "NLDFSV123456XYZ", "HOTELSCOM654684", "HOTELS.COM      ", -112.00, Transaction.OTHER);
-//		l.add(t);
-//		c = Transaction.returnCalendarFromOFX("20220602120000");
-//		t = new Transaction(c, "NLAWECDEF123456", "QUIZNOS #2304", "                 ", -17.40,
-//				Transaction.ENTERTAINMENT);
-//		l.add(t);
-//		c = Transaction.returnCalendarFromOFX("20220607120000");
-//		t = new Transaction(c, "YIQJQ123456AXYZ", "JCPENNEY 0496", "Pair of jeans   ", -45.00, Transaction.ESSENTIALS);
-//		l.add(t);
-//
-//		System.out.println("\n------------------------------ Sort by DATE ---------------------------------------");
-//		i = l.sort(Transaction.POSTED_DATE);
-//		while (i.hasNext()) {
-//			System.out.println(i.next());
-//		}
-//		System.out.println("\n");
-//		while (i.hasPrevious()) {
-//			System.out.println(i.previous());
-//		}
-//
-//		System.out.println("\n------------------------------ Sort by REFERENCE -----------------------------------");
-//		i = l.sort(Transaction.REF_NUMBER);
-//		while (i.hasNext()) {
-//			System.out.println(i.next());
-//		}
-//		System.out.println("\n");
-//		while (i.hasPrevious()) {
-//			System.out.println(i.previous());
-//		}
-//
-//		System.out.println("\n------------------------------ Sort by DESCRIPTION --------------------------------");
-//		i = l.sort(Transaction.DESCRIPTION);
-//		while (i.hasNext()) {
-//			System.out.println(i.next());
-//		}
-//		System.out.println("\n");
-//		while (i.hasPrevious()) {
-//			System.out.println(i.previous());
-//		}
-//
-//		System.out.println("\n------------------------------ Sort by MEMO ---------------------------------------");
-//		i = l.sort(Transaction.MEMO);
-//		while (i.hasNext()) {
-//			System.out.println(i.next());
-//		}
-//		System.out.println("\n");
-//		while (i.hasPrevious()) {
-//			System.out.println(i.previous());
-//		}
-//
-//		System.out.println("\n------------------------------ Sort by AMOUNT -------------------------------------");
-//		i = l.sort(Transaction.AMOUNT);
-//		while (i.hasNext()) {
-//			System.out.println(i.next());
-//		}
-//		System.out.println("\n");
-//		while (i.hasPrevious()) {
-//			System.out.println(i.previous());
-//		}
-//
-//		System.out.println("\n------------------------------ Sort by CATEGORY -----------------------------------");
-//		i = l.sort(Transaction.CATEGORY);
-//		while (i.hasNext()) {
-//			System.out.println(i.next());
-//		}
-//		System.out.println("\n");
-//		while (i.hasPrevious()) {
-//			System.out.println(i.previous());
-//		}
-//	}
+    /*
+	public static void main(String[] args) {
+
+		Transaction t;
+		Calendar c;  // import java.util.Calendar;
+		TransactionList l = new TransactionList();
+		ListIterator<Transaction> i;
+
+		c = Transaction.returnCalendarFromOFX("20220415120000");
+		t = new Transaction(c, "ABCDEF123456XYZ", "CUB Foods 1379", "Big Shopping Today", -241.15,
+				Transaction.getACategoryValue("ESSENTIALS"));
+		l.add(t);
+		c = Transaction.returnCalendarFromOFX("20220417120000");
+		t = new Transaction(c, "F1234BF1556XYZA", "CUB Foods 1378", "Big Shopping Again!", -211.54,
+				Transaction.getACategoryValue("ESSENTIALS"));
+		l.add(t);
+		c = Transaction.returnCalendarFromOFX("20220420120000");
+		t = new Transaction(c, "CDEF123456XYZAB", "XFinity Monthly", "Acct 23514470A9    ", -73.00,
+				Transaction.getACategoryValue("ENTERTAINMENT"));
+		l.add(t);
+		c = Transaction.returnCalendarFromOFX("20220428120000");
+		t = new Transaction(c, "OBCDEF123456XYZ", "BP Petrol", "12.56gal.         ", -44.89, Transaction.getACategoryValue("TRANSPORT"));
+		l.add(t);
+		c = Transaction.returnCalendarFromOFX("20220501120000");
+		t = new Transaction(c, "AB12CDEF123456X", "CUB Foods 1378", "Small bag of Stuff", -22.38,
+				Transaction.getACategoryValue("ESSENTIALS"));
+		l.add(t);
+		c = Transaction.returnCalendarFromOFX("20220525120000");
+		t = new Transaction(c, "KJVDFNSSE5A6XYZ", "ONLINE PAYMENT", "THANK YOU        ", 400.00, Transaction.getACategoryValue("INCOME"));
+		l.add(t);
+		c = Transaction.returnCalendarFromOFX("20220525120000");
+		t = new Transaction(c, "ABCDDEF12456XYZ", "Netflix.com", "                ", -21.04, Transaction.getACategoryValue("ENTERTAINMENT"));
+		l.add(t);
+		c = Transaction.returnCalendarFromOFX("20220525120000");
+		t = new Transaction(c, "NLDFSV123456XYZ", "HOTELSCOM654684", "HOTELS.COM      ", -112.00, Transaction.getACategoryValue("OTHER"));
+		l.add(t);
+		c = Transaction.returnCalendarFromOFX("20220602120000");
+		t = new Transaction(c, "NLAWECDEF123456", "QUIZNOS #2304", "                 ", -17.40,
+				Transaction.getACategoryValue("ENTERTAINMENT"));
+		l.add(t);
+		c = Transaction.returnCalendarFromOFX("20220607120000");
+		t = new Transaction(c, "YIQJQ123456AXYZ", "JCPENNEY 0496", "Pair of jeans   ", -45.00, Transaction.getACategoryValue("ESSENTIALS"));
+		l.add(t);
+
+		System.out.println("\n------------------------------ Sort by DATE ---------------------------------------");
+		i = l.sort(Transaction.POSTED_DATE);
+		while (i.hasNext()) {
+			System.out.println(i.next());
+		}
+		System.out.println("\n");
+		while (i.hasPrevious()) {
+			System.out.println(i.previous());
+		}
+
+		System.out.println("\n------------------------------ Sort by REFERENCE -----------------------------------");
+		i = l.sort(Transaction.REF_NUMBER);
+		while (i.hasNext()) {
+			System.out.println(i.next());
+		}
+		System.out.println("\n");
+		while (i.hasPrevious()) {
+			System.out.println(i.previous());
+		}
+
+		System.out.println("\n------------------------------ Sort by DESCRIPTION --------------------------------");
+		i = l.sort(Transaction.DESCRIPTION);
+		while (i.hasNext()) {
+			System.out.println(i.next());
+		}
+		System.out.println("\n");
+		while (i.hasPrevious()) {
+			System.out.println(i.previous());
+		}
+
+		System.out.println("\n------------------------------ Sort by MEMO ---------------------------------------");
+		i = l.sort(Transaction.MEMO);
+		while (i.hasNext()) {
+			System.out.println(i.next());
+		}
+		System.out.println("\n");
+		while (i.hasPrevious()) {
+			System.out.println(i.previous());
+		}
+
+		System.out.println("\n------------------------------ Sort by AMOUNT -------------------------------------");
+		i = l.sort(Transaction.AMOUNT);
+		while (i.hasNext()) {
+			System.out.println(i.next());
+		}
+		System.out.println("\n");
+		while (i.hasPrevious()) {
+			System.out.println(i.previous());
+		}
+
+		System.out.println("\n------------------------------ Sort by CATEGORY -----------------------------------");
+		i = l.sort(Transaction.CATEGORY);
+		while (i.hasNext()) {
+			System.out.println(i.next());
+		}
+		System.out.println("\n");
+		while (i.hasPrevious()) {
+			System.out.println(i.previous());
+		}
+	}
+	*/
 }

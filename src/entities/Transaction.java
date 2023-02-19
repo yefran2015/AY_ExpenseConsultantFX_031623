@@ -287,33 +287,37 @@ public class Transaction {
         return output;
     }
 
-//	@Override
-//	public String toString() {
-//		String output = "THIS TRANSACTION:\n------------------------------------\n";
-//		output += "Posted Date:      " + returnMMslashDDFromCalendar(this.postedDate) + "\n";
-//		output += "Reference Number: " + this.refNumber + "\n";
-//		output += "Description:      " + this.description + "\n";
-//		output += "Memo:             " + this.memo + "\n";
-//		output += "Amount:           " + String.format("$ %.2f", amount) + "\n";
-//		output += "Category:         " + this.category + "\n------------------------------------\n";
-//		return output;
-//	}
+    /*
+	@Override
+	public String toString() {
+		String output = "THIS TRANSACTION:\n------------------------------------\n";
+		output += "Posted Date:      " + returnMMslashDDFromCalendar(this.postedDate) + "\n";
+		output += "Reference Number: " + this.refNumber + "\n";
+		output += "Description:      " + this.description + "\n";
+		output += "Memo:             " + this.memo + "\n";
+		output += "Amount:           " + String.format("$ %.2f", amount) + "\n";
+		output += "Category:         " + this.category + "\n------------------------------------\n";
+		return output;
+	}
+    */
 
-//	public static void main(String[] args) {
-//		System.out.println(returnOFXFromCalendar(returnCalendarFromOFX("20220415201405")));
-//		System.out.println("\n\n");
-//		Transaction t1 = new Transaction(returnCalendarFromMMslashDD("02/22", "2022"),
-//				"S254WD98422000A1", "Cub Foods #1224", "Quick groceries...", 126.74, ESSENTIALS);
-//		Transaction t2 = new Transaction(returnCalendarFromMMslashDD("02/21", "2022"),
-//				"R254WD98422000A1", "Rainbow Foods", "Birthday present purchase", 122, ESSENTIALS);
-//		System.out.println(t1);
-//		System.out.println(t2 + "\n\n");
-//		System.out.println("COMPARISONS:\n------------------");
-//		System.out.println("Posted Dates:   " + t1.comparePostedDates(t2) + "\n");
-//		System.out.println("Ref. Numbers:   " + t1.compareRefNumbers(t2) + "\n");
-//		System.out.println("Descriptions:   " + t1.compareDescriptions(t2) + "\n");
-//		System.out.println("Memos:          " + t1.compareMemos(t2) + "\n");
-//		System.out.println("Amounts:        " + t1.compareAmounts(t2) + "\n");
-//		System.out.println("Categories:     " + t1.compareCategories(t2) + "\n------------------");
-//	}
+    /*
+	public static void main(String[] args) {
+		System.out.println(returnOFXFromCalendar(returnCalendarFromOFX("20220415201405")));
+		System.out.println("\n\n");
+		Transaction t1 = new Transaction(returnCalendarFromMMslashDD("02/22", "2022"),
+				"S254WD98422000A1", "Cub Foods #1224", "Quick groceries...", 126.74, getACategoryValue("ESSENTIALS"));
+		Transaction t2 = new Transaction(returnCalendarFromMMslashDD("02/21", "2022"),
+				"R254WD98422000A1", "Rainbow Foods", "Birthday present purchase", 122, getACategoryValue("ESSENTIALS"));
+		System.out.println(t1);
+		System.out.println(t2 + "\n\n");
+		System.out.println("COMPARISONS:\n------------------");
+		System.out.println("Posted Dates:   " + t1.comparePostedDates(t2) + "\n");
+		System.out.println("Ref. Numbers:   " + t1.compareRefNumbers(t2) + "\n");
+		System.out.println("Descriptions:   " + t1.compareDescriptions(t2) + "\n");
+		System.out.println("Memos:          " + t1.compareMemos(t2) + "\n");
+		System.out.println("Amounts:        " + t1.compareAmounts(t2) + "\n");
+		System.out.println("Categories:     " + t1.compareCategories(t2) + "\n------------------");
+	}
+	*/
 }
