@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ListIterator;
 
-import static gui_v1.settings.GUI_Static_Settings.pathToFile;
+//import static gui_v1.settings.GUI_Static_Settings.pathToFile;
 import static parsers.OFXParser.instance;
 
 public class MenuActionProgrammableHandle {
@@ -34,31 +34,35 @@ public class MenuActionProgrammableHandle {
      *  Code in method is just example of use, how to get file from user, and
      *  can be used anywhere.
      */
-    public  void doParsOFXFileProcessing2(){
+    public  void doParsOFXFileProcessing(){
         GUI_RecordsFrame records = new GUI_RecordsFrame();
-          File f = new File("/home/");
+          File f = null;
 //         GUI_FileChooser.getFileOrDirectory(f);
         File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
         if(chosenFile == null ){
             JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
         } else{
-            out( "OFX Chosen File for pParse is" + chosenFile.getName() );
+            out( "OFX Chosen File for parsing is " + chosenFile.getAbsolutePath() + ".");
             Request request = Request.instance();
             ListIterator<Result> it;
             request.setFileWithPath(chosenFile.getAbsolutePath());
             it = PEC.instance().parseOFX(request);
+            Result result = new Result();
+            result = it.next();
             while(it.hasNext()){
-                Transaction transactionRecdord = (Transaction) it;
-                System.out.println(transactionRecdord);
-                RecordsTable.addRowToTable(transactionRecdord);
+                result = new Result();
+                result = it.next();
+                RecordsTable.addRowToTable(result.getTDate(), result.getTRef(), result.getTDesc(),
+                        result.getTMemo(), result.getTAmount(), result.getTCat());
             }
         }
         records.setVisible(true);
     }
+    /*
     void doParsOFXFileProcessing() {
 
         GUI_RecordsFrame records = new GUI_RecordsFrame();
-        File f = new File(pathToFile);
+        File f = null;
 //         GUI_FileChooser.getFileOrDirectory(f);
         File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
         if(chosenFile == null ){
@@ -73,7 +77,7 @@ public class MenuActionProgrammableHandle {
             ListIterator<Transaction> i = t.listIterator(); // t.sort(Transaction.DESCRIPTION);
             int count  = 0;
             while (i.hasNext()) {
-                RecordsTable.addRowToTable(i.next());
+                //RecordsTable.addRowToTable(i.next());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -81,7 +85,7 @@ public class MenuActionProgrammableHandle {
         records.setVisible(true);
 
     }
-
+*/
     public void out(Object o){
         System.out.println(o+"");
 
