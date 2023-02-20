@@ -5,6 +5,7 @@ package gui_v1.action_processors;
 import entities.Transaction;
 import entities.TransactionList;
 import gui_v1.RecordsTable;
+import gui_v1.login.LogInWindow;
 import gui_v1.mainWindows.GUI_RecordsFrame;
 import main_logic.PEC;
 import main_logic.Request;
