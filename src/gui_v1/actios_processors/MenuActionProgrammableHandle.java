@@ -2,8 +2,13 @@ package gui_v1.actios_processors;
 
 
 
+import main_logic.PEC;
+import main_logic.Request;
+import main_logic.Result;
+
 import javax.swing.*;
 import java.io.File;
+import java.util.ListIterator;
 
 public class MenuActionProgrammableHandle {
 
@@ -21,11 +26,17 @@ public class MenuActionProgrammableHandle {
      *  can be used anywhere.
      */
     void doParsOFXFileProcessing(){
-        File choosenFile= GUI_FileChooser.getFileOrDirectory();
-        if(choosenFile == null ){
+        File chosenFile= GUI_FileChooser.getFileOrDirectory();
+
+        if(chosenFile == null ){
             JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
         } else{
-            JOptionPane.showMessageDialog(null, "OFX Choosen File for pParse is" + choosenFile.getName() ,"About", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "OFX Chosen File for pParse is" + chosenFile.getName() ,"About", JOptionPane.INFORMATION_MESSAGE);
+            Request request = Request.instance();
+            ListIterator<Result> it;
+            request.setFileWithPath(chosenFile.getAbsolutePath());
+            it = PEC.instance().parseOFX(request);
+            // ???
         }
 
 

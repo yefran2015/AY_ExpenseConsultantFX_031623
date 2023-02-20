@@ -91,7 +91,7 @@ public class PEC {
 	 * @param request - Request object
 	 * @return - list of Result objects with Transaction fields filled out
 	 */
-	private ListIterator<Result> parseOFX(Request request) {
+	public ListIterator<Result> parseOFX(Request request) {
 		File file = null;
 		boolean exception = false;
 		Result result = new Result();
@@ -157,7 +157,7 @@ public class PEC {
 	 * Switches the view between ascending and descending order.
 	 * @return new IteratorList to view
 	 */
-	private ListIterator<Result> sortingOrientationSwitched() {
+	public ListIterator<Result> sortingOrientationSwitched() {
 		ascColumn[sortedColumn] = !ascColumn[sortedColumn];
 		return getNewView();
 	}
@@ -168,7 +168,7 @@ public class PEC {
 	 *                pressed
 	 * @return new IteratorList to view
 	 */
-	private ListIterator<Result> sortedColumnSwitched(Request request) {
+	public ListIterator<Result> sortedColumnSwitched(Request request) {
 		switch (request.getButton()) {
 			case DATE -> sortedColumn = Transaction.POSTED_DATE;
 			case REF -> sortedColumn = Transaction.REF_NUMBER;
