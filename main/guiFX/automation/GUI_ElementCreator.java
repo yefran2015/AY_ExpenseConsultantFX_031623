@@ -22,21 +22,21 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables {
 		RadioButton  rbtn = new RadioButton(msg);
 		rbtn.setFont(newFont(rbtn.getFont(), GUI_Settings_Variables.txtSize_RadioButton));
 		rbtn.setTextFill(GUI_Settings_Variables.clrF_RadioButton);
-		rbtn.setBackground(Background.fill(GUI_Settings_Variables.clrB_RadioButton));
+		//rbtn.setBackground(Background.fill(GUI_Settings_Variables.clrB_RadioButton));
 		return rbtn;
 	}
 	public static TextField newTextField() {
 		TextField jtf = new TextField();
 		jtf.setFont(newFont(jtf.getFont(), GUI_Settings_Variables.txtSize_TextField+1));
 		jtf.setStyle("-fx-text-fill: "+String.valueOf(GUI_Settings_Variables.clrF_TextField));
-		jtf.setBackground(Background.fill(GUI_Settings_Variables.clrB_TextField));
+		//jtf.setBackground(Background.fill(GUI_Settings_Variables.clrB_TextField));
 		return jtf;
 	}
 	public static TextArea newTextArea() {
 		TextArea  jta = new TextArea();
 		jta.setFont(newFont(jta.getFont(), GUI_Settings_Variables.txtSize_TextArea));
 		jta.setStyle("-fx-text-fill: "+String.valueOf(GUI_Settings_Variables.clrF_TextArea));
-		jta.setBackground(Background.fill(GUI_Settings_Variables.clrB_TextArea));
+		//jta.setBackground(Background.fill(GUI_Settings_Variables.clrB_TextArea));
 		return jta;
 	}
 
@@ -54,7 +54,7 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables {
 		lbl.setContentDisplay(ContentDisplay.CENTER);
 		lbl.setFont(newFont(lbl.getFont(), GUI_Settings_Variables.txtSize_Heading));
 		lbl.setTextFill(GUI_Settings_Variables.clrF_HeadTitle);
-		lbl.setBackground(Background.fill(GUI_Settings_Variables.clrB_HeadTitle));
+		//lbl.setBackground(Background.fill(GUI_Settings_Variables.clrB_HeadTitle));
 		return lbl;
 	}
 	public static Label newSubHead(String  msg) {
@@ -62,7 +62,7 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables {
 		lbl.setContentDisplay(ContentDisplay.CENTER);
 		lbl.setFont(newFont(lbl.getFont(), GUI_Settings_Variables.txtSize_subHead));
 		lbl.setTextFill(GUI_Settings_Variables.clrF_SubTitle);
-		lbl.setBackground(Background.fill(GUI_Settings_Variables.clrB_SubTitle));
+		//lbl.setBackground(Background.fill(GUI_Settings_Variables.clrB_SubTitle));
 		return lbl;
 	}
 	public static Label newTitle(String  msg) {
@@ -70,14 +70,14 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables {
 		lbl.setContentDisplay(ContentDisplay.CENTER);
 		lbl.setFont(newFont(lbl.getFont(), GUI_Settings_Variables.txtSize_Title));
 		lbl.setTextFill(GUI_Settings_Variables.clrF_Title);
-		lbl.setBackground(Background.fill(GUI_Settings_Variables.clrB_Title));
+		//lbl.setBackground(Background.fill(GUI_Settings_Variables.clrB_Title));
 		return lbl;
 	}
 	public static Button newButton(String  msg) {
 		Button  jbtn = new Button(checkTitleMsg(msg));
 		jbtn.setFont(newFont(jbtn.getFont(), GUI_Settings_Variables.txtSize_Button));
 		jbtn.setTextFill(GUI_Settings_Variables.clrF_Btn_Add);
-		jbtn.setBackground(Background.fill(GUI_Settings_Variables.clrB_Btn_Add));
+		//jbtn.setBackground(Background.fill(GUI_Settings_Variables.clrB_Btn_Add));
 		return jbtn;
 	}
 	public static Menu newMenu(String  msg) {
@@ -87,6 +87,8 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables {
 //		jmenu.setOnAction(Background.fill(clrB_Menu));
 		return jmenu;
 	}
+
+
 	public static MenuItem newMenuItem(String  msg) {
 		MenuItem  jmenu = new MenuItem(checkTitleMsg(msg));
 //		jmenu.setStyle("-fx-text-fill: "+String.valueOf(clrF_TextField));

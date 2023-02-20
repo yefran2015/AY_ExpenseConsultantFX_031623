@@ -94,8 +94,7 @@ public class PEC {
 		File file = null;
 		boolean exception = false;
 		Result result = new Result();
-		ListIterator<Transaction> it = tList.listIterator();
-		ListIterator<Result> rList = new ArrayList<Result>().listIterator();
+		ArrayList<Result> rList = new ArrayList<Result>();
 		try {
 			file = new File(request.getFileWithPath());
 			tList = OFXParser.ofxParser(file);
@@ -105,15 +104,17 @@ public class PEC {
 		if (exception) {
 			result.setCode(IO_ERROR);
 			rList.add(result);
-			return rList;
+			return rList.listIterator();
 		}
+		ListIterator<Transaction> it = tList.listIterator();
 		result.setCode(SUCCESS);
 		resetView();
 		while (it.hasNext()) {
 			result.setTFields(it.next());
 			rList.add(result);
+			result = new Result();
 		}
-		return rList;
+		return rList.listIterator();
 	}
 
 	/**
@@ -123,7 +124,7 @@ public class PEC {
 	 */
 	private ListIterator<Result> getNewView() {
 		ListIterator<Transaction> it = tList.sort(sortedColumn);
-		ListIterator<Result> resIt = new ArrayList<Result>().listIterator();
+		ArrayList<Result> resIt = new ArrayList<Result>();
 		if (descColumn[sortedColumn]) {
 			while (it.hasNext()) {
 				Result result = new Result();
@@ -138,7 +139,7 @@ public class PEC {
 				resIt.add(result);
 			}
 		}
-		return resIt;
+		return resIt.listIterator();
 	}
 
 	/**
@@ -181,7 +182,16 @@ public class PEC {
 		return getNewView();
 	}
 
+	/*
 	public static void main(String[] args) {
-
+		Request request = Request.instance();
+		ListIterator<Result> it;
+		request.setFileWithPath("/Users/starnet/CreditCardSAMPLE.qfx");
+		System.out.println("Now parsing.");
+		it = PEC.instance().parseOFX(request);
+		while (it.hasNext()) {
+			System.out.println(it.next().getTDesc());
+		}
 	}
+	*/
 }

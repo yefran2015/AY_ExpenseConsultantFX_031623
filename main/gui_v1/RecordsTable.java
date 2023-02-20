@@ -12,7 +12,9 @@ import java.awt.*;
 public class RecordsTable  extends JPanel{
     private static JTable instance;
 
-    private static String[] columnNames = {"Date", "Ref", "Name", "Memo", "Amount", "OTHER"};
+    private static String[] columnNames = {"Date", "Ref", "Name", "Memo", "Amount", "Category"};
+    private static String[][] testData = {};
+    /*
     private static String[][] testData = {{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "7777"},
             {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "O777THER"},
             {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OT777HER"} ,
@@ -20,6 +22,8 @@ public class RecordsTable  extends JPanel{
             {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "777"},
             {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OT77HER"},
             {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OT777HER"}};
+
+     */
 
 //    private static final JTable jtRecordsTable = GUI_ElementCreator.newJTable(testData, columnNames);
     public static JTable createTableView(String[][] testData, String[] columnNames){
@@ -54,6 +58,19 @@ public class RecordsTable  extends JPanel{
         m.addRow(rowItems);
 
     }
+    public static void addRowToTable(String ofxDate, String ref, String name, String memo, String amount, String cat) {
+        String[] rowItems = new String[6];
+        rowItems[0] = ofxDate + "";
+        rowItems[1] = ref + "";
+        rowItems[2] = name + "";
+        rowItems[3] = memo + "";
+        rowItems[4] = amount + "";
+        rowItems[5] = cat + "";
+        DefaultTableModel m = (DefaultTableModel) (instance.getModel());
+        m.addRow(rowItems);
+    }
+
+    /*
     public static void addRowToTable(Transaction t){
         String[] rowItems = new String[6];
 
@@ -68,6 +85,8 @@ public class RecordsTable  extends JPanel{
 //        System.out.println("_______________"+t);
 
     }
+
+     */
     public static void addRowToTable(String[] dateRow){
         DefaultTableModel m = (DefaultTableModel) (instance.getModel());
         m.addRow(dateRow);
