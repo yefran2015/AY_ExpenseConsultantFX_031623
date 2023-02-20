@@ -15,8 +15,13 @@ public class GUI_Menu extends JMenuBar implements GUI_Settings_Variables{
 	private static final long serialVersionUID = 1L;
 	private GUI_Menu_Actions a;
 	public GUI_Menu(){
-		setBackground(clrB_JMenuBar);
-		setForeground(clrF_JMenuBar);
+		if(gui_v1.settings.GUI_Static_Settings.workStage==0){
+			setBackground(clrB_JMenuBar);
+		}else{
+			setForeground(clrF_JMenuBar);
+		}
+
+
 		setFont(GUI_ElementCreator.newFont(this.getFont(), txtSize_JMenuBar));
 		a = new GUI_Menu_Actions();
 
@@ -38,69 +43,59 @@ public class GUI_Menu extends JMenuBar implements GUI_Settings_Variables{
 
 		
 		
-		JMenu jmAction = GUI_ElementCreator.newJMenu("Actions" );
-		jmAction.setMnemonic('A');
-		JMenuItem jmiAddData = GUI_ElementCreator.newJMenuItem("Insert Data");
-		jmiAddData.setMnemonic('I');
-		jmAction.add(jmiAddData);
-		JMenuItem jmiSearchData = GUI_ElementCreator.newJMenuItem("Search Data");
-		jmiSearchData.setMnemonic('r');
-		jmAction.add(jmiSearchData);
-		JMenuItem jmiAdvising = GUI_ElementCreator.newJMenuItem("Advising");
-		jmiAdvising.setMnemonic('d');
-		jmAction.add(jmiAdvising);
-		JMenuItem jmiEditData = GUI_ElementCreator.newJMenuItem("Edit Data");
-		jmiEditData.setMnemonic('E');
-		jmAction.add(jmiEditData);
-
-		add(jmAction);
+		JMenu jmAction = GUI_ElementCreator.newJMenu("Transactions" );
+		jmAction.setMnemonic('T');
+		jmAction.addActionListener(a);
 
 
-		JMenu jmView = GUI_ElementCreator.newJMenu("View");
-		jmView.setMnemonic('V');
-		JMenu jmWindow = GUI_ElementCreator.newJMenu("GUI Windows Views");
-		jmWindow.setMnemonic('W');
-		JMenuItem jmiShowRecordsWindow = GUI_ElementCreator.newJMenuItem("Show Records Window");
-		jmiShowRecordsWindow.setMnemonic('R');
-		jmiShowRecordsWindow.addActionListener(a);
-		jmWindow.add(new JSeparator());
-		jmWindow.add(jmiShowRecordsWindow);
-		jmView.add(jmWindow);
-		add(jmView);
-		
-		JMenu jmSettings = GUI_ElementCreator.newJMenu("Settings");
-		jmSettings.setMnemonic('S');
-		JMenu jmFontSize = GUI_ElementCreator.newJMenu("Adjust Text Size");
-		jmFontSize.setMnemonic('T');
-		jmFontSize.addActionListener(a);
+		JMenu jmVMenu = GUI_ElementCreator.newJMenu("Menu");
+		jmVMenu.setMnemonic('M');
 
+		JMenuItem jmiHowStart = GUI_ElementCreator.newJMenuItem("How To Start");
+		jmiHowStart.setMnemonic('S');
+		jmiHowStart.addActionListener(a);
+		jmVMenu.add(jmiHowStart);
 
-		JMenuItem jmiIncreaseFontSize = GUI_ElementCreator.newJMenuItem("Increse GUI Text Size (+)");
-		jmiIncreaseFontSize.setMnemonic('+');
-		jmiIncreaseFontSize.addActionListener(a);
-		JMenuItem jmiDecreaseFontSize = GUI_ElementCreator.newJMenuItem("Decrese GUI Text Size (-)");
-		jmiDecreaseFontSize.setMnemonic('-');
-		jmiDecreaseFontSize.addActionListener(a);
-		jmFontSize.add(jmiIncreaseFontSize);
-		jmFontSize.add(jmiDecreaseFontSize);
-		jmSettings.add(jmFontSize);
-		add(jmSettings);
-		
-		
+		JMenuItem jmiParseOFX = GUI_ElementCreator.newJMenuItem("Parse OFX File");
+		jmiParseOFX.setMnemonic('P');
+		jmiParseOFX.addActionListener(a);
+		jmVMenu.add(jmiParseOFX);
+
+		JMenuItem jmiAddDataManually = GUI_ElementCreator.newJMenuItem("Manual Entry");
+		jmiAddDataManually.setMnemonic('M');
+		jmiAddDataManually.addActionListener(a);
+		jmVMenu.add(jmiAddDataManually);
+
+		JMenuItem jmiSummery = GUI_ElementCreator.newJMenuItem("Generate Summary");
+		jmiSummery.setMnemonic('S');
+		jmiSummery.addActionListener(a);
+		jmVMenu.add(jmiSummery);
+
+		JMenuItem jmiAdvising = GUI_ElementCreator.newJMenuItem("Get Advise");
+		jmiAdvising.setMnemonic('G');
+		jmiAdvising.addActionListener(a);
+		jmVMenu.add(jmiAdvising);
+
+		JMenuItem jmiSettings = GUI_ElementCreator.newJMenuItem("Settings");
+		jmiSettings.setMnemonic('S');
+		jmiSettings.addActionListener(a);
+		jmVMenu.add(jmiSettings);
+
+		JMenuItem jmiLogOuut = GUI_ElementCreator.newJMenuItem("LogOut" );
+		jmiLogOuut.addActionListener(a);
+		jmiLogOuut.setMnemonic('O');
+		jmVMenu.add(jmiLogOuut);
+
+		add(jmVMenu);
+
 		JMenu jmHelp = GUI_ElementCreator.newJMenu("Help" );
 		jmHelp.setMnemonic('H');
-		JMenuItem jmiUse = GUI_ElementCreator.newJMenuItem("App Use");
-		jmiUse.setMnemonic('U');
-		jmHelp.add(jmiUse);
-		jmHelp.add(new JSeparator());
+
 		JMenuItem jmiAbout = GUI_ElementCreator.newJMenuItem("About");
 		jmiAbout.setMnemonic('A');
 		jmiAbout.addActionListener(a);
 		jmHelp.add(jmiAbout);
 		add(jmHelp);
-	}
-	public GUI_Menu(Component mainGUIWindow) {
-		this();
-		a.setMainGUIComponent(mainGUIWindow);
+
 	}
 }
