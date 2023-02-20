@@ -1,7 +1,6 @@
 package gui_v1;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.*;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,7 +16,8 @@ public class GUI_MessagesDislplayBoxP extends JPanel implements GUI_Settings_Var
 	private JLabel lblTitle =  GUI_ElementCreator.newSubHead("This is Informative Dislpay");
 	private JTextArea jtaMessagesDisplayOutput = GUI_ElementCreator.newJTextArea();
 	private void TestData() {
-
+//		setPreferredSize(new Dimension(300,0));
+		setPreferredSize(mainWindowMessageAreaSize);
 		String strTestData="System Overview\n"
 				+ "The Consultant will be both an immediate and an ongoing analyst and advisor in your personal monetary matters. It will help you determine whether you’re doing fine in your financial life, or you need a little guidance. It will help you plan for and achieve financial health.\n"
 				+ "Attributes\n"
