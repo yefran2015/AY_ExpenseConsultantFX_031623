@@ -5,6 +5,7 @@ package gui_v1.action_processors;
 import entities.Transaction;
 import entities.TransactionList;
 import gui_v1.RecordsTable;
+import gui_v1.mainWindows.GUI_RecordsFrame;
 import main_logic.PEC;
 import main_logic.Request;
 import main_logic.Result;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ListIterator;
 
+import static gui_v1.settings.GUI_Static_Settings.pathToFile;
 import static parsers.OFXParser.instance;
 
 public class MenuActionProgrammableHandle {
@@ -33,6 +35,7 @@ public class MenuActionProgrammableHandle {
      *  can be used anywhere.
      */
     public  void doParsOFXFileProcessing2(){
+        GUI_RecordsFrame records = new GUI_RecordsFrame();
           File f = new File("/home/");
 //         GUI_FileChooser.getFileOrDirectory(f);
         File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
@@ -50,9 +53,12 @@ public class MenuActionProgrammableHandle {
                 RecordsTable.addRowToTable(transactionRecdord);
             }
         }
+        records.setVisible(true);
     }
     void doParsOFXFileProcessing() {
-        File f = new File("/home/");
+
+        GUI_RecordsFrame records = new GUI_RecordsFrame();
+        File f = new File(pathToFile);
 //         GUI_FileChooser.getFileOrDirectory(f);
         File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
         if(chosenFile == null ){
@@ -61,20 +67,19 @@ public class MenuActionProgrammableHandle {
         }
         TransactionList t;
         instance();
-
-//        File file = new File("CreditCardSAMPLE.qfx");
         try {
             t = OFXParser.ofxParser(chosenFile);
 
             ListIterator<Transaction> i = t.listIterator(); // t.sort(Transaction.DESCRIPTION);
             int count  = 0;
             while (i.hasNext()) {
-    //            System.out.println(i.next());
                 RecordsTable.addRowToTable(i.next());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        records.setVisible(true);
+
     }
 
     public void out(Object o){
