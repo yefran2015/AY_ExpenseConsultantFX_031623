@@ -11,7 +11,7 @@ import gui_v1.automation.GUI_FontSizeAdjustable;
  * @
  *
  */
-public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable{
+public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable {
 
 	
 	/**
@@ -57,11 +57,12 @@ public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable{
 	String strHeadTitle_GUIRecordsWindow = "Records Handler Personal Expenses Manager ";
 
 
+
 	int gui_width = 900;
 	int gui_height = 1000;
 	Dimension mainGUIFrameSize = new Dimension(gui_width, gui_height);
 	Dimension recordsGUIWindowFrameSize = new Dimension(gui_width, gui_height);
-
+	Dimension mainWindowMessageAreaSize = new Dimension(0,200);
 
 
 	String mainGUIFrameWindowTitle = strAppOfficialName;
@@ -85,7 +86,7 @@ public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable{
 
 	int txtSize_Heading = txtSize_Regular + 4 * txtSizeFactor;
 	int txtSize_subHead = txtSize_Regular +  4 * txtSizeFactor;
-	int txtSize_Title  = txtSize_Regular +  2 * txtSizeFactor;
+	int txtSize_Title  = txtSize_Regular +  1 * txtSizeFactor;
 	
 
 	int txtSize_NamesOfFields = txtSize_Regular;
@@ -95,9 +96,11 @@ public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable{
 	
 	////////////////////////////////////////
 	/// Java Elements Font size settings here
-	int txtSize_JMenuBar = txtSize_Regular + 5 *txtSizeFactor;
-	int txtSize_JMenu = txtSize_Regular +  5 * txtSizeFactor;
-	int txtSize_JMenuItem = txtSize_Regular + 4 * txtSizeFactor;
+
+	//// Menu Items Sizes:
+	int txtSize_JMenuBar = txtSize_Regular + 2 *txtSizeFactor;
+	int txtSize_JMenu = txtSize_Regular +  2 * txtSizeFactor;
+	int txtSize_JMenuItem = txtSize_Regular + 2 * txtSizeFactor;
 	int txtSize_JLabel = txtSize_Regular +  txtSizeFactor;
 
 	int txtSize_JTextArea = txtSize_Regular;
@@ -112,7 +115,7 @@ public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable{
 
 		
     /////////////////////////////////////////
-
+///// COLOR SETTINGS START HERE
 	Color guiFramesBackgroundColor = Color.CYAN;
 	Color guiFramesForegroundColor = Color.BLACK;
 
@@ -238,7 +241,7 @@ public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable{
 
 	Color clrF_JMenuBar = Color.BLUE;
 	Color clrB_JMenuBar = Color.getHSBColor(74, 205, 242);
-	Color clrF_JMenu = Color.BLUE;
+	Color clrF_JMenu = Color.BLACK;
 	Color clrB_JMenu = Color.LIGHT_GRAY;
 	Color clrF_JMenuItem = Color.BLUE;
 	Color clrB_JMenuItem = Color.getHSBColor(74, 205, 242);;

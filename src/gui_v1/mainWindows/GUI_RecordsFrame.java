@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import gui_v1.GUI_RecordsBoxP;
 import gui_v1.menu.GUI_Menu;
+import gui_v1.menu.GUI_Menu_Technical;
 import gui_v1.settings.GUI_Settings_Variables;
 
 public class GUI_RecordsFrame extends JFrame implements GUI_Settings_Variables{
@@ -16,8 +17,13 @@ public class GUI_RecordsFrame extends JFrame implements GUI_Settings_Variables{
 		setBackground(guiFramesBackgroundColor);
 		setForeground(guiFramesForegroundColor);
 
-		setJMenuBar(new GUI_Menu(this));
+//		setJMenuBar(new GUI_Menu(this));
 		setTitle(recordsGUIWindowTitle);
+		if(gui_v1.settings.GUI_Static_Settings.workStage==1){
+			setJMenuBar(new GUI_Menu());
+		}else{
+			setJMenuBar(new GUI_Menu_Technical());
+		}
 		setSize(recordsGUIWindowFrameSize);
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
@@ -32,4 +38,5 @@ public class GUI_RecordsFrame extends JFrame implements GUI_Settings_Variables{
 	public Component getComponent() {
 		return this;
 	}
+
 }
