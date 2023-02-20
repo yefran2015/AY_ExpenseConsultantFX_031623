@@ -146,7 +146,7 @@ public class PEC {
 	 * Switches the view between descending and ascending order.
 	 * @return new IteratorList to view
 	 */
-	private ListIterator<Result> sortingOrientationSwitched() {
+	public ListIterator<Result> sortingOrientationSwitched() {
 		descColumn[sortedColumn] = !descColumn[sortedColumn];
 		return getNewView();
 	}
@@ -157,7 +157,7 @@ public class PEC {
 	 *                pressed
 	 * @return new IteratorList to view
 	 */
-	private ListIterator<Result> sortedColumnSwitched(Request request) {
+	public ListIterator<Result> sortedColumnSwitched(Request request) {
 		switch (request.getButton()) {
 			case DATE:
 				sortedColumn = Transaction.POSTED_DATE;
