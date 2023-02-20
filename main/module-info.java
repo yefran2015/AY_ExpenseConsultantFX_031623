@@ -6,6 +6,6 @@ module guiFX.mainWindows.SPAM {
 
 
 
-    opens guiFX.mainWindows to javafx.fxml;
-    exports guiFX.mainWindows;
+    //opens guiFX.mainWindows to javafx.fxml;
+    //exports guiFX.mainWindows;
 }
