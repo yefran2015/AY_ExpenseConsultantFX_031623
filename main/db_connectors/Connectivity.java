@@ -8,7 +8,7 @@ public class Connectivity {
     Connection connection;
    public Connection getConnection() {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/expense_consultant", "root", "1558");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/expense_consultant", "root", "ics49901");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -55,6 +55,8 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 
 
 	private void developmentActions(ActionEvent e) {
+		MenuActionProgrammableHandle ac = new MenuActionProgrammableHandle();
+
 		if (e.getActionCommand().compareToIgnoreCase("Exit")==0) {
 			System.exit(0);
 		}else if (e.getActionCommand().compareToIgnoreCase("About")==0) {
@@ -68,14 +70,7 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 		}else if (e.getActionCommand().compareToIgnoreCase("Manual Entry")==0) {
 			JOptionPane.showMessageDialog(null, "Manual Entry Menu","About", JOptionPane.INFORMATION_MESSAGE);
 		}else if (e.getActionCommand().compareToIgnoreCase("Parse OFX File")==0) {
-
-			File choosenFile= GUI_FileChooser.getFileOrDirectory();
-			if(choosenFile == null ){
-				JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
-			} else{
-				JOptionPane.showMessageDialog(null, "OFX Choosen File for pParse is" + choosenFile.getName() ,"About", JOptionPane.INFORMATION_MESSAGE);
-			}
-
+			ac.doParsOFXFileProcessing();
 		}else if (e.getActionCommand().compareToIgnoreCase("Get Advise")==0) {
 			JOptionPane.showMessageDialog(null, "Get Advise Menu","About", JOptionPane.INFORMATION_MESSAGE);
 
