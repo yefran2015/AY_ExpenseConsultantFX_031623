@@ -10,7 +10,7 @@ import javax.swing.border.LineBorder;
 import gui_v1.automation.GUI_ElementCreator;
 import gui_v1.settings.GUI_Settings_Variables;
 
-public class GUI_AddAccountP extends JPanel implements GUI_Settings_Variables{
+public class  GUI_AddAccountP extends JPanel implements GUI_Settings_Variables{
 
 	private static final long serialVersionUID = 1L;
 

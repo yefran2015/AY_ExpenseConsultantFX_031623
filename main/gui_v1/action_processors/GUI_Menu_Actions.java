@@ -28,6 +28,7 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 		MenuActionProgrammableHandle ac = new MenuActionProgrammableHandle();
 
 		if (e.getActionCommand().compareToIgnoreCase("Exit")==0) {
+			ac.dologOutProcessing();
 			System.exit(0);
 		}else if (e.getActionCommand().compareToIgnoreCase("About")==0) {
 			JOptionPane.showMessageDialog(null, ""+strAboutApp,"About", JOptionPane.INFORMATION_MESSAGE);
@@ -44,6 +45,7 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 			ac.doHowToStartProcessing();
 		}else if (e.getActionCommand().compareToIgnoreCase("LogOut")==0) {
 			ac.dologOutProcessing();
+			System.exit(0);
 		}else if (e.getActionCommand().compareToIgnoreCase("Settings")==0){
 			ac.doSettingsProcessing();
 
