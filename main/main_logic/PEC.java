@@ -98,6 +98,9 @@ public class PEC {
 		try {
 			file = new File(request.getFileWithPath());
 			tList = OFXParser.ofxParser(file);
+			if (tList==null) {
+				exception = true;
+			}
 		} catch (Exception e) {
 			exception = true;
 		}
