@@ -48,6 +48,10 @@ public class MenuActionProgrammableHandle {
             ListIterator<Result> it;
             request.setFileWithPath(chosenFile.getAbsolutePath());
             it = PEC.instance().parseOFX(request);
+            /*
+            request.setButton(Request.Button.NAME); // sorted by different attribute (NAME)
+            it = PEC.instance().sortedColumnSwitched(request);
+            */
             Result result = new Result();
             result = it.next();
             while(it.hasNext()){

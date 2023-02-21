@@ -101,7 +101,8 @@ public class DataTransfer {
 		this.tRef = transaction.getRefNumber();
 		this.tDesc = transaction.getDescription();
 		this.tMemo = transaction.getMemo();
-		this.tAmount = String.format("$%.2f", transaction.getAmount());
+		if (transaction.getAmount()<0) { this.tAmount = String.format("$%.2f", transaction.getAmount()); }
+		else { this.tAmount = String.format("$ %.2f", transaction.getAmount()); }
 		this.tCat = transaction.getCategoryName();
 	}
 

@@ -91,9 +91,11 @@ public class OFXParser {
 	/**
 	 * This setter makes sure the resulting list of Transactions will
 	 * NOT be longer than 3 months worth of data.
-	 * @param endDate
+	 * @param endDate - the original endDate from the OFX file
 	 */
 	public static void setEndDate(Calendar endDate) {
+		// this following solution ensures that maxDate doesn't
+		// adopt the startDate's reference, but only its value
 		Calendar maxDate = Transaction.returnCalendarFromOFX(Transaction.returnOFXFromCalendar(getStartDate()));
 		maxDate.add(Calendar.MONTH, 3);
 		if (maxDate.compareTo(endDate)<0) {
@@ -274,7 +276,7 @@ public class OFXParser {
 			if (tag.equals("STMTTRN")) {
 				clearFields();
 			}
-			if (tag.equals("CREDITCARDMSGSRSV1")) {
+			if (tag.startsWith("CREDITCARD")) {
 				setCreditCard(true);
 				setAcctType("CREDIT CARD");
 			}
@@ -373,10 +375,10 @@ public class OFXParser {
 		}
 	}
 
-
+	/*
 	public static void main(String[] args) throws IOException {
 		TransactionList t;
-		File file = new File("reditCardSAMPLE.qfx");
+		File file = new File("/Users/starnet/CreditCardSAMPLE.qfx");
 		instance();
 		t = OFXParser.ofxParser(file);
 		ListIterator<Transaction> i = t.listIterator(); // t.sort(Transaction.DESCRIPTION);
@@ -390,6 +392,6 @@ public class OFXParser {
 		System.out.println("Account number: " + OFXParser.getAcctNumber());
 		System.out.println("Account type: " + OFXParser.getAcctType());
 	}
-
+	*/
 
 }
