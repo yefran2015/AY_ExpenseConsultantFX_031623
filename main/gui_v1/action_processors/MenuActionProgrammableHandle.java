@@ -54,6 +54,9 @@ public class MenuActionProgrammableHandle {
             */
             Result result = new Result();
             result = it.next();
+            if (result.getCode()!=Result.Code.SUCCESS) {
+                JOptionPane.showMessageDialog(null, "The file is not OFX/QFX\nfile or could NOT be read.","Error", JOptionPane.INFORMATION_MESSAGE);
+            }
             while(it.hasNext()){
                 result = new Result();
                 result = it.next();
