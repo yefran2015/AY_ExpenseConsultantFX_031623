@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Capstone-Project-FX">
+    <output-path>$PROJECT_DIR$/out</output-path>
+    <root id="archive" name="Capstone-Project-FX.jar">
+      <element id="module-output" name="Capstone-Project-FX" />
+      <element id="dir-copy" path="$PROJECT_DIR$" />
+      <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx.graphics.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx-swt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx.base.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx.controls.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx.fxml.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx.media.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx.swing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx.web.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/java-2019-06/java-sql-intellij/mysql-connector-java-8.0.26.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
