@@ -33,13 +33,19 @@ import entities.TransactionList;
 public class OFXParser {
 
 	private static TransactionList output = new TransactionList();
+	//	min and max for dates of Transactions acceptable to the parser
+	private static String strDateMin = "19000101000000";
+	private static String strDateMax = "20991231000000";
+
 	private static Calendar startDate;
 	private static Calendar endDate;
 	private static boolean isCreditCard;
 	private static String currency;
 	private static String acctType;
 	private static String acctNumber;
-//	OFXParser is a singleton class
+	private static String bankName;
+	private static String bankID;
+	//	OFXParser is a singleton class
 	private static OFXParser singleton = null;
 
 	/**
@@ -51,7 +57,7 @@ public class OFXParser {
 
 	/**
 	 * Instance creator.
-	 * 
+	 *
 	 * @return an instance of OFXParser
 	 */
 	public static OFXParser instance() {
@@ -65,13 +71,14 @@ public class OFXParser {
 	 * Clears all fields of the parser.
 	 */
 	public static void clearParser() {
-		String strDate = "19000101000000";
-		startDate = Transaction.returnCalendarFromOFX(strDate);
-		endDate = Transaction.returnCalendarFromOFX(strDate);
+		startDate = Transaction.returnCalendarFromOFX(strDateMin);
+		endDate = Transaction.returnCalendarFromOFX(strDateMax);
 		isCreditCard = false;
 		currency = "";
 		acctType = "";
 		acctNumber = "";
+		bankName = "";
+		bankID = "";
 	}
 
 //	------------ getters and setters ----------------------	
@@ -80,35 +87,27 @@ public class OFXParser {
 		return startDate;
 	}
 
-	public static void setStartDate(Calendar startDate) {
-		OFXParser.startDate = startDate;
+	private static void setStartDate(Calendar startDate) {
+		if (OFXParser.startDate.compareTo(startDate) < 0) {
+			OFXParser.startDate = startDate;
+		}
 	}
 
 	public static Calendar getEndDate() {
 		return endDate;
 	}
 
-	/**
-	 * This setter makes sure the resulting list of Transactions will
-	 * NOT be longer than 3 months worth of data.
-	 * @param endDate - the original endDate from the OFX file
-	 */
-	public static void setEndDate(Calendar endDate) {
-		// this following solution ensures that maxDate doesn't
-		// adopt the startDate's reference, but only its value
-		Calendar maxDate = Transaction.returnCalendarFromOFX(Transaction.returnOFXFromCalendar(getStartDate()));
-		maxDate.add(Calendar.MONTH, 3);
-		if (maxDate.compareTo(endDate)<0) {
-			OFXParser.endDate = Transaction.returnCalendarFromOFX(Transaction.returnOFXFromCalendar(maxDate));
+	private static void setEndDate(Calendar endDate) {
+		if (OFXParser.endDate.compareTo(endDate) > 0) {
+			OFXParser.endDate = endDate;
 		}
-		else OFXParser.endDate = endDate;
 	}
 
 	public static boolean isCreditCard() {
 		return isCreditCard;
 	}
 
-	public static void setCreditCard(boolean isCreditCard) {
+	private static void setCreditCard(boolean isCreditCard) {
 		OFXParser.isCreditCard = isCreditCard;
 	}
 
@@ -116,7 +115,7 @@ public class OFXParser {
 		return currency;
 	}
 
-	public static void setCurrency(String currency) {
+	private static void setCurrency(String currency) {
 		OFXParser.currency = currency;
 	}
 
@@ -124,7 +123,7 @@ public class OFXParser {
 		return acctType;
 	}
 
-	public static void setAcctType(String acctType) {
+	private static void setAcctType(String acctType) {
 		OFXParser.acctType = acctType;
 	}
 
@@ -132,11 +131,19 @@ public class OFXParser {
 		return acctNumber;
 	}
 
-	public static void setAcctNumber(String acctNumber) {
+	private static void setAcctNumber(String acctNumber) {
 		OFXParser.acctNumber = acctNumber;
 	}
 
-//	--------------------------------------------------------
+	public static String getBankName() { return bankName; }
+
+	private static void setBankName(String bankName) { OFXParser.bankName = bankName; }
+
+	public static String getBankID() { return bankID; }
+
+	private static void setBankID(String bankID) { OFXParser.bankID = bankID; }
+
+	//	--------------------------------------------------------
 
 //  
 
@@ -150,6 +157,26 @@ public class OFXParser {
 	 * @throws IOException - in case of problems with the file
 	 */
 	public static TransactionList ofxParser(File source) throws IOException {
+		clearParser();
+		return ofxParser(new FileInputStream(source));
+	}
+
+	/**
+	 * Overloaded method.
+	 * Parses OFX file and returns a list of Transactions. It doesn't check the file
+	 * for existence, readability, etc. It leaves this up to the calling method. It
+	 * only worries about the file content.
+	 *
+	 * @param source - Open Financial Exchange (OFX) file
+	 * @param start - minimum date for returned Transactions
+	 * @param end - maximum date for returned Transactions
+	 * @return - list of Transactions
+	 * @throws IOException - in case of problems with the file
+	 */
+	public static TransactionList ofxParser(File source, Calendar start, Calendar end) throws IOException {
+		clearParser();
+		setStartDate(start);
+		setEndDate(end);
 		return ofxParser(new FileInputStream(source));
 	}
 
@@ -293,8 +320,10 @@ public class OFXParser {
 			// tags in between. For example consider: <a><b><c><d></a>
 			// when I encounter "</a>", it tells me that all the tags
 			// inside "a" should be considered to be closed
-			if (tag.equals("STMTTRN") && date.compareTo(getEndDate()) <= 0) {
-				output.add(new Transaction(date, ref, name, mem, amt, Transaction.getACategoryValue("OTHER")));
+			if (tag.equals("STMTTRN")) {
+				Transaction t = new Transaction(date, ref, name, mem, amt,
+						Transaction.getACategoryValue("OTHER"));
+				if (t.isBetweenDates(getStartDate(), getEndDate())) { output.add(t); }
 			}
 			while (!lastOpenTag().equals(tag)) {
 				closeTag(lastOpenTag());
@@ -351,6 +380,14 @@ public class OFXParser {
 				setAcctType(text);
 				return;
 			}
+			if (lastOpenTag().equals("ORG")) {
+				setBankName(text);
+				return;
+			}
+			if (lastOpenTag().equals("BANKID")) {
+				setBankID(text);
+				return;
+			}
 			if (lastOpenTag().equals("DTSTART")) {
 				setStartDate(Transaction.returnCalendarFromOFX(text));
 				return;
@@ -391,7 +428,8 @@ public class OFXParser {
 		System.out.println("Currency: " + OFXParser.getCurrency());
 		System.out.println("Account number: " + OFXParser.getAcctNumber());
 		System.out.println("Account type: " + OFXParser.getAcctType());
+		System.out.println("Bank name: " + OFXParser.getBankName());
+		System.out.println("Bank ID: " + OFXParser.getBankID());
 	}
 	*/
-
 }

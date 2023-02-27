@@ -86,8 +86,9 @@ public class PEC {
 	 * Gets the name + abs. path from the Request object, checks the file for
 	 * readability, hands the job over to OFX parser and collects and expedites
 	 * the Result as a ListIterator. The newly populated list is no more than
-	 * 3 months long.
-	 * @param request - Request object
+	 * request.from - request.to long.
+	 * @param request - Request object;
+	 *                  request.fileWithPath, request.from, request.to filled out
 	 * @return - list of Result objects with Transaction fields filled out
 	 */
 	public ListIterator<Result> parseOFX(Request request) {
@@ -97,7 +98,7 @@ public class PEC {
 		ArrayList<Result> rList = new ArrayList<Result>();
 		try {
 			file = new File(request.getFileWithPath());
-			tList = OFXParser.ofxParser(file);
+			tList = OFXParser.ofxParser(file, request.getFrom(), request.getTo());
 			if (tList==null) {
 				exception = true;
 			}
