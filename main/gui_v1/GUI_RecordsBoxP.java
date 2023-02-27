@@ -47,18 +47,10 @@ public class GUI_RecordsBoxP extends JPanel implements GUI_Settings_Variables{
 		jpRecordsTitleBoxP.add(jlblRecordsSubTitle);
 
 		jpRecordsDisplayBoxP.setLayout(new BorderLayout());
-//		jpRecordsDisplayBoxP.add(jtRecordsTable.getTableHeader(), BorderLayout.PAGE_START);
-//		jpRecordsDisplayBoxP.add(jtRecordsTable, BorderLayout.CENTER);
-//		jpRecordsDisplayBoxP.add(new RecordsTable(columnNames), BorderLayout.CENTER);
-//		jpRecordsDisplayBoxP.add(RecordsTable.createTableView(testData,columnNames));
-//		RecordsTable.createTableView(testData,columnNames);
-//		jpRecordsDisplayBoxP.add(RecordsTable.getRecordsTable().getTableHeader(), BorderLayout.PAGE_START);
-//
-//		jpRecordsDisplayBoxP.add(RecordsTable.getRecordsTable(), BorderLayout.CENTER);
-//		jpRecordsDisplayBoxP.add(new JScrollPane( new RecordsTable()), BorderLayout.CENTER);
 
 
-		jpRecordsDisplayBoxP.add(new RecordsTable());
+
+		jpRecordsDisplayBoxP.add(new RecordsTable(), BorderLayout.CENTER);
 
 		jpRecordsActionControlsBoxP.setLayout(new GridLayout(1,3));
 //		jpRecordsActionControlsBoxP.setPreferredSize(new Dimension(0,300));
@@ -73,7 +65,6 @@ public class GUI_RecordsBoxP extends JPanel implements GUI_Settings_Variables{
 		add(jpRecordsDisplayBoxP, BorderLayout.CENTER);
 		add(jpRecordsActionControlsBoxP, BorderLayout.SOUTH);
 
-//		TableView tv = new TableView(testData);
 	}
 
 	@Override

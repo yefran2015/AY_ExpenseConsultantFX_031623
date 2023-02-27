@@ -3,13 +3,12 @@ package gui_v1.action_processors;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.*;
 
 import gui_v1.login.LogInWindow;
 import gui_v1.login.SignUPWindow;
-import gui_v1.mainWindows.GUI_RecordsFrame;
+import gui_v1.mainWindows.GUI_RecordsWindow;
 import gui_v1.settings.GUI_Settings_Variables;
 
 public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements ActionListener, GUI_Settings_Variables{
@@ -62,7 +61,8 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 		}else if (e.getActionCommand().compareToIgnoreCase("About")==0) {
 			JOptionPane.showMessageDialog(null, ""+strAboutApp,"About", JOptionPane.INFORMATION_MESSAGE);
 		}else if (e.getActionCommand().compareToIgnoreCase("Show Records Window")==0) {
-			new GUI_RecordsFrame();
+//			new GUI_RecordsWindow();
+			GUI_RecordsWindow.showRecordsWindow();
 		}else if (e.getActionCommand().compareToIgnoreCase("Increse GUI Text Size (+)")==0) {
 			increaseAllElementsFont();
 		}else if (e.getActionCommand().compareToIgnoreCase("Decrese GUI Text Size (-)")==0) {
