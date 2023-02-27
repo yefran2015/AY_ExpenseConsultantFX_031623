@@ -316,15 +316,18 @@ public class OFXParser {
 		 * @param tag - String with the label of the tag
 		 */
 		public void closeTag(String tag) {
-			// when we close a tag we could implicitly close a bunch of
-			// tags in between. For example consider: <a><b><c><d></a>
-			// when I encounter "</a>", it tells me that all the tags
-			// inside "a" should be considered to be closed
+			// if the last close tag was of a Transaction, let's create that
+			// Transaction object and check, if it's within the requested time window.
+			// If so, add it!
 			if (tag.equals("STMTTRN")) {
 				Transaction t = new Transaction(date, ref, name, mem, amt,
 						Transaction.getACategoryValue("OTHER"));
 				if (t.isBetweenDates(getStartDate(), getEndDate())) { output.add(t); }
 			}
+			// when we close a tag we could implicitly close a bunch of
+			// tags in between. For example consider: <a><b><c><d></a>
+			// when I encounter "</a>", it tells me that all the tags
+			// inside "a" should be considered to be closed
 			while (!lastOpenTag().equals(tag)) {
 				closeTag(lastOpenTag());
 			}
