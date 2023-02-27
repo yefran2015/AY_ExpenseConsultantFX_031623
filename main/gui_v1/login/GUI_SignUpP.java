@@ -1,7 +1,6 @@
 package gui_v1.login;
 
 import gui_v1.automation.GUI_ElementCreator;
-import gui_v1.mainWindows.MainGUIWindow;
 import gui_v1.settings.GUI_LoginSignUpWiindows_Settings;
 
 import javax.swing.*;

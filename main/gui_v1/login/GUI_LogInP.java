@@ -1,9 +1,8 @@
 package gui_v1.login;
 import db_connectors.Connectivity;
 import gui_v1.automation.GUI_ElementCreator;
-import gui_v1.mainWindows.MainGUIWindow;
+import gui_v1.mainWindows.GUI_MainWindow;
 import gui_v1.settings.GUI_LoginSignUpWiindows_Settings;
-import gui_v1.testers.GUI_MainWindowTester;
 
 import javax.swing.*;
 import java.awt.*;
@@ -98,8 +97,9 @@ public class GUI_LogInP extends JPanel implements GUI_LoginSignUpWiindows_Settin
 
                 try {
                     if (resultSet.getInt(1) == 1) {
-                       MainGUIWindow mg= new MainGUIWindow();
-                       mg.setVisible(true);
+//                       GUI_MainWindow mg= new GUI_MainWindow();
+//                       mg.setVisible(true);
+                        GUI_MainWindow.showMainWindow();
                     } else {
                       JOptionPane.showMessageDialog(null,"Wrong Email or Password!");
                     }

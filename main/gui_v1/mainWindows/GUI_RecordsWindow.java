@@ -9,10 +9,11 @@ import gui_v1.menu.GUI_Menu;
 import gui_v1.menu.GUI_Menu_Technical;
 import gui_v1.settings.GUI_Settings_Variables;
 
-public class GUI_RecordsFrame extends JFrame implements GUI_Settings_Variables{
+public class GUI_RecordsWindow extends JFrame implements GUI_Settings_Variables{
 
 	private static final long serialVersionUID = 1L;
-	public GUI_RecordsFrame() {
+	private static GUI_RecordsWindow instance = null;
+	private GUI_RecordsWindow() {
 
 		setBackground(guiFramesBackgroundColor);
 		setForeground(guiFramesForegroundColor);
@@ -32,11 +33,24 @@ public class GUI_RecordsFrame extends JFrame implements GUI_Settings_Variables{
 		add(new GUI_RecordsBoxP(), BorderLayout.CENTER);
 
 		add(new JLabel(strCopyRigts, JLabel.CENTER), BorderLayout.SOUTH);
-		setVisible(true);
+//		setVisible(true);
 	}
 	@Override
 	public Component getComponent() {
 		return this;
 	}
-
+	public static GUI_RecordsWindow createRecordViewWindow(){
+		if(instance==null){
+			instance = new GUI_RecordsWindow();
+		}
+		return instance;
+	}
+	public static void showRecordsWindow(){
+		createRecordViewWindow();
+		instance.setVisible(true);
+	}
+	public static void hideRecordsWindoww(){
+		createRecordViewWindow();
+		instance.setVisible(false);
+	}
 }

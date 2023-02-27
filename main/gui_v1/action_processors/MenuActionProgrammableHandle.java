@@ -2,23 +2,19 @@ package gui_v1.action_processors;
 
 
 
-import entities.Transaction;
-import entities.TransactionList;
+import ay_local.AY_Local_Static;
 import gui_v1.RecordsTable;
-import gui_v1.login.LogInWindow;
-import gui_v1.mainWindows.GUI_RecordsFrame;
+import gui_v1.mainWindows.GUI_RecordsWindow;
 import main_logic.PEC;
 import main_logic.Request;
 import main_logic.Result;
-import parsers.OFXParser;
 
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ListIterator;
 
 //import static gui_v1.settings.GUI_Static_Settings.pathToFile;
-import static parsers.OFXParser.instance;
+
 
 public class MenuActionProgrammableHandle {
 
@@ -36,10 +32,11 @@ public class MenuActionProgrammableHandle {
      *  can be used anywhere.
      */
     public  void doParsOFXFileProcessing(){
-        GUI_RecordsFrame records = new GUI_RecordsFrame();
-          File f = null;
-//         GUI_FileChooser.getFileOrDirectory(f);
+      //  GUI_RecordsFrame records = new GUI_RecordsFrame();
+        GUI_RecordsWindow.createRecordViewWindow();
+        File f = AY_Local_Static.dir;
         File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
+
         if(chosenFile == null ){
             JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
         } else{
@@ -48,24 +45,58 @@ public class MenuActionProgrammableHandle {
             ListIterator<Result> it;
             request.setFileWithPath(chosenFile.getAbsolutePath());
             it = PEC.instance().parseOFX(request);
-            /*
-            request.setButton(Request.Button.NAME); // sorted by different attribute (NAME)
-            it = PEC.instance().sortedColumnSwitched(request);
-            */
+
             Result result = new Result();
             result = it.next();
             if (result.getCode()!=Result.Code.SUCCESS) {
                 JOptionPane.showMessageDialog(null, "The file is not OFX/QFX\nfile or could NOT be read.","Error", JOptionPane.INFORMATION_MESSAGE);
             }
+
             while(it.hasNext()){
-                result = new Result();
+//                result = new Result();
                 result = it.next();
                 RecordsTable.addRowToTable(result.getTDate(), result.getTRef(), result.getTDesc(),
                         result.getTMemo(), result.getTAmount(), result.getTCat());
             }
         }
-        records.setVisible(true);
+//        records.setVisible(true);
+
+        GUI_RecordsWindow.showRecordsWindow();
     }
+
+    public void out(Object o){
+        System.out.println(o+"");
+
+    }
+
+    void doAdvisingProcessing(){
+
+    }
+    void doManualEntryProcessing(){
+
+    }
+    void doGenerateSummaryProcessing(){
+
+    }
+    void doSettingsProcessing(){
+
+    }
+    void dologOutProcessing(){
+
+    }
+
+
+}
+
+
+
+
+
+        /*
+            request.setButton(Request.Button.NAME); // sorted by different attribute (NAME)
+            it = PEC.instance().sortedColumnSwitched(request);
+            */
+
     /*
     void doParsOFXFileProcessing() {
 
@@ -94,31 +125,6 @@ public class MenuActionProgrammableHandle {
 
     }
 */
-    public void out(Object o){
-        System.out.println(o+"");
-
-    }
-
-    void doAdvisingProcessing(){
-
-    }
-    void doManualEntryProcessing(){
-
-    }
-    void doGenerateSummaryProcessing(){
-
-    }
-    void doSettingsProcessing(){
-
-    }
-    void dologOutProcessing(){
-
-    }
-
-
-}
-
-
 
 //
 //    void doParsOFXFileProcessing(){
