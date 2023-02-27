@@ -302,7 +302,7 @@ public class Transaction {
         output += this.refNumber + "\t";
         output += this.description + "\t";
         output += this.memo + "\t";
-        output += String.format("$%7.2f", amount) + "\t";
+        output += String.format("$%8.2f", amount) + "\t";
         output += this.category;
         return output;
     }

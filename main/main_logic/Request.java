@@ -1,6 +1,14 @@
 package main_logic;
 
+import entities.Transaction;
+
+import java.util.Calendar;
+
 public class Request extends DataTransfer {
+
+	public static final String MIN_FROM = "19000101000000";
+	public static final String MAX_TO = "20991231000000";
+
 
 	public enum Button {
 		// buttons of Main Menu
@@ -20,8 +28,8 @@ public class Request extends DataTransfer {
 	// of action is required
 	private Button button;
 	// dates "from" and "to" to specify the time scope of request
-	private String from;
-	private String to;
+	private Calendar from;
+	private Calendar to;
 
 	private Request() {
 		reset();
@@ -34,21 +42,29 @@ public class Request extends DataTransfer {
 		return request;
 	}
 
-	public String getFrom() {
-		return from;
+	public Calendar getFrom() { return from; }
+	public String getOFXFrom() {
+		// returns OFX format (YYYYMMDDHHMMSS)
+		return Transaction.returnOFXFromCalendar(from);
 	}
 
-	public void setFrom(String from) {
-		this.from = from;
+	public void setFrom(Calendar from) { this.from = from; }
+	public void setOFXFrom(String from) {
+		this.from = Transaction.returnCalendarFromOFX(from);
+	}
+	public void setMinFrom() { from = Transaction.returnCalendarFromOFX(MIN_FROM); }
+
+	public Calendar getTo() { return to; }
+	public String getOFXTo() {
+		// returns OFX format (YYYYMMDDHHMMSS)
+		return Transaction.returnOFXFromCalendar(to);
 	}
 
-	public String getTo() {
-		return to;
+	public void setTo(Calendar to) { this.to = to; }
+	public void setOFXTo(String to) {
+		this.to = Transaction.returnCalendarFromOFX(to);
 	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
+	public void setMaxTo() { to = Transaction.returnCalendarFromOFX(MAX_TO); }
 
 	public Button getButton() {
 		return button;
@@ -61,8 +77,8 @@ public class Request extends DataTransfer {
 	@Override
 	public void reset() {
 		super.reset();
-		from = "";
-		to = "";
+		setMinFrom();
+		setMaxTo();
 		button = Button.NONE;
 	}
 

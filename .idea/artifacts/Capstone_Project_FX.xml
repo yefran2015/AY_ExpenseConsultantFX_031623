@@ -13,6 +13,7 @@
       <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx.swing.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/Applications/java-2019-06/javafx-sdk-15.0.1/lib/javafx.web.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/Applications/java-2019-06/java-sql-intellij/mysql-connector-java-8.0.26.jar" path-in-jar="/" />
+      <element id="library" level="project" name="javafx.media" />
     </root>
   </artifact>
 </component>

@@ -94,6 +94,5 @@ public class GUI_Menu extends JMenuBar implements GUI_Settings_Variables{
 		jmiAbout.addActionListener(a);
 		jmHelp.add(jmiAbout);
 		add(jmHelp);
-
 	}
 }

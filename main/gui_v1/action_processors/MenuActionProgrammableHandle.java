@@ -1,16 +1,16 @@
 package gui_v1.action_processors;
 
 
-
-import ay_local.AY_Local_Static;
 import gui_v1.RecordsTable;
 import gui_v1.mainWindows.GUI_RecordsWindow;
 import main_logic.PEC;
 import main_logic.Request;
 import main_logic.Result;
+import parsers.OFXParser;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ListIterator;
 
 //import static gui_v1.settings.GUI_Static_Settings.pathToFile;
@@ -34,26 +34,39 @@ public class MenuActionProgrammableHandle {
     public  void doParsOFXFileProcessing(){
       //  GUI_RecordsFrame records = new GUI_RecordsFrame();
         GUI_RecordsWindow.createRecordViewWindow();
-        File f = AY_Local_Static.dir;
+        File f = null;
         File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
-
         if(chosenFile == null ){
             JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
         } else{
             out( "OFX Chosen File for parsing is " + chosenFile.getAbsolutePath() + ".");
             Request request = Request.instance();
+            request.reset();
             ListIterator<Result> it;
             request.setFileWithPath(chosenFile.getAbsolutePath());
+            /*
+            //For limiting the time window for parsed Transactions.
+            request.setFrom(...);
+            request.setTo(...);
+            // technically, we don't want more than 3 months of Transactions:
+            // date.add(Calendar.MONTH, 3);
+            */
             it = PEC.instance().parseOFX(request);
-
+            /*
+            //Applying sorting, if a Transaction column header/title has been clicked.
+            //This may have to go to a different method.
+            request.setButton(Request.Button.NAME); // sorted by different attribute (NAME)
+            it = PEC.instance().sortedColumnSwitched(request);
+            */
             Result result = new Result();
             result = it.next();
             if (result.getCode()!=Result.Code.SUCCESS) {
                 JOptionPane.showMessageDialog(null, "The file is not OFX/QFX\nfile or could NOT be read.","Error", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                RecordsTable.addRowToTable(result.getTDate(), result.getTRef(), result.getTDesc(),
+                        result.getTMemo(), result.getTAmount(), result.getTCat());
             }
-
             while(it.hasNext()){
-//                result = new Result();
                 result = it.next();
                 RecordsTable.addRowToTable(result.getTDate(), result.getTRef(), result.getTDesc(),
                         result.getTMemo(), result.getTAmount(), result.getTCat());
@@ -125,6 +138,7 @@ public class MenuActionProgrammableHandle {
 
     }
 */
+
 
 //
 //    void doParsOFXFileProcessing(){

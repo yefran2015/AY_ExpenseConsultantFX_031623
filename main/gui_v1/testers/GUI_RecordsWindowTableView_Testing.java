@@ -3,7 +3,7 @@ package gui_v1.testers;
 import entities.Transaction;
 import entities.TransactionList;
 import gui_v1.RecordsTable;
-import gui_v1.mainWindows.GUI_RecordsFrame;
+//import gui_v1.mainWindows.GUI_RecordsFrame;
 import parsers.OFXParser;
 
 import javax.swing.*;
@@ -15,6 +15,9 @@ import java.util.ListIterator;
 import static parsers.OFXParser.instance;
 
 public class GUI_RecordsWindowTableView_Testing {
+
+
+    /*
     public static void main(String[] args)  throws IOException {
 //AY_WORKING_ARCHIVE/CreditCardSAMPLE.qfx
 //        parserTester();
