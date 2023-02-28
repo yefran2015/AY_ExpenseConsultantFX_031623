@@ -20,6 +20,7 @@ public class GUI_MainWindow extends JFrame implements GUI_Settings_Variables  {
 		return instance;
 	}
 	 private GUI_MainWindow() {
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 //		setBackground(guiFramesBackgroundColor);
 //		setForeground(guiFramesForegroundColor);
 //		setJMenuBar(new GUI_Menu_Technical(this));
@@ -37,6 +38,19 @@ public class GUI_MainWindow extends JFrame implements GUI_Settings_Variables  {
 		add(new GUI_MainBoxP(), BorderLayout.CENTER);
 
 		add(new JLabel(strCopyRigts, JLabel.CENTER), BorderLayout.SOUTH);
+		 
+		 addWindowListener(new WindowAdapter() {
+			 @Override
+			 public void windowClosing(WindowEvent e) {
+				 int answr = JOptionPane.showOptionDialog(null, "Do you want to terminate run of Consultant", "Cation System termination",
+						 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
+				 if(answr == JOptionPane.YES_OPTION){
+					 System.exit(JFrame.EXIT_ON_CLOSE);
+				 }else{
+
+				 }
+			 }
+		 });
 
 	}
 	public static void showMainWindow(){
