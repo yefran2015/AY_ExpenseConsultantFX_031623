@@ -10,7 +10,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.print.PrinterException;
-import java.util.Comparator;
 //import javax.swing.table.DefaultTableModel;
 
 public class RecordsTable  extends JPanel {
@@ -19,26 +18,19 @@ public class RecordsTable  extends JPanel {
     private static String[] columnNames = { "Date", "Ref", "Name", "Memo", "Amount", "Category"};
     private static String[][] testData = {};
     private static DefaultTableModel m;
- 
+
     public RecordsTable() {
         setLayout(new BorderLayout());
         createTable();
-//        createTableWithCustomSorting();
+//        createTable_v2();
     }
-    /**
-     *  This method is for creating table with ability to sort Amount column
-     *  with String datatype and dollar sign apfront
-     */
-    private void createTableWithCustomSorting() {
 
+    private void createTable_v2() {
         instance = new JTable(new DefaultTableModel(testData,columnNames));
-        instance.setRowSorter(RecordsTable_CustomMethods.getCustomRowSorter(instance.getModel(), 5));
-
+        instance.setAutoCreateRowSorter(true);
         add(instance.getTableHeader(), BorderLayout.PAGE_START);
         add(new JScrollPane(instance), BorderLayout.CENTER);
     }
-
-
     private void createTable() {
         TableModel m = new DefaultTableModel(testData, columnNames) {
             public Class getColumnClass(int column) {
@@ -59,19 +51,6 @@ public class RecordsTable  extends JPanel {
         add(new JScrollPane(instance), BorderLayout.CENTER);
     }
 
-    public static void addRowToTable(String ofxDate, String ref, String name, String memo, String amount, String cat) {
-        Object[] rowItems = new Object[6];
-        rowItems[0] = ofxDate + "";
-        rowItems[1] = ref + "";
-        rowItems[2] = name + "";
-        rowItems[3] = memo + "";
-        rowItems[4] = amount + "" ;
-        rowItems[5] = cat + "";
-        m = (DefaultTableModel) (instance.getModel());
-        m.addRow(rowItems);
-
-    }
-
     public static void addRowToTable(String ofxDate, String ref, String name, String memo, Double amount, String cat) {
         Object[] rowItems = new Object[6];
         rowItems[0] = ofxDate + "";
@@ -88,12 +67,8 @@ public class RecordsTable  extends JPanel {
     public static void printTransactionsTable(){
         try {
             instance.print();
-            JOptionPane.showMessageDialog(null, "Unable to print.\nCheck your printer,\nand\ntry to print again.","Unable to Print", JOptionPane.WARNING_MESSAGE);
-
         } catch (PrinterException e) {
-//            throw new RuntimeException(e);
-            JOptionPane.showMessageDialog(null, "Unable to print.\nCheck your printer,\nand\ntry to print again.","Unable to Print", JOptionPane.WARNING_MESSAGE);
-
+            throw new RuntimeException(e);
         }
     }
 
