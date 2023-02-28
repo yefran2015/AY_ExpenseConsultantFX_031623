@@ -14,6 +14,7 @@ public class GUI_RecordsWindow extends JFrame implements GUI_Settings_Variables{
 	private static final long serialVersionUID = 1L;
 	private static GUI_RecordsWindow instance = null;
 	private GUI_RecordsWindow() {
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		setBackground(guiFramesBackgroundColor);
 		setForeground(guiFramesForegroundColor);
@@ -34,6 +35,18 @@ public class GUI_RecordsWindow extends JFrame implements GUI_Settings_Variables{
 
 		add(new JLabel(strCopyRigts, JLabel.CENTER), BorderLayout.SOUTH);
 //		setVisible(true);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int answr = JOptionPane.showOptionDialog(null, "Do you want to terminate run of Consultant", "Cation System termination",
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
+				if(answr == JOptionPane.YES_OPTION){
+					System.exit(JFrame.EXIT_ON_CLOSE);
+				}else{
+
+				}
+			}
+		});
 	}
 	@Override
 	public Component getComponent() {
