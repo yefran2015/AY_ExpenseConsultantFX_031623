@@ -10,7 +10,7 @@ public class DataTransfer {
 	private String tRef;
 	private String tDesc;
 	private String tMemo;
-	private String tAmount;
+	private Double tAmount;
 	private String tCat;
 	// parse OFX file fields
 	private String fileWithPath;
@@ -31,7 +31,7 @@ public class DataTransfer {
 		tRef = "";
 		tDesc = "";
 		tMemo = "";
-		tAmount = "";
+		tAmount = 0.0;
 		tCat = "";
 		fileWithPath = "";
 
@@ -70,11 +70,11 @@ public class DataTransfer {
 		this.tMemo = tMemo;
 	}
 
-	public String getTAmount() {
+	public Double getTAmount() {
 		return tAmount;
 	}
 
-	public void setTAmount(String tAmount) {
+	public void setTAmount(Double tAmount) {
 		this.tAmount = tAmount;
 	}
 
@@ -101,8 +101,9 @@ public class DataTransfer {
 		this.tRef = transaction.getRefNumber();
 		this.tDesc = transaction.getDescription();
 		this.tMemo = transaction.getMemo();
-		if (transaction.getAmount()<0) { this.tAmount = String.format("$%.2f", transaction.getAmount()); }
-		else { this.tAmount = String.format("$ %.2f", transaction.getAmount()); }
+//		if (transaction.getAmount()<0) { this.tAmount = String.format("$%.2f", transaction.getAmount()); }
+//		else { this.tAmount = String.format("$ %.2f", transaction.getAmount()); }
+		this.tAmount = ((int)(transaction.getAmount() * 100))/100.0;
 		this.tCat = transaction.getCategoryName();
 	}
 
