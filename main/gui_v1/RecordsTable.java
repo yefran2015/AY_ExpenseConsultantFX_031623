@@ -9,6 +9,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.print.PrinterException;
 //import javax.swing.table.DefaultTableModel;
 
 public class RecordsTable  extends JPanel {
@@ -60,6 +61,15 @@ public class RecordsTable  extends JPanel {
         rowItems[5] = cat + "";
         m = (DefaultTableModel) (instance.getModel());
         m.addRow(rowItems);
+
+    }
+
+    public static void printTransactionsTable(){
+        try {
+            instance.print();
+        } catch (PrinterException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
