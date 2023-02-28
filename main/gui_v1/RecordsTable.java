@@ -9,6 +9,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.print.PrinterException;
 //import javax.swing.table.DefaultTableModel;
 
 public class RecordsTable  extends JPanel {
@@ -21,8 +22,15 @@ public class RecordsTable  extends JPanel {
     public RecordsTable() {
         setLayout(new BorderLayout());
         createTable();
+//        createTable_v2();
     }
 
+    private void createTable_v2() {
+        instance = new JTable(new DefaultTableModel(testData,columnNames));
+        instance.setAutoCreateRowSorter(true);
+        add(instance.getTableHeader(), BorderLayout.PAGE_START);
+        add(new JScrollPane(instance), BorderLayout.CENTER);
+    }
     private void createTable() {
         TableModel m = new DefaultTableModel(testData, columnNames) {
             public Class getColumnClass(int column) {
@@ -39,27 +47,29 @@ public class RecordsTable  extends JPanel {
         RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(m);
         instance.setRowSorter(sorter);
 
-
-
-
-
-//        m = new DefaultTableModel(testData, columnNames);
-//        instance = new JTable(m);
-
         add(instance.getTableHeader(), BorderLayout.PAGE_START);
         add(new JScrollPane(instance), BorderLayout.CENTER);
     }
 
-    public static void addRowToTable(String ofxDate, String ref, String name, String memo, String amount, String cat) {
-        String[] rowItems = new String[6];
+    public static void addRowToTable(String ofxDate, String ref, String name, String memo, Double amount, String cat) {
+        Object[] rowItems = new Object[6];
         rowItems[0] = ofxDate + "";
         rowItems[1] = ref + "";
         rowItems[2] = name + "";
         rowItems[3] = memo + "";
-        rowItems[4] = amount + "";
+        rowItems[4] = amount ;
         rowItems[5] = cat + "";
         m = (DefaultTableModel) (instance.getModel());
         m.addRow(rowItems);
+
+    }
+
+    public static void printTransactionsTable(){
+        try {
+            instance.print();
+        } catch (PrinterException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
