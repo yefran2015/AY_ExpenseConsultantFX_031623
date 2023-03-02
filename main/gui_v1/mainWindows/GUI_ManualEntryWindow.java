@@ -1,10 +1,7 @@
 package gui_v1.mainWindows;
 
-import gui_v1.menu.GUI_Menu;
-import gui_v1.menu.GUI_Menu_Technical;
 import gui_v1.settings.GUI_Settings_Variables;
-import gui_v1.transaction_records.GUI_ManulEntryBoxP;
-
+import gui_v1.transaction_records.GUI_ManualTransactionsEntryP;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -21,19 +18,12 @@ public class GUI_ManualEntryWindow extends JFrame implements GUI_Settings_Variab
         setBackground(guiFramesBackgroundColor);
         setForeground(guiFramesForegroundColor);
 
-
-        setTitle(manulEntryWindowWindowTitle);
-        if(gui_v1.settings.GUI_Static_Settings.workStage==1){
-            setJMenuBar(new GUI_Menu());
-        }else{
-            setJMenuBar(new GUI_Menu_Technical());
-        }
         setSize(manualEntryGUIWindowFrameSize);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
 
-        add(new GUI_ManulEntryBoxP(), BorderLayout.CENTER);
+        add(new GUI_ManualTransactionsEntryP(), BorderLayout.CENTER);
 
         add(new JLabel(strCopyRigts, JLabel.CENTER), BorderLayout.SOUTH);
         addWindowListener(new WindowAdapter() {
@@ -50,7 +40,6 @@ public class GUI_ManualEntryWindow extends JFrame implements GUI_Settings_Variab
                 }
             }
         });
-//		setVisible(true);
     }
     @Override
     public Component getComponent() {
