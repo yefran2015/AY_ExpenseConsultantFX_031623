@@ -11,10 +11,9 @@ import java.awt.event.ActionListener;
 public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings_Variables, ActionListener {
 
 
-    private JComboBox jcmbAccount = GUI_ElementCreator.newJComboBox(new String[]{"Nick","Nick2","Nick3"});
+    private JComboBox jcmbAccount = GUI_ElementCreator.newJComboBox(new String[]{"Nick","Nick2","Nick3", "NEW"});
 
     private JTextField jtfDate = GUI_ElementCreator.newTextField("02/15/2025");
-    private JButton jbtnCallendar =GUI_ElementCreator.newJButton("Select Date");
     private JTextField jtfRefNum= GUI_ElementCreator.newTextField("Enter Reference Number");
     private JTextField jtfTransName = GUI_ElementCreator.newTextField("Enter Transaction Name");
     private JTextField jtfMemo= GUI_ElementCreator.newTextField("Enter Memo");
@@ -46,6 +45,7 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
 
             JPanel userInputElementsBox = new JPanel(new GridLayout(7,2));
             userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Account:"));
+            jcmbAccount.addActionListener(this);
             userInputElementsBox.add(jcmbAccount);
 
             userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Date:"));
@@ -91,11 +91,14 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
                 String descr = jtfTransName.getText().trim();
                 String memo = jtfMemo.getText().trim();
                 String amount = jtfAmount.getText().trim();
-//                String category = jtfCategory.getText().trim();
-
                 String custom_category= jcmbCategory.getSelectedItem().toString().trim();
 
                 new ManualEntryProgrammableHandler(accoutn, date, refN,descr, memo, amount,custom_category);
+
+            }else  if(e.getSource() == jcmbAccount){
+                if(jcmbAccount.getSelectedItem().toString().trim().compareToIgnoreCase("NEW")==0){
+                    new NewAccountWindow();
+                }
 
             }
         }
