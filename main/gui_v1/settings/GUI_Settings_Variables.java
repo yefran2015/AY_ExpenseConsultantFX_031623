@@ -64,10 +64,12 @@ public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable {
 	Dimension recordsGUIWindowFrameSize = new Dimension(gui_width, gui_height);
 	Dimension mainWindowMessageAreaSize = new Dimension(0,200);
 
+	Dimension manualEntryGUIWindowFrameSize = new Dimension(gui_width, 400);
 
 	String mainGUIFrameWindowTitle = strAppOfficialName;
 	String recordsGUIWindowTitle = strAppOfficialName;
-	
+	String manulEntryWindowWindowTitle = strAppOfficialName;
+
 	/////////////////////////////////////////
 	//    main colors
 	/////////////////////////////////////////
