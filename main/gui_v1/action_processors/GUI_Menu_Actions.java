@@ -3,11 +3,10 @@ package gui_v1.action_processors;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.*;
-
 import gui_v1.login.LogInWindow;
 import gui_v1.login.SignUPWindow;
+import gui_v1.mainWindows.GUI_ManualEntryWindow;
 import gui_v1.mainWindows.GUI_RecordsWindow;
 import gui_v1.settings.GUI_Settings_Variables;
 
@@ -34,6 +33,7 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 
 		}else if (e.getActionCommand().compareToIgnoreCase("Manual Entry")==0) {
 			ac.doManualEntryProcessing();
+
 		}else if (e.getActionCommand().compareToIgnoreCase("Parse OFX File")==0) {
 			ac.doParsOFXFileProcessing();
 		}else if (e.getActionCommand().compareToIgnoreCase("Get Advise")==0) {
