@@ -12,8 +12,9 @@ public class SignUPWindow  extends JFrame implements GUI_LoginSignUpWiindows_Set
         setSize(signUpWindowSize);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        add(new  GUI_SignUpP(this), BorderLayout.CENTER);
+        setLayout(new BorderLayout());       
+//        add(new  GUI_SignUpP(), BorderLayout.CENTER);
+        add(new  GUI_SignUpP_v2(), BorderLayout.CENTER);
         add(new JLabel(strCopyRigts, JLabel.CENTER), BorderLayout.SOUTH);
         setVisible(true);
     }
