@@ -1,5 +1,6 @@
 package gui_v1.login;
 
+import gui_v1.action_processors.SignupNewUserProgrammableHandler;
 import gui_v1.automation.GUI_ElementCreator;
 import gui_v1.settings.GUI_LoginSignUpWiindows_Settings;
 
@@ -10,13 +11,14 @@ import java.awt.event.ActionListener;
 
 public class GUI_SignUpP extends JPanel implements GUI_LoginSignUpWiindows_Settings, ActionListener {
     private JFrame signUpFrame;
-    private JTextField jtfName;
-    private JTextField jtfLName;
+    private JTextField jtfSeqAnswer1;
+    private JTextField jtfSeqAnswer2;
     private JTextField jtfNewLogInName;
     private JTextField jtfEmail;
-    private JTextField jtfEmail2;
     private JPasswordField jtfNewPass;
-    private  JPasswordField jtfNewPass2;
+    private JPasswordField jtfNewPass2;
+    private JComboBox jcmbQuestion1;
+    private JComboBox jcmbQuestion2;
 
     public GUI_SignUpP(JFrame frame) {
         this.signUpFrame = frame;
@@ -26,39 +28,13 @@ public class GUI_SignUpP extends JPanel implements GUI_LoginSignUpWiindows_Setti
 
 
         JPanel inputBoxP = new JPanel();
-        inputBoxP.setLayout(new GridLayout(8,2));
-
-        jtfName =  new JTextField();
-        jtfName.setText("Name: ");
-        jtfName.selectAll();
-        inputBoxP.add(new JLabel("Name: "));
-        inputBoxP.add(jtfName);
-
-        jtfLName =  new JTextField();
-        jtfLName.setText("last Name: ");
-        jtfLName.selectAll();
-        inputBoxP.add(new JLabel("Last Name: "));
-        inputBoxP.add(jtfLName);
-
-        jtfNewLogInName =  new JTextField();
-        jtfNewLogInName.setText("New LogIn Name: ");
-        jtfNewLogInName.selectAll();
-        inputBoxP.add(new JLabel("Choose Login Name: "));
-        inputBoxP.add(jtfNewLogInName);
-
+        inputBoxP.setLayout(new GridLayout(10,2));
 
         jtfEmail =  new JTextField();
         jtfEmail.setText("Your Email");
         jtfEmail.selectAll();
         inputBoxP.add(new JLabel("Email:"));
         inputBoxP.add(jtfEmail);
-        jtfEmail2 =  new JTextField();
-        jtfEmail2.setText("Confirm Email");
-        jtfEmail2.selectAll();
-        inputBoxP.add(new JLabel("Confirm your Email:"));
-        inputBoxP.add(jtfEmail2);
-
-
 
         jtfNewPass =  new JPasswordField();
         inputBoxP.add(new JLabel("Choose log in password: "));
@@ -67,6 +43,24 @@ public class GUI_SignUpP extends JPanel implements GUI_LoginSignUpWiindows_Setti
         inputBoxP.add(new JLabel("Confirm chosen password: "));
         inputBoxP.add(jtfNewPass2);
         add(inputBoxP, BorderLayout.CENTER);
+
+        jcmbQuestion1 = new JComboBox(new String[]{"Q1","Q2","Q3"});
+        inputBoxP.add(new JLabel("Select Security Question 1"));
+        inputBoxP.add(jcmbQuestion1);
+        jtfSeqAnswer1 =  new JTextField();
+        jtfSeqAnswer1.setText("Enter Answer to  Question 1");
+        jtfSeqAnswer1.selectAll();
+        inputBoxP.add(new JLabel("Select Answer to Security Question 1"));
+        inputBoxP.add(jtfSeqAnswer1);
+
+        jcmbQuestion2 = new JComboBox(new String[]{"Q3","Q4","Q5"});
+        inputBoxP.add(new JLabel("Select Security Question 2"));
+        inputBoxP.add(jcmbQuestion2);
+        jtfSeqAnswer2 =  new JTextField();
+        jtfSeqAnswer2.setText("Enter Answer to  Question 2");
+        jtfSeqAnswer2.selectAll();
+        inputBoxP.add(new JLabel("Select Answer to Security Question 2"));
+        inputBoxP.add(jtfSeqAnswer2);
 
 
         JButton jbtOk = new JButton("OK");
@@ -78,15 +72,17 @@ public class GUI_SignUpP extends JPanel implements GUI_LoginSignUpWiindows_Setti
 
     @Override
     public void actionPerformed(ActionEvent a) {
+
         if (a.getActionCommand().compareToIgnoreCase("OK")==0) {
-            String  userInfo = "\nUser Name: "+ jtfName.getText() + "\nLast Name: " + jtfLName.getText() ;
-            userInfo+=  "\nEmail: "+ jtfEmail.getText()+"\nEmail confirm: "+ jtfEmail2.getText();
-            userInfo += "\nUser Login: "+ jtfNewLogInName.getText() + "\nPasword: " + jtfNewPass.getPassword()  + "\nPassword2: "+ jtfNewPass2.getPassword();
+             String email= jtfEmail.getText().trim();
+             String pass1 = jtfNewPass.getPassword().toString().trim();
+             String pass2 = jtfNewPass2.getPassword().toString().trim();;
+             String question1 = jcmbQuestion1.getSelectedItem().toString().trim();
+             String question2= jcmbQuestion2.getSelectedItem().toString().trim();;
+             String answer1 = jtfSeqAnswer1.getText().trim();
+             String answer2 = jtfSeqAnswer2.getText().trim();
 
-            JOptionPane.showMessageDialog(null, userInfo,"Confirm", JOptionPane.INFORMATION_MESSAGE);
-            signUpFrame.setVisible(false);
-            //new MainGUIWindow();
-
+            new SignupNewUserProgrammableHandler(email, pass1,pass2, question1, question2,answer1,answer2);
         }
     }
 }
