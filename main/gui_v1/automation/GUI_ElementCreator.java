@@ -2,14 +2,7 @@ package gui_v1.automation;
 import java.awt.Component;
 import java.awt.Font;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JRadioButton;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -35,6 +28,20 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables{
 		jtf.setForeground(clrF_JTextField);
 		jtf.setBackground(clrB_JTextField);
 		 return jtf;
+	}
+	public static JComboBox newJComboBox(String[]  s){
+		JComboBox  jcmmo = new JComboBox(s);
+		jcmmo.setFont(newFont(jcmmo.getFont(), txtSize_JTextField+1));
+		return jcmmo;
+	}
+	public static JTextField newTextField(String s) {
+		JTextField  jtf = new JTextField();
+		jtf.setFont(newFont(jtf.getFont(), txtSize_JTextField+1));
+		jtf.setForeground(clrF_JTextField);
+		jtf.setBackground(clrB_JTextField);
+		jtf.setText(s);
+		jtf.selectAll();
+		return jtf;
 	}
 	public static JTextArea newJTextArea() {
 		JTextArea  jta = new JTextArea();
@@ -81,6 +88,13 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables{
 		jbtn.setBackground(clrB_Btn_Add);
 		 return jbtn;
 	}
+	public static JButton newRecordNavigationJButton(String  msg) {
+		JButton  jbtn = new JButton(checkTitleMsg(msg));
+		jbtn.setFont(newFont(jbtn.getFont(), txtSize_JButton));
+		jbtn.setForeground(clrF_Btn_Add);
+		jbtn.setBackground(clrB_Btn_Add);
+		return jbtn;
+	}
 	public static JMenu newJMenu(String  msg) {
 		JMenu  jmenu = new JMenu(checkTitleMsg(msg));
 		jmenu.setFont(newFont(jmenu.getFont(), txtSize_JMenu));
@@ -103,7 +117,7 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables{
 		 return lbl;
 	}
 	public static JLabel newTextLabel(String  msg) {
-		JLabel  lbl = new JLabel(checkTitleMsg(msg), JLabel.CENTER);
+		JLabel  lbl = new JLabel(checkTitleMsg(msg), JLabel.LEFT);
 		lbl.setFont(newFont(lbl.getFont(), txtSize_Regular));
 		lbl.setForeground(clrF_InfoMsgs);
 //		lbl.setBackground(clrB_Title);
