@@ -1,7 +1,9 @@
 package gui_v1.action_processors;
 
 
+import ay_local_settings.ay_local_variables;
 import gui_v1.RecordsTable;
+import gui_v1.mainWindows.GUI_ManualEntryWindow;
 import gui_v1.mainWindows.GUI_RecordsWindow;
 import main_logic.PEC;
 import main_logic.Request;
@@ -34,7 +36,9 @@ public class MenuActionProgrammableHandle {
     public  void doParsOFXFileProcessing(){
       //  GUI_RecordsFrame records = new GUI_RecordsFrame();
         GUI_RecordsWindow.createRecordViewWindow();
-        File f = null;
+//        File f = null;
+
+        File f = ay_local_variables.work_dir;
         File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
         if(chosenFile == null ){
             JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
@@ -86,7 +90,7 @@ public class MenuActionProgrammableHandle {
 
     }
     void doManualEntryProcessing(){
-
+        GUI_ManualEntryWindow.showManualEntryWindow();
     }
     void doGenerateSummaryProcessing(){
 
