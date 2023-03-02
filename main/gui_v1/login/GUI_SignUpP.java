@@ -20,8 +20,8 @@ public class GUI_SignUpP extends JPanel implements GUI_LoginSignUpWiindows_Setti
     private JComboBox jcmbQuestion1;
     private JComboBox jcmbQuestion2;
 
-    public GUI_SignUpP(JFrame frame) {
-        this.signUpFrame = frame;
+    public GUI_SignUpP() {
+       
         setLayout(new BorderLayout());
         add(GUI_ElementCreator.newTitle(StrSignUpHeadTilte), BorderLayout.NORTH);
 
