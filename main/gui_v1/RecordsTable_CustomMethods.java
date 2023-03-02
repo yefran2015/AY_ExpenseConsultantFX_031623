@@ -4,6 +4,17 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.util.Comparator;
 
+/**
+ * @author Andrey Y
+ * @author  Pavel
+ * @author Sam
+ * @version 0.0.1
+ * @serial 030220231659
+ *  This class is place for accumulating all custom methods needed
+ *  for SPAM Teams Expense Consultant App to Run, and showing
+ *  correct results.
+ *
+ */
 public class RecordsTable_CustomMethods {
     /**
      * @param m   table model of table to set custom row sorting
@@ -13,7 +24,7 @@ public class RecordsTable_CustomMethods {
      *   table.setRowSorter(getCustomRowSorter(table.getModel()), culumnNum);
      *
      */
-    public static TableRowSorter getCustomRowSorter(TableModel m, int column){
+    public static TableRowSorter getCustomRowSorter_v1(TableModel m, int column){
         var sorter = new TableRowSorter<TableModel>(m);
         sorter.setComparator(column, new Comparator<String>() {
             @Override
@@ -30,4 +41,47 @@ public class RecordsTable_CustomMethods {
         return sorter;
     }
 
+    /**
+     * @param m --  table model of table to set custom row sorting
+     * @return -- custom row sorting for specified column of tables
+     * @return -- table sorted object with specified sorting
+     *
+     * This  method is providing custom amount sorting of specified column by its number.
+     */
+    public static TableRowSorter getCustomRowSorter(TableModel m, int column){
+        var sorter = new TableRowSorter<TableModel>(m);
+        sorter.setComparator(column, new Comparator<String>() {
+            @Override
+            public int compare(String c1, String c2) {
+                Double n1 = null;
+                Double n2 = null;
+//                o(c1 + " c "+c2);
+                if(c1.startsWith("$")){
+                    n1 = Double.parseDouble((c1.substring(1)).replace(",",""));
+                }else if(c1.startsWith("-")){
+                    n1 = Double.parseDouble((c1.substring(2)).replace(",",""));
+                    n1*= -1;
+                }
+                if(c2.startsWith("$")){
+                    n2 = Double.parseDouble((c2.substring(1)).replace(",",""));
+                }else if(c2.startsWith("-")){
+                    n2 = Double.parseDouble((c2.substring(2)).replace(",",""));
+                    n2*= -1;
+                }
+//                o(n1 + " "+ n2);
+
+                if (n1 <= n2) {
+                    return -1;
+                } else if (n1 > n2) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+        return sorter;
+    }
+
+//    private static void o(Object o){
+//        System.out.println(o+"");
+//    }
 }
