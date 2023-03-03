@@ -1,5 +1,6 @@
 package gui_v1.transaction_records;
 
+import gui_v1.action_processors.NewAccountProgrammableHandler;
 import gui_v1.automation.GUI_ElementCreator;
 
 import javax.swing.*;
@@ -47,10 +48,13 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
             int answr = JOptionPane.showOptionDialog(null, msg, "Adding and Storing Account!",
                     JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
             if(answr == JOptionPane.YES_OPTION){
-                frame.dispose();;
+                frame.dispose();
+                new NewAccountProgrammableHandler(jtfAcctNum.getText().trim(), jtfAcctNick.getText().trim(), jcmbBank.getSelectedItem().toString().trim());
             }else{
 
             }
+
+            
         }
     }
 }
