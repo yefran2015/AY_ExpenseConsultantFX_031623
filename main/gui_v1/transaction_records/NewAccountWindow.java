@@ -16,7 +16,7 @@ public class NewAccountWindow  extends JFrame  implements GUI_Settings_Variables
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         add(new JLabel(strCopyRigts, JLabel.CENTER), BorderLayout.SOUTH);
-        add(new GUI_NewAccountP(), BorderLayout.CENTER);
+        add(new GUI_NewAccountP(this), BorderLayout.CENTER);
         setVisible(true);
     }
 
