@@ -22,7 +22,7 @@ public class MenuActionProgrammableHandle {
 
 
     void doHowToStartProcessing(){
-
+        GUI_HowToWindow.showRecordsWindow();
     }
 
     /**
