@@ -65,6 +65,7 @@ public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable {
 	Dimension mainWindowMessageAreaSize = new Dimension(0,200);
 
 	Dimension manualEntryGUIWindowFrameSize = new Dimension(gui_width, 400);
+	Dimension howToWindowFrameSize  = new Dimension(gui_width, gui_height);
 
 	String mainGUIFrameWindowTitle = strAppOfficialName;
 	String recordsGUIWindowTitle = strAppOfficialName;
