@@ -34,8 +34,8 @@ public class RecordsTable  extends JPanel{
     private void createTableWithCustomSorting() {
 
         instance = new JTable(new DefaultTableModel(testData,columnNames));
-        instance.setRowSorter(RecordsTable_CustomMethods.getCustomRowSorter(instance.getModel(), 4));
         instance.setRowSorter(RecordsTable_CustomMethods.getCustomRowSorterByDate(instance.getModel(), 0));
+        instance.setRowSorter(RecordsTable_CustomMethods.getCustomRowSorter(instance.getModel(), 4));
 
         DefaultTableCellRenderer r = new DefaultTableCellRenderer();
         r.setHorizontalAlignment(JLabel.RIGHT);
