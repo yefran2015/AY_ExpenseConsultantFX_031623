@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings_Variables, ActionListener {
 
 
-    private JComboBox jcmbAccount = GUI_ElementCreator.newJComboBox(new String[]{"Nick","Nick2","Nick3", "NEW"});
+    private static JComboBox jcmbAccount = GUI_ElementCreator.newJComboBox(new String[]{"Nick","Nick2","Nick3", "NEW"});
 
     private JTextField jtfDate = GUI_ElementCreator.newTextField("02/15/2025");
     private JTextField jtfRefNum= GUI_ElementCreator.newTextField("Enter Reference Number");
@@ -76,7 +76,9 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
             buttonsBox.add(jbtnDone);
             add(buttonsBox, BorderLayout.SOUTH);
         }
-
+        public static void addAccountNickToComboBox(String acctNick){
+            jcmbAccount.addItem(acctNick);
+        }
         @Override
         public Component getComponent() {
             return null;
