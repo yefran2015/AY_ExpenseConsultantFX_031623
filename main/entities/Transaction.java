@@ -131,7 +131,7 @@ public class Transaction {
      * @param date - Calendar type
      * @return a String in format YYYYMMDDHHMMSS
      */
-    public static String returnMMslashDDFromCalendar(Calendar date) {
+    public static String returnMMslashDDFromCalendar2(Calendar date) {
         String month, day;
         month = Integer.toString(date.get(Calendar.MONTH) + 1);
         day = Integer.toString(date.get(Calendar.DATE));
@@ -141,7 +141,17 @@ public class Transaction {
             day = "0" + day;
         return month + "/" + day;
     }
-
+    public static String returnMMslashDDFromCalendar(Calendar date) {
+        String month, day;
+        String year = date.get(Calendar.YEAR)+"";
+        month = Integer.toString(date.get(Calendar.MONTH) + 1);
+        day = Integer.toString(date.get(Calendar.DATE));
+        if (month.length() == 1)
+            month = "0" + month;
+        if (day.length() == 1)
+            day = "0" + day;
+        return year+"/"+ month + "/" + day;
+    }
 //  -------------- other static methods -----------------------------------
 //
 
