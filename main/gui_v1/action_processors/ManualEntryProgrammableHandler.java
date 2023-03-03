@@ -29,4 +29,6 @@ public class ManualEntryProgrammableHandler {
         JOptionPane.showMessageDialog(null, regInfo,  "Manual Entry Data", JOptionPane.INFORMATION_MESSAGE);
 
     }
+
+
 }

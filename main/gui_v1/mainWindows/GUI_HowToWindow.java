@@ -19,7 +19,7 @@ public class GUI_HowToWindow  extends JFrame implements GUI_Settings_Variables {
         setSize(howToWindowFrameSize);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        addPemnu();
+        addMenu();
         ImageIcon howToImage = new ImageIcon("HowToPoster.jpg");
 
 
@@ -32,7 +32,7 @@ public class GUI_HowToWindow  extends JFrame implements GUI_Settings_Variables {
             }
         });
     }
-    private void addPemnu(){
+    private void addMenu(){
         if(gui_v1.settings.GUI_Static_Settings.workStage==1){
             setJMenuBar(new GUI_Menu());
         }else{

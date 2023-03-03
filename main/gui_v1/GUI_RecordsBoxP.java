@@ -52,6 +52,7 @@ public class GUI_RecordsBoxP extends JPanel implements GUI_Settings_Variables{
 
 		jpRecordsDisplayBoxP.add(new RecordsTable(), BorderLayout.CENTER);
 
+
 		jpRecordsActionControlsBoxP.setLayout(new GridLayout(1,3));
 //		jpRecordsActionControlsBoxP.setPreferredSize(new Dimension(0,300));
 		jpRecordsActionControlsBoxP.add(new GUI_RecordsAvailableActionsSelectionP());
@@ -61,9 +62,12 @@ public class GUI_RecordsBoxP extends JPanel implements GUI_Settings_Variables{
 
 
 
+
 		add(jpRecordsTitleBoxP, BorderLayout.NORTH);
 		add(jpRecordsDisplayBoxP, BorderLayout.CENTER);
 		add(jpRecordsActionControlsBoxP, BorderLayout.SOUTH);
+//		add(new RecordsNavigationButtonsP(), BorderLayout.SOUTH);
+
 
 	}
 

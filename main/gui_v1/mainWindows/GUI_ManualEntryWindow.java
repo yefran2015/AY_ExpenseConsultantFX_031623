@@ -15,8 +15,8 @@ public class GUI_ManualEntryWindow extends JFrame implements GUI_Settings_Variab
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 
-        setBackground(guiFramesBackgroundColor);
-        setForeground(guiFramesForegroundColor);
+//        setBackground(guiFramesBackgroundColor);
+//        setForeground(guiFramesForegroundColor);
 
         setSize(manualEntryGUIWindowFrameSize);
         setLocationRelativeTo(null);

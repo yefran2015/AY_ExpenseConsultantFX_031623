@@ -49,7 +49,8 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
                     JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
             if(answr == JOptionPane.YES_OPTION){
                 frame.dispose();
-                new NewAccountProgrammableHandler(jtfAcctNum.getText().trim(), jtfAcctNick.getText().trim(), jcmbBank.getSelectedItem().toString().trim());
+                new NewAccountProgrammableHandler(jtfAcctNum.getText().trim(), jtfAcctNick.getText().trim(),
+                        jcmbBank.getSelectedItem().toString().trim());
             }else{
 
             }

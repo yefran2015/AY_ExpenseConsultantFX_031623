@@ -58,8 +58,8 @@ public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable {
 
 
 
-	int gui_width = 900;
-	int gui_height = 1000;
+	int gui_width = 950;
+	int gui_height = 800;
 	Dimension mainGUIFrameSize = new Dimension(gui_width, gui_height);
 	Dimension recordsGUIWindowFrameSize = new Dimension(gui_width, gui_height);
 	Dimension mainWindowMessageAreaSize = new Dimension(0,200);

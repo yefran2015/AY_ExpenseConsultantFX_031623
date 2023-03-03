@@ -2,8 +2,10 @@ package gui_v1.mainWindows;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.*;
+
 import gui_v1.GUI_RecordsBoxP;
 import gui_v1.menu.GUI_Menu;
 import gui_v1.menu.GUI_Menu_Technical;
@@ -16,8 +18,9 @@ public class GUI_RecordsWindow extends JFrame implements GUI_Settings_Variables{
 	private GUI_RecordsWindow() {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-		setBackground(guiFramesBackgroundColor);
-		setForeground(guiFramesForegroundColor);
+
+//		setBackground(guiFramesBackgroundColor);
+//		setForeground(guiFramesForegroundColor);
 
 //		setJMenuBar(new GUI_Menu(this));
 		setTitle(recordsGUIWindowTitle);
@@ -34,7 +37,6 @@ public class GUI_RecordsWindow extends JFrame implements GUI_Settings_Variables{
 		add(new GUI_RecordsBoxP(), BorderLayout.CENTER);
 
 		add(new JLabel(strCopyRigts, JLabel.CENTER), BorderLayout.SOUTH);
-//		setVisible(true);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -47,6 +49,7 @@ public class GUI_RecordsWindow extends JFrame implements GUI_Settings_Variables{
 				}
 			}
 		});
+//		setVisible(true);
 	}
 	@Override
 	public Component getComponent() {
