@@ -12,8 +12,9 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
     private JTextField jtfAcctNum= GUI_ElementCreator.newTextField("Account Number");
     private JTextField jtfAcctNick= GUI_ElementCreator.newTextField("Account Nick");
     private JButton jbtnAdd = GUI_ElementCreator.newJButton("Add This Account");
+    private JFrame frame;
 
-    public GUI_NewAccountP(){
+    public GUI_NewAccountP(JFrame f){
         setLayout(new BorderLayout());
         add(GUI_ElementCreator.newTitle("Enter New Account Info"), BorderLayout.NORTH);
         JPanel pBox = new JPanel(new GridLayout(3,2));
@@ -26,6 +27,8 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
         add(pBox, BorderLayout.CENTER);
         jbtnAdd.addActionListener(this);
         add(jbtnAdd, BorderLayout.SOUTH);
+
+        frame = f;
 
     }
 
@@ -44,7 +47,7 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
             int answr = JOptionPane.showOptionDialog(null, msg, "Adding and Storing Account!",
                     JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
             if(answr == JOptionPane.YES_OPTION){
-                System.exit(JFrame.EXIT_ON_CLOSE);
+                frame.dispose();;
             }else{
 
             }
