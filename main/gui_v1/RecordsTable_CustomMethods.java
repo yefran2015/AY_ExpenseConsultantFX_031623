@@ -40,7 +40,45 @@ public class RecordsTable_CustomMethods {
         });
         return sorter;
     }
-
+    public static TableRowSorter getCustomRowSorterByDate(TableModel m, int column){
+        var sorter = new TableRowSorter<TableModel>(m);
+        sorter.setComparator(column, new Comparator<String>() {
+            @Override
+            public int compare(String c1, String c2) {
+                Double n1 = null;
+                Double n2 = null;
+                String[] date1arr = c1.split("/");
+                String[] date2arr = c2.split("/");
+                Integer y1 = Integer.parseInt(date1arr[0]);
+                Integer m1 = Integer.parseInt(date1arr[1]);
+                Integer d1 = Integer.parseInt(date1arr[2]);
+                Integer y2 = Integer.parseInt(date2arr[0]);
+                Integer m2 = Integer.parseInt(date2arr[1]);
+                Integer d2 = Integer.parseInt(date2arr[2]);
+                if(y1<y2){
+                    return -1;
+                }else if(y1>y2){
+                    return 1;
+                }else if(y1==y2){
+                    if(m1<m2){
+                        return -1;
+                    }else if(m1>m2){
+                        return 1;
+                    }else{
+                        if(d1<d2){
+                            return -1;
+                        } else if(d1>d2){
+                            return 1;
+                        }else{
+                            return 0;
+                        }
+                    }
+                }
+                return 0;
+            }
+        });
+        return sorter;
+    }
     /**
      * @param m --  table model of table to set custom row sorting
      * @return -- custom row sorting for specified column of tables
