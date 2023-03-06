@@ -1,5 +1,6 @@
 package entities;
 
+
 import java.util.Calendar;
 
 /**
@@ -130,15 +131,16 @@ public class Transaction {
      * @param date - Calendar type
      * @return a String in format YYYYMMDDHHMMSS
      */
-    public static String returnMMslashDDFromCalendar(Calendar date) {
-        String month, day;
+    public static String returnYYYYMMDDFromCalendar(Calendar date) {
+        String year, month, day;
+        year = Integer.toString(date.get(Calendar.YEAR));
         month = Integer.toString(date.get(Calendar.MONTH) + 1);
         day = Integer.toString(date.get(Calendar.DATE));
         if (month.length() == 1)
             month = "0" + month;
         if (day.length() == 1)
             day = "0" + day;
-        return month + "/" + day;
+        return year + "/" + month + "/" + day;
     }
 
 //  -------------- other static methods -----------------------------------
@@ -149,14 +151,33 @@ public class Transaction {
      * @param catValue - numerical value of the category
      * @return the equivalent name; empty String if not found
      */
+//    public static String getACategoryName(int catValue) {
+//        for (int value : CAT_VALUES) {
+//            if (value == catValue) {
+//                return CAT_NAMES[value];
+//            }
+//        }
+//        return "";
+//    }
+
     public static String getACategoryName(int catValue) {
-        for (int value : CAT_VALUES) {
-            if (value == catValue) {
-                return CAT_NAMES[value];
+//        for (int value : CAT_VALUES) {
+////            if (value == catValue && !(value >7)) {
+////                return CAT_NAMES[value];
+////            }
+//            if (value == catValue) {
+//                return CAT_NAMES[value];
+//            }
+//        }
+        for (int i=0; i<CAT_VALUES.length; i++) {
+            if (CAT_VALUES[i] == catValue) {
+                return CAT_NAMES[i];
             }
         }
         return "";
     }
+
+
 
     /**
      * Gets a Transaction category numerical value from its name.
@@ -278,11 +299,11 @@ public class Transaction {
 
     @Override
     public String toString() {
-        String output = returnMMslashDDFromCalendar(this.postedDate) + "\t";
+        String output = returnYYYYMMDDFromCalendar(this.postedDate) + "\t";
         output += this.refNumber + "\t";
         output += this.description + "\t";
         output += this.memo + "\t";
-        output += String.format("$%7.2f", amount) + "\t";
+        output += String.format("$%8.2f", amount) + "\t";
         output += this.category;
         return output;
     }

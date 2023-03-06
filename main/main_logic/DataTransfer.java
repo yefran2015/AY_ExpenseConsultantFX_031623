@@ -97,7 +97,7 @@ public class DataTransfer {
 	// more getters and setters: ...
 
 	public void setTFields(Transaction transaction) {
-		this.tDate = Transaction.returnMMslashDDFromCalendar(transaction.getPostedDate());
+		this.tDate = Transaction.returnYYYYMMDDFromCalendar(transaction.getPostedDate());
 		this.tRef = transaction.getRefNumber();
 		this.tDesc = transaction.getDescription();
 		this.tMemo = transaction.getMemo();

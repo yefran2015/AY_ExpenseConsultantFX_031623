@@ -1,5 +1,6 @@
 package gui_v1.action_processors;
 
+import entities.Transaction;
 import gui_v1.RecordsTable;
 import gui_v1.mainWindows.GUI_HowToWindow;
 import gui_v1.mainWindows.GUI_ManualEntryWindow;
@@ -65,12 +66,14 @@ public class MenuActionProgrammableHandle {
             if (result.getCode()!=Result.Code.SUCCESS) {
                 JOptionPane.showMessageDialog(null, "The file is not OFX/QFX\nfile or could NOT be read.","Error", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                RecordsTable.addRowToTable(result.getTDate(), result.getTRef(), result.getTDesc(),
+                RecordsTable.addRowToTable(result.getTDate(),
+                        result.getTRef(), result.getTDesc(),
                         result.getTMemo(), result.getTAmount(), result.getTCat());
             }
             while(it.hasNext()){
                 result = it.next();
-                RecordsTable.addRowToTable(result.getTDate(), result.getTRef(), result.getTDesc(),
+                RecordsTable.addRowToTable(result.getTDate(),
+                        result.getTRef(), result.getTDesc(),
                         result.getTMemo(), result.getTAmount(), result.getTCat());
                // out("Date>>>> "+result.getTDate());
             }
