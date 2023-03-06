@@ -83,15 +83,14 @@ public class Transaction {
     }
 
     /**
-     * Returns a Calendar type of date from a String format, used in paper
-     * statements.
+     * Returns a Calendar type of date from a String format, used in the table.
      *
-     * @param stringDate - format MM/DD
-     * @param year       - additional information necessary; format YYYY
+     * @param stringDate - format YYYY/MM/DD
      * @return same date as a Calendar type
      */
-    public static Calendar returnCalendarFromMMslashDD(String stringDate, String year) {
-        stringDate = year + stringDate.substring(0, 2) + stringDate.substring(3, 5) + "000000";
+    public static Calendar returnCalendarFromYYYYMMDD(String stringDate) {
+        stringDate = stringDate.substring(0, 4) + stringDate.substring(5, 7) +
+                stringDate.substring(8, 10) + "000000";
         return returnCalendarFromOFX(stringDate);
     }
 
@@ -129,7 +128,7 @@ public class Transaction {
      * of date.
      *
      * @param date - Calendar type
-     * @return a String in format YYYYMMDDHHMMSS
+     * @return a String in format YYYY/MM/DD
      */
     public static String returnYYYYMMDDFromCalendar(Calendar date) {
         String year, month, day;
