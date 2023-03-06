@@ -1,7 +1,5 @@
 package gui_v1.action_processors;
 
-
-import ay_local_settings.ay_local_variables;
 import gui_v1.RecordsTable;
 import gui_v1.mainWindows.GUI_HowToWindow;
 import gui_v1.mainWindows.GUI_ManualEntryWindow;
@@ -39,7 +37,6 @@ public class MenuActionProgrammableHandle {
         GUI_RecordsWindow.createRecordViewWindow();
         File f = null;
 
-//        File f = ay_local_variables.work_dir;
         File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
         if(chosenFile == null ){
             JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
