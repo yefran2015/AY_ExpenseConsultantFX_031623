@@ -15,24 +15,24 @@ import entities.Transaction;
 import entities.TransactionList;
 
 /**
- * 
+ *
  * This Parser class parses bank-generated transaction reports and turns them
  * into a list of transactions no longer than 3-months-worth.
- * 
+ *
  * ( OFX = Open Financial Exchange )
- * 
+ *
  * @author SPAM (Sammy Dinka, Andrey Yefermov, Pavel Danek) © 2023,
- * 
+ *
  * @adapted from an Internet version of a OFX parser, written by Federico
  *          Tomassetti (http://tomassetti.me)
- * 
+ *
  *          THANK YOU!
  *
  * @source https://semaphoreci.com/community/tutorials/a-tdd-approach-to-parsing-ofx-banking-data-in-java
  */
 public class OFXParser {
 
-	private static TransactionList output = new TransactionList();
+	private static TransactionList output;
 	//	min and max for dates of Transactions acceptable to the parser
 	private static String strDateMin = "19000101000000";
 	private static String strDateMax = "20991231000000";
@@ -71,6 +71,7 @@ public class OFXParser {
 	 * Clears all fields of the parser.
 	 */
 	public static void clearParser() {
+		output = new TransactionList();
 		startDate = Transaction.returnCalendarFromOFX(strDateMin);
 		endDate = Transaction.returnCalendarFromOFX(strDateMax);
 		isCreditCard = false;
@@ -151,7 +152,7 @@ public class OFXParser {
 	 * Parses OFX file and returns a list of Transactions. It doesn't check the file
 	 * for existence, readability, etc. It leaves this up to the calling method. It
 	 * only worries about the file content.
-	 * 
+	 *
 	 * @param source - Open Financial Exchange (OFX) file
 	 * @return - list of Transactions
 	 * @throws IOException - in case of problems with the file
@@ -183,7 +184,7 @@ public class OFXParser {
 	/**
 	 * Parses OFX input stream, similar to its overloaded counterpart, and returns a
 	 * list of Transactions.
-	 * 
+	 *
 	 * @param is - InputStream to read from
 	 * @return - list of Transactions
 	 * @throws IOException - in case of problems with the file
@@ -201,7 +202,7 @@ public class OFXParser {
 	/**
 	 * Reads the whole source into a String. String, technically, can be up to
 	 * 2,147,483,647 bytes (2 GB) long.
-	 * 
+	 *
 	 * @param is - InputStream to read from
 	 * @return - a String representing a whole text-based file
 	 * @throws IOException - in case of problems with the file
@@ -224,7 +225,7 @@ public class OFXParser {
 
 	/**
 	 * Processes the whole String, using a recursion. Sorts out tags and other text.
-	 * 
+	 *
 	 * @param content   - the source String
 	 * @param position  - a pointer to a position in the String
 	 * @param collector - this object keeps all sorted parts of the original String
@@ -295,7 +296,7 @@ public class OFXParser {
 
 		/**
 		 * Collects opening tags of the file. (Opening tag: <XXX>, closing tag: </XXX>)
-		 * 
+		 *
 		 * @param tag - String with the label of the tag
 		 */
 		public void openTag(String tag) {
@@ -312,7 +313,7 @@ public class OFXParser {
 		/**
 		 * Closes open tags, when collects a matching closing tag, and all tags
 		 * in-between. (Opening tag: <XXX>, closing tag: </XXX>)
-		 * 
+		 *
 		 * @param tag - String with the label of the tag
 		 */
 		public void closeTag(String tag) {
@@ -337,7 +338,7 @@ public class OFXParser {
 
 		/**
 		 * Collects and uses all banking info from the Transactions inside all the tags.
-		 * 
+		 *
 		 * @param text - text being converted to a meaningful piece of information
 		 */
 		public void text(String text) {
@@ -403,7 +404,7 @@ public class OFXParser {
 
 		/**
 		 * A helper method that returns the last open tag label.
-		 * 
+		 *
 		 * @return String representing the tag label
 		 */
 		private String lastOpenTag() {
