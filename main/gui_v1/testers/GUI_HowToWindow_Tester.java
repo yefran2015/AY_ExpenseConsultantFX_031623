@@ -9,8 +9,8 @@ public class GUI_HowToWindow_Tester {
     }
 
     private void Test1() {
-        GUI_HowToWindow.createRecordViewWindow();
-        GUI_HowToWindow.showRecordsWindow();
+        GUI_HowToWindow.createHowToWindow();
+        GUI_HowToWindow.showHowToWindow();
     }
 
     public static void main(String[] args) {
