@@ -9,16 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUI_NewAccountP extends JPanel implements ActionListener {
+//    private static final String NEW_BANK = "<NEW BANK>";
+//
+//    // WILL BE LOADED FROM THE DATABASE
+//    private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America" };
+//    private static DropDownItems bankNames = new DropDownItems(bankList, "<--no bank-->", NEW_BANK);
+    private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America", "ADD NEW BANK"};
 
-    private static final String NEW_BANK = "<NEW BANK>";
-
-    // WILL BE LOADED FROM THE DATABASE
-    private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America" };
-    private static DropDownItems bankNames = new DropDownItems(bankList, "<--no bank-->", NEW_BANK);
-
-    private JComboBox  jcmbBank = GUI_ElementCreator.newJComboBox(bankNames.getList());
-    private JTextField jtfAcctNum= GUI_ElementCreator.newTextField("");
-    private JTextField jtfAcctNick= GUI_ElementCreator.newTextField("");
+    private JComboBox  jcmbBank = GUI_ElementCreator.newJComboBox(bankList);
+    private JTextField jtfAcctNum= GUI_ElementCreator.newTextField("Account Number");
+    private JTextField jtfAcctNick= GUI_ElementCreator.newTextField("Account Nick");
     private JButton jbtnAdd = GUI_ElementCreator.newJButton("Add This Account");
     private JFrame frame;
 
@@ -31,6 +31,7 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
         pBox.add(GUI_ElementCreator.newTextLabel("Account Nick:"));
         pBox.add(jtfAcctNick);
         pBox.add(GUI_ElementCreator.newTextLabel("Bank:"));
+        jcmbBank.addActionListener(this);
         pBox.add(jcmbBank);
         add(pBox, BorderLayout.CENTER);
         jbtnAdd.addActionListener(this);
@@ -43,7 +44,6 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()== jbtnAdd){
-            /*
             String msg = "Do you really want to save this account:";
             msg+="\n";
             msg+="Account #: "+ jtfAcctNum.getText().trim();
@@ -56,16 +56,20 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
             int answr = JOptionPane.showOptionDialog(null, msg, "Adding and Storing Account!",
                     JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
             if(answr == JOptionPane.YES_OPTION){
-            */
                 frame.dispose();
                 new NewAccountProgrammableHandler(jtfAcctNum.getText().trim(), jtfAcctNick.getText().trim(),
                         jcmbBank.getSelectedItem().toString().trim());
-            /*
             }else{
 
             }
-            */
+
             
+        }else  if(e.getSource() == jcmbBank){
+            if(jcmbBank.getSelectedItem().toString().trim().compareToIgnoreCase(bankList[bankList.length-1])==0){
+                JOptionPane.showOptionDialog(null, "New Bank Window will be created soon", "New Bank",
+                        JOptionPane.YES_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.YES_OPTION);
+            }
+
         }
     }
 }
