@@ -13,13 +13,12 @@ public class NewAccountProgrammableHandler {
         strAccntNick = _strAccntNick;
         strBank = _strBank;
         addAccountNickToComboBox(_strAccntNick);
-        showNewManualEntryInfo();
+        //showNewManualEntryInfo();
     }
+
     private void showNewManualEntryInfo(){
         String regInfo = "User New Accounts :\nAccount #:"+ strAcctNum+ "\nAccount NickName: " + strAccntNick
-                +"\nBank "+ strBank;
-
-
+                +"\nBank: "+ strBank;
         JOptionPane.showMessageDialog(null, regInfo,  "New Account Data", JOptionPane.INFORMATION_MESSAGE);
 
     }

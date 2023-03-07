@@ -8,7 +8,7 @@ import java.awt.*;
 public class NewAccountWindow  extends JFrame  implements GUI_Settings_Variables {
 
     public NewAccountWindow() {
-        int width = 300;
+        int width = 500;
         int height = 200;
         setTitle("New Account");
         setSize(new Dimension(width, height));

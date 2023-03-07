@@ -92,7 +92,7 @@ public class MenuActionProgrammableHandle {
 
     }
     void doManualEntryProcessing(){
-        GUI_ManualEntryWindow.showManualEntryWindow();
+        GUI_ManualEntryWindow.showManualEntryWindow("", -1, "");
     }
     void doGenerateSummaryProcessing(){
 
