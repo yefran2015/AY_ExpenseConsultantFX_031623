@@ -12,7 +12,7 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
 
     private static final String NEW_BANK = "<NEW BANK>";
 
-    // LOADED FROM THE DATABASE
+    // WILL BE LOADED FROM THE DATABASE
     private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America" };
     private static DropDownItems bankNames = new DropDownItems(bankList, "<--no bank-->", NEW_BANK);
 
