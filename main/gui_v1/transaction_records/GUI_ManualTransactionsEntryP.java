@@ -30,7 +30,7 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
     private JTextField jtfAmount= GUI_ElementCreator.newTextField("");
     private JComboBox jcmbCategory;
 
-    // LOADED FROM THE DATABASE
+    // WILL BE LOADED FROM THE DATABASE
     private static String[] nickList = new String[] { "Main Checking", "Savings", "My VISA" };
     private static DropDownItems acctNicks = new DropDownItems(nickList, NO_ACCT, NEW_ACCT);
     private static DropDownItems tranCat;
