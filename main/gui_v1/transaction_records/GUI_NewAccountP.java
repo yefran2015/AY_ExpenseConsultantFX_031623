@@ -14,7 +14,7 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
 //    // WILL BE LOADED FROM THE DATABASE
 //    private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America" };
 //    private static DropDownItems bankNames = new DropDownItems(bankList, "<--no bank-->", NEW_BANK);
-    private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America", "ADD NEW BANK"};
+    private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America", "NEW BANK"};
 
     private JComboBox  jcmbBank = GUI_ElementCreator.newJComboBox(bankList);
     private JTextField jtfAcctNum= GUI_ElementCreator.newTextField("Account Number");
