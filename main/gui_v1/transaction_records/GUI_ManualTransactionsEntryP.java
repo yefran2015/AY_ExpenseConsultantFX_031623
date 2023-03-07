@@ -1,41 +1,33 @@
 package gui_v1.transaction_records;
 
-import entities.Transaction;
 import gui_v1.action_processors.ManualEntryProgrammableHandler;
 import gui_v1.automation.GUI_ElementCreator;
+import gui_v1.gui_logic.GUI_ManualEntryTemporaialHolder;
+import gui_v1.mainWindows.GUI_ManualEntryWindow;
+import gui_v1.mainWindows.GUI_RecordsWindow;
 import gui_v1.settings.GUI_Settings_Variables;
-import main_logic.Request;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
-import static gui_v1.mainWindows.GUI_ManualEntryWindow.hideManualEntryWindow;
-import static gui_v1.mainWindows.GUI_ManualEntryWindow.showManualEntryWindow;
+public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings_Variables, ActionListener, FocusListener {
 
-public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings_Variables, ActionListener {
+    private static String[] manyalEntryDefaultJTextFieldText =new String[]{"Select Nick","Enter Date in Format: 02/22/2023","Enter Reference number",
+            "Enter Transaction Name","Enter Memo","Enter Amount", "Select Category"};
 
-    private static Request[] tempArray = new Request[5];
-    static Request form = Request.instance();
+    private static JComboBox jcmbAccount = GUI_ElementCreator.newJComboBox(new String[]{manyalEntryDefaultJTextFieldText[0], "Nick","Nick2","Nick3", "NEW"});
 
-    private static final String NEW_ACCT = "<NEW ACCOUNT>";
-    private static final String NO_ACCT = "<--no account-->";
-    private static final String NEW_CAT = "<NEW CATEGORY>";
+    private JTextField jtfDate = GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[1]);
+    private JTextField jtfRefNum= GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[2]);
+    private JTextField jtfTransName = GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[3]);
+    private JTextField jtfMemo= GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[4]);
+    private JTextField jtfAmount= GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[5]);
 
-    private JComboBox jcmbAccount;
-    private JTextField jtfDate = GUI_ElementCreator.newTextField("");
-    private JTextField jtfRefNum= GUI_ElementCreator.newTextField("");
-    private JTextField jtfTransName = GUI_ElementCreator.newTextField("");
-    private JTextField jtfMemo= GUI_ElementCreator.newTextField("");
-    private JTextField jtfAmount= GUI_ElementCreator.newTextField("");
-    private JComboBox jcmbCategory;
-
-    // WILL BE LOADED FROM THE DATABASE
-    private static String[] nickList = new String[] { "Main Checking", "Savings", "My VISA" };
-    private static DropDownItems acctNicks = new DropDownItems(nickList, NO_ACCT, NEW_ACCT);
-    private static DropDownItems tranCat;
-
-    private static int currentTran = 0; // which Transaction is being shown
+//    private JTextField jtfCategory= GUI_ElementCreator.newTextField("Enter new Category");
+    private JComboBox jcmbCategory = GUI_ElementCreator.newJComboBox(new String[]{manyalEntryDefaultJTextFieldText[6],"Fun","Games","Other"});
 
     private JButton jbtnCancel = GUI_ElementCreator.newJButton("Cancel");
     private JButton jbtnAnother = GUI_ElementCreator.newJButton("Another");
@@ -46,54 +38,56 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
     private JButton jbtnNext = GUI_ElementCreator.newJButton("Next->");
     private JButton jbtnLast = GUI_ElementCreator.newJButton("Last-->");
 
-    private JPanel mainBoxP;
 
-    public GUI_ManualTransactionsEntryP(String whichNick, int position, String whichCat){
+
+
+    public GUI_ManualTransactionsEntryP(){
         setLayout(new BorderLayout());
-        if (tempArray.length==0 || position==-1) {
-            form.reset();
-            form.setTDate("");
-            form.setTRef("");
-            form.setTDesc("");
-            form.setTMemo("");
-            form.setTAmount(0.00);
-            setFields(form);
-        }
-        String headingTitle  = "Transaction Manual Entry";
+        String  headingTitle  = "Transaction Manual Entry";
         add(GUI_ElementCreator.newSubHead(headingTitle), BorderLayout.NORTH);
-        mainBoxP = new JPanel(new BorderLayout());
+
+        JPanel mainBoxP = new JPanel(new BorderLayout());
         String  manualEntryTitleMessage  = "Enter Transaction Information";
         mainBoxP.add(GUI_ElementCreator.newTitle(manualEntryTitleMessage), BorderLayout.NORTH);
-        tranCat = new DropDownItems(Transaction.CAT_NAMES, NEW_CAT);
-        jcmbAccount= GUI_ElementCreator.newJComboBox(acctNicks.getList());
-        jcmbCategory= GUI_ElementCreator.newJComboBox(tranCat.getList());
-
-        if (whichNick.length()>0) jcmbAccount.setSelectedItem(whichNick);
-        if (whichCat.length()>0) jcmbCategory.setSelectedItem(whichCat);
 
         JPanel userInputElementsBox = new JPanel(new GridLayout(7,2));
-        userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Account Nickname:"));
+        userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Account:"));
         jcmbAccount.addActionListener(this);
         userInputElementsBox.add(jcmbAccount);
 
-        userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Date (YYYY/MM/DD):"));
+        userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Date:"));
         userInputElementsBox.add(jtfDate);
-
-
-        userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Reference #:"));
+        jtfDate.addFocusListener(this);
+        userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Reference #"));
         userInputElementsBox.add(jtfRefNum);
-        userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Transaction Name/ Description:"));
+        jtfRefNum.addFocusListener(this);
+        userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Transaction Name:"));
         userInputElementsBox.add(jtfTransName);
+        jtfTransName.addFocusListener(this);
         userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Memo:"));
         userInputElementsBox.add(jtfMemo);
+        jtfMemo.addFocusListener(this);
         userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Amount:"));
         userInputElementsBox.add(jtfAmount);
+        jtfAmount.addFocusListener(this);
+
         userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Category:"));
         userInputElementsBox.add(jcmbCategory);
 
         mainBoxP.add(userInputElementsBox, BorderLayout.CENTER);
         add(mainBoxP, BorderLayout.CENTER);
+
+
+        jbtnFirst.addActionListener(this);
+        jbtnPrev.addActionListener(this);
+        jbtnNext.addActionListener(this);
+        jbtnLast.addActionListener(this);
+
+
         jbtnDone.addActionListener(this);
+        jbtnCancel.addActionListener(this);
+        jbtnAnother.addActionListener(this);
+
         JPanel buttonsBox = new JPanel(new GridLayout(2,4));
         buttonsBox.add(jbtnFirst);
         buttonsBox.add(jbtnPrev);
@@ -103,47 +97,123 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
         buttonsBox.add(jbtnAnother);
         buttonsBox.add(jbtnDone);
         add(buttonsBox, BorderLayout.SOUTH);
-    }
 
+    }
     public static void addAccountNickToComboBox(String acctNick){
-        acctNicks.addItem(acctNick);
-        hideManualEntryWindow();
-        showManualEntryWindow(acctNick,-1, Transaction.CAT_NAMES[currentTran]);
+        jcmbAccount.addItem(acctNick);
+    }
+    public void setALLDefault_UserHelpTexts(){
+//        jtfDate.setText(manyalEntryDefaultJTextFieldText[0]);
+//        tfRefNum.setText(manyalEntryDefaultJTextFieldText[1]);
+//        jtfTransName.setText(manyalEntryDefaultJTextFieldText[2]);
+//        jtfMemo.setText(manyalEntryDefaultJTextFieldText[3]);
+//        jtfAmount.setText(manyalEntryDefaultJTextFieldText[4]);
+        setALLCustom_UserHelpTexts(manyalEntryDefaultJTextFieldText[0],  manyalEntryDefaultJTextFieldText[1],
+                manyalEntryDefaultJTextFieldText[2], manyalEntryDefaultJTextFieldText[3], manyalEntryDefaultJTextFieldText[4],
+                manyalEntryDefaultJTextFieldText[5],manyalEntryDefaultJTextFieldText[6]);
+
+    }
+    public void setALLCustom_UserHelpTexts(String accountCombo_helpText, String date_helpText, String refnum_helpText, String transName_helpText,
+                                           String memo_helpText, String amount_helpText, String categoryCombo_helpText){
+        setJTFCustom_Texts(date_helpText, refnum_helpText, transName_helpText, memo_helpText, amount_helpText);
+        setJCMBs_Custom_UserHelpTexts(accountCombo_helpText, categoryCombo_helpText);
     }
 
+    private void setJCMBs_Custom_UserHelpTexts(String accountComboHelpText, String categoryComboHelpText) {
+        jcmbAccount.setSelectedItem(accountComboHelpText);
+        jcmbCategory.setSelectedItem(categoryComboHelpText);
+
+    }
+
+    public void setJTFCustom_Texts( String date_helpText, String refnum_helpText, String TransName_helpText,
+                                                  String memo_helpText, String amount_helpText){
+        jtfDate.setText(date_helpText);
+        jtfRefNum.setText(refnum_helpText);
+        jtfTransName.setText(TransName_helpText);
+        jtfMemo.setText(memo_helpText);
+        jtfAmount.setText(amount_helpText);
+    }
+    public void setManualEntriesValues(String[] tmpManualEntries){
+        String acctNick = tmpManualEntries[0];
+        String date = tmpManualEntries[1];
+        String refNum = tmpManualEntries[2];
+        String transName = tmpManualEntries[3];
+        String memo = tmpManualEntries[4];
+        String amount = tmpManualEntries[5];
+        String category = tmpManualEntries[6];
+        setALLCustom_UserHelpTexts(acctNick, date, refNum, transName, memo, amount, category);
+
+    }
     @Override
     public Component getComponent() {
         return null;
     }
 
-    private void setFields(Request request) {
-        jtfDate = GUI_ElementCreator.newTextField(request.getTDate());
-        jtfRefNum = GUI_ElementCreator.newTextField(request.getTRef());
-        jtfTransName = GUI_ElementCreator.newTextField(request.getTDesc());
-        jtfMemo = GUI_ElementCreator.newTextField(request.getTMemo());
-        if (request.getTAmount()==0.00) jtfAmount = GUI_ElementCreator.newTextField("");
-        else jtfAmount = GUI_ElementCreator.newTextField(Double.toString(request.getTAmount()));
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == jbtnDone){
-            String account = jcmbAccount.getSelectedItem().toString().trim();
-            if (account.equalsIgnoreCase(NO_ACCT)) account = "";
-            String date= jtfDate.getText().trim();
-            String refN = jtfRefNum.getText().trim();
-            String descr = jtfTransName.getText().trim();
-            String memo = jtfMemo.getText().trim();
-            String amount = jtfAmount.getText().trim();
-            String custom_category= jcmbCategory.getSelectedItem().toString().trim();
 
-            new ManualEntryProgrammableHandler(account, date, refN,descr, memo, amount, custom_category);
+        if(e.getSource() == jbtnDone){
+//           String accoutn = jcmbAccount.getSelectedItem().toString().trim();
+//           String date= jtfDate.getText().trim();
+//           String refN = jtfRefNum.getText().trim();
+//           String descr = jtfTransName.getText().trim();
+//           String memo = jtfMemo.getText().trim();
+//           String amount = jtfAmount.getText().trim();
+//           String  custom_category= jcmbCategory.getSelectedItem().toString().trim();
+//
+//            new ManualEntryProgrammableHandler(accoutn, date, refN,descr, memo, amount,custom_category);
+
+            new ManualEntryProgrammableHandler(GUI_ManualEntryTemporaialHolder.getManuallYEnterredAccounts());
+            GUI_ManualEntryTemporaialHolder.clearTmporalManulEntrylist();
+//            GUI_ManualEntryWindow.hideManualEntryWindow();
+            GUI_ManualEntryWindow.disposeManualEntryWindow();
+            GUI_RecordsWindow.showRecordsWindow();
 
         }else  if(e.getSource() == jcmbAccount){
-            if(jcmbAccount.getSelectedItem().toString().trim().compareToIgnoreCase(NEW_ACCT)==0){
+            if(jcmbAccount.getSelectedItem().toString().trim().compareToIgnoreCase("NEW")==0){
                 new NewAccountWindow();
             }
 
+        }else  if(e.getSource() == jbtnAnother){
+            processAnotherClick();
+
+        }else  if(e.getSource() == jbtnFirst){
+            String[] firstManualEntryArr = GUI_ManualEntryTemporaialHolder.getFirst();
+            setManualEntriesValues(firstManualEntryArr);
+        }else  if(e.getSource() == jbtnPrev){
+            String[] previousManualEntryArr =  GUI_ManualEntryTemporaialHolder.getPrev();
+            setManualEntriesValues(previousManualEntryArr);
+        }else  if(e.getSource() == jbtnNext){
+            String[] nextManualEntryArr = GUI_ManualEntryTemporaialHolder.getNext();
+            setManualEntriesValues(nextManualEntryArr);
+        }else  if(e.getSource() == jbtnLast){
+            String[] lastManualEntryArr =  GUI_ManualEntryTemporaialHolder.getLast();
+            setManualEntriesValues(lastManualEntryArr);
         }
     }
+
+
+    private void processAnotherClick(){
+        String accoutn = jcmbAccount.getSelectedItem().toString().trim();
+        String date= jtfDate.getText().trim();
+        String refN = jtfRefNum.getText().trim();
+        String descr = jtfTransName.getText().trim();
+        String memo = jtfMemo.getText().trim();
+        String amount = jtfAmount.getText().trim();
+        String custom_category= jcmbCategory.getSelectedItem().toString().trim();
+
+        GUI_ManualEntryTemporaialHolder.addTempUserManualEntry(accoutn, date, refN,descr, memo, amount,custom_category);
+        setALLDefault_UserHelpTexts();
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        ((JTextField)e.getSource()).selectAll();
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+    }
 }
+
+
