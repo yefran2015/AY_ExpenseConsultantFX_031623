@@ -322,7 +322,7 @@ public class OFXParser {
 			// If so, add it!
 			if (tag.equals("STMTTRN")) {
 				Transaction t = new Transaction(date, ref, name, mem, amt,
-						Transaction.getACategoryValue("OTHER"));
+						Transaction.getACategoryValue(Transaction.CAT_NAMES[0])); // First category in the list; default
 				if (t.isBetweenDates(getStartDate(), getEndDate())) { output.add(t); }
 			}
 			// when we close a tag we could implicitly close a bunch of

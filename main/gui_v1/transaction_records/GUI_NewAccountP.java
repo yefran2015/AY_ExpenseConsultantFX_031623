@@ -9,9 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUI_NewAccountP extends JPanel implements ActionListener {
-    private JComboBox  jcmbBank = GUI_ElementCreator.newJComboBox(new String[]{"Bank","Bank2","Bank3"});
-    private JTextField jtfAcctNum= GUI_ElementCreator.newTextField("Account Number");
-    private JTextField jtfAcctNick= GUI_ElementCreator.newTextField("Account Nick");
+
+    private static final String NEW_BANK = "<NEW BANK>";
+
+    // LOADED FROM THE DATABASE
+    private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America" };
+    private static DropDownItems bankNames = new DropDownItems(bankList, "<--no bank-->", NEW_BANK);
+
+    private JComboBox  jcmbBank = GUI_ElementCreator.newJComboBox(bankNames.getList());
+    private JTextField jtfAcctNum= GUI_ElementCreator.newTextField("");
+    private JTextField jtfAcctNick= GUI_ElementCreator.newTextField("");
     private JButton jbtnAdd = GUI_ElementCreator.newJButton("Add This Account");
     private JFrame frame;
 
@@ -36,6 +43,7 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()== jbtnAdd){
+            /*
             String msg = "Do you really want to save this account:";
             msg+="\n";
             msg+="Account #: "+ jtfAcctNum.getText().trim();
@@ -48,13 +56,15 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
             int answr = JOptionPane.showOptionDialog(null, msg, "Adding and Storing Account!",
                     JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
             if(answr == JOptionPane.YES_OPTION){
+            */
                 frame.dispose();
                 new NewAccountProgrammableHandler(jtfAcctNum.getText().trim(), jtfAcctNick.getText().trim(),
                         jcmbBank.getSelectedItem().toString().trim());
+            /*
             }else{
 
             }
-
+            */
             
         }
     }

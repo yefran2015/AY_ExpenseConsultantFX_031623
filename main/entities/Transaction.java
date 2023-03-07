@@ -12,10 +12,8 @@ import java.util.Calendar;
  */
 public class Transaction {
 
-    //	Constants representing a Transaction category/ type.
-    public static final int[] CAT_VALUES= { 1, 2, 3, 4, 5, 6, 50};
-    public static final String[] CAT_NAMES= { "INCOME", "FEE", "ESSENTIALS", "TRANSPORT", "ENTERTAINMENT", "ALCOHOL",
-            "OTHER"};
+    //	Array representing a Transaction category/ type.
+    public static String[] CAT_NAMES= { "<OTHER>", "INCOME", "FEE", "ESSENTIALS", "TRANSPORT", "ENTERTAINMENT", "ALCOHOL"};
 
 //	many more to be added
 
@@ -150,30 +148,9 @@ public class Transaction {
      * @param catValue - numerical value of the category
      * @return the equivalent name; empty String if not found
      */
-//    public static String getACategoryName(int catValue) {
-//        for (int value : CAT_VALUES) {
-//            if (value == catValue) {
-//                return CAT_NAMES[value];
-//            }
-//        }
-//        return "";
-//    }
-
     public static String getACategoryName(int catValue) {
-//        for (int value : CAT_VALUES) {
-////            if (value == catValue && !(value >7)) {
-////                return CAT_NAMES[value];
-////            }
-//            if (value == catValue) {
-//                return CAT_NAMES[value];
-//            }
-//        }
-        for (int i=0; i<CAT_VALUES.length; i++) {
-            if (CAT_VALUES[i] == catValue) {
-                return CAT_NAMES[i];
-            }
-        }
-        return "";
+        if (catValue >= CAT_NAMES.length || catValue < 0) return CAT_NAMES[0];
+        else return CAT_NAMES[catValue];
     }
 
 
@@ -181,15 +158,27 @@ public class Transaction {
     /**
      * Gets a Transaction category numerical value from its name.
      * @param catName - name of the category
-     * @return the equivalent numerical value; -1 if not found
+     * @return the equivalent numerical value; 0 (default value) if not found
      */
     public static int getACategoryValue(String catName) {
-        for (int value = 0; value < CAT_VALUES.length; value++) {
+        for (int value = 0; value < CAT_NAMES.length; value++) {
             if (CAT_NAMES[value].equalsIgnoreCase(catName)) {
-                return CAT_VALUES[value];
+                return value;
             }
         }
-        return -1;
+        return 0;
+    }
+
+    /**
+     * Adds a new category to the list of possible Transaction categories.
+     * @param newName - new category name
+     */
+    public static void addACategoryName(String newName) {
+        String[] newNames = new String[Transaction.CAT_NAMES.length+1];
+        System.arraycopy(CAT_NAMES, 0, newNames, 0, CAT_NAMES.length);
+        newNames[newNames.length-1] = newName;
+        CAT_NAMES = new String[newNames.length];
+        System.arraycopy(newNames, 0, CAT_NAMES, 0, CAT_NAMES.length);
     }
 
 // --------------- getters and setters ------------------------------------
