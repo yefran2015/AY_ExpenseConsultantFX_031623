@@ -108,6 +108,7 @@ public interface GUI_Settings_Variables extends GUI_FontSizeAdjustable {
 
 	int txtSize_JTextArea = txtSize_Regular;
 	int txtSize_JTextField = txtSize_Regular;
+	int txtSize_JTextFieldOutput = txtSize_Regular;
 	int txtSize_JCheckBox = txtSize_Smaller;
 	int txtSize_JRadioButton = txtSize_Smaller;
 	int txtSize_JButton = txtSize_Regular;

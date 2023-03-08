@@ -2,6 +2,7 @@ package gui_v1.transaction_records;
 
 import gui_v1.action_processors.ManualEntryProgrammableHandler;
 import gui_v1.automation.GUI_ElementCreator;
+import gui_v1.guiHelp_utils.GUI_AY_Calendar;
 import gui_v1.gui_logic.GUI_ManualEntryTemporaialHolder;
 import gui_v1.mainWindows.GUI_ManualEntryWindow;
 import gui_v1.mainWindows.GUI_RecordsWindow;
@@ -13,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Calendar;
 
 public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings_Variables, ActionListener, FocusListener {
 
@@ -21,15 +23,14 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
 
 
     private JTextField jtfDate = GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[1]);
+    private JTextField jtfOutputDate= GUI_ElementCreator.newOutputTextField("2023/04/22");
     private JTextField jtfRefNum= GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[2]);
     private JTextField jtfTransName = GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[3]);
     private JTextField jtfMemo= GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[4]);
     private JTextField jtfAmount= GUI_ElementCreator.newTextField(manyalEntryDefaultJTextFieldText[5]);
 
-//    private JTextField jtfCategory= GUI_ElementCreator.newTextField("Enter new Category");
-//    private JComboBox jcmbCategory = GUI_ElementCreator.newJComboBox(new String[]{manyalEntryDefaultJTextFieldText[6],"Fun","Games","Other"});
-    private static JComboBox jcmbAccount  = GUI_ElementCreator.newJComboBox(TransactionBankAccountInitialLists.getInstance().getAccntNicksList());
-    private static JComboBox jcmbCategory = GUI_ElementCreator.newJComboBox(TransactionBankAccountInitialLists.getInstance().getTransCategoryist());
+    private static JComboBox<String> jcmbAccount  = GUI_ElementCreator.newJComboBox(TransactionBankAccountInitialLists.getInstance().getAccntNicksList());
+    private static JComboBox<String> jcmbCategory = GUI_ElementCreator.newJComboBox(TransactionBankAccountInitialLists.getInstance().getTransCategoryist());
 
     private JButton jbtnCancel = GUI_ElementCreator.newJButton("Cancel");
     private JButton jbtnAnother = GUI_ElementCreator.newJButton("Another");
@@ -40,7 +41,9 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
     private JButton jbtnNext = GUI_ElementCreator.newJButton("Next->");
     private JButton jbtnLast = GUI_ElementCreator.newJButton("Last-->");
 
-
+    private JComboBox<String> jcmbYears;
+    private JComboBox<String> jcmbMonths;
+    private JComboBox<String> jcmbDays;
 
 
     public GUI_ManualTransactionsEntryP(){
@@ -60,9 +63,21 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
 
         userInputElementsBox.add(jcmbAccount);
 
-        userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Date:"));
-        userInputElementsBox.add(jtfDate);
-        jtfDate.addFocusListener(this);
+        JPanel dateBoxP = new JPanel(new BorderLayout());
+        dateBoxP.add(GUI_ElementCreator.newTextLabel("Date:"), BorderLayout.WEST);
+
+        jtfOutputDate.setEditable(false);
+        jtfOutputDate.setBackground(null);
+        JPanel datOutBoxP = new JPanel();
+        jtfOutputDate.setPreferredSize(new Dimension(120,txtSize_JTextField+4));
+        datOutBoxP.add(GUI_ElementCreator.newOutputTextFieldLabel("Selected Date:"));
+        datOutBoxP.add(jtfOutputDate);
+        datOutBoxP.add(GUI_ElementCreator.newFieldNameLabel(" "));
+        dateBoxP.add(datOutBoxP, BorderLayout.EAST);
+        userInputElementsBox.add(dateBoxP);
+        userInputElementsBox.add(dateSelectionsP());
+
+
         userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Reference #"));
         userInputElementsBox.add(jtfRefNum);
         jtfRefNum.addFocusListener(this);
@@ -106,6 +121,71 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
         add(buttonsBox, BorderLayout.SOUTH);
 
     }
+
+    private JPanel dateSelectionsP(){
+
+        JPanel dateBoxP = new JPanel(new GridLayout(1,6));
+
+        jcmbYears = GUI_ElementCreator.newJComboBox(GUI_AY_Calendar.getYearsDesendingArr());
+        jcmbYears.setActionCommand("YEAR");
+        jcmbYears.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
+        jcmbYears.addActionListener(actionListenerForDatesJCMboxes());
+
+        jcmbMonths = GUI_ElementCreator.newJComboBox(GUI_AY_Calendar.monthsArr);
+        jcmbMonths.setSelectedItem((Calendar.getInstance().get(Calendar.MONTH)+1)+"");
+        jcmbMonths.addActionListener(actionListenerForDatesJCMboxes());
+        jcmbMonths.setActionCommand("MONTH");
+
+        jcmbDays = GUI_ElementCreator.newJComboBox(GUI_AY_Calendar.getDaysAsStrArrForMountOFYear(Integer.parseInt(jcmbMonths.getSelectedItem()+""),
+                Integer.parseInt(jcmbYears.getSelectedItem()+"")));
+        jcmbDays.setSelectedItem(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"");
+        jcmbDays.addActionListener(actionListenerForDatesJCMboxes());
+        jcmbDays.setActionCommand("DAY");
+
+        dateBoxP.add(GUI_ElementCreator.newTextLabel("Year"));
+        dateBoxP.add(jcmbYears);
+        dateBoxP.add(GUI_ElementCreator.newFieldNameLabel("Month"));
+        dateBoxP.add(jcmbMonths);
+        dateBoxP.add(GUI_ElementCreator.newFieldNameLabel("Day"));
+        dateBoxP.add(jcmbDays);
+
+        setDateOutputTextFieldWithDateFromComboBoxes();
+
+        return dateBoxP;
+    }
+    private void setDateOutputTextFieldWithDateFromComboBoxes(){
+        jtfOutputDate.setText( jcmbMonths.getSelectedItem() +"/"+jcmbDays.getSelectedItem()+ "/"+jcmbYears.getSelectedItem());
+    }
+    private ActionListener actionListenerForDatesJCMboxes(){
+        ActionListener a=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                o(e);
+                if(e.getActionCommand().compareToIgnoreCase("YEAR")==0){
+                    jcmbMonths.setSelectedIndex(0);
+//                    jcmbDays.setSelectedIndex(0);
+//                    o("YEAR");
+                }else if(e.getActionCommand().compareToIgnoreCase("MONTH")==0){
+                    replaceItemsAtJCMBWieth(jcmbDays, GUI_AY_Calendar.getDaysAsStrArrForMountOFYear(Integer.parseInt(jcmbMonths.getSelectedItem()+""), Integer.parseInt(jcmbYears.getSelectedItem()+"")));
+//                    o("MONTH");
+                }else if(e.getActionCommand().compareToIgnoreCase("DAY")==0){
+//                    o("DAY");
+                }
+                setDateOutputTextFieldWithDateFromComboBoxes();
+            }
+        };
+        return a;
+    }
+    private void o(Object o){
+        System.out.println(o+"");
+    }
+    private void replaceItemsAtJCMBWieth(JComboBox<String> jcb, String[] items){
+        jcb.removeAllItems();
+        for(String i: items){
+            jcb.addItem(i);
+        }
+    }
+
     public static void addAccountNickToComboBox(String acctNick){
         jcmbAccount.insertItemAt(acctNick, jcmbAccount.getItemCount()-1);
     }
@@ -129,6 +209,7 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
 
     public void setJTFCustom_Texts( String date_helpText, String refnum_helpText, String TransName_helpText,
                                                   String memo_helpText, String amount_helpText){
+
         jtfDate.setText(date_helpText);
         jtfRefNum.setText(refnum_helpText);
         jtfTransName.setText(TransName_helpText);
@@ -144,8 +225,14 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
         String amount = tmpManualEntries[5];
         String category = tmpManualEntries[6];
         setALLCustom_UserHelpTexts(acctNick, date, refNum, transName, memo, amount, category);
-
+        setManualEntriesCalendarValues(date.split("/"));
     }
+    public void setManualEntriesCalendarValues(String[] calArrYMD){
+        jcmbYears.setSelectedItem(calArrYMD[2]);
+        jcmbMonths.setSelectedItem(calArrYMD[0]);
+        jcmbDays.setSelectedItem(calArrYMD[1]);
+    }
+
     @Override
     public Component getComponent() {
         return null;
@@ -167,12 +254,11 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
 
             new ManualEntryProgrammableHandler(GUI_ManualEntryTemporaialHolder.getManuallYEnterredAccounts());
             GUI_ManualEntryTemporaialHolder.clearTmporalManulEntrylist();
-//            GUI_ManualEntryWindow.hideManualEntryWindow();
             GUI_ManualEntryWindow.disposeManualEntryWindow();
             GUI_RecordsWindow.showRecordsWindow();
 
         }else  if(e.getSource() == jcmbAccount){
-            if(jcmbAccount.getSelectedItem().toString().trim().compareToIgnoreCase("NEW")==0){
+            if((jcmbAccount.getSelectedItem()+"").trim().compareToIgnoreCase("NEW")==0){
                 new NewAccountWindow();
             }
 
@@ -200,10 +286,10 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
     }
     private void processAnotherClick(){
         clearErrorBorders();
-        String accoutn = jcmbAccount.getSelectedItem().toString().trim();
-        String custom_category= jcmbCategory.getSelectedItem().toString().trim();
+        String account = (jcmbAccount.getSelectedItem()+"").trim();
+        String custom_category= (jcmbCategory.getSelectedItem()+"").trim();
         boolean err=false;
-        if(accoutn.compareToIgnoreCase(manyalEntryDefaultJTextFieldText[0])==0){
+        if(account.compareToIgnoreCase(manyalEntryDefaultJTextFieldText[0])==0){
             jcmbAccount.setBorder(new LineBorder(Color.RED, 1));
             err = true;
 
@@ -215,7 +301,7 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
         if(err){
             return;
         }
-        String date= jtfDate.getText().trim();
+        String date= jtfOutputDate.getText().trim();
         String refN = jtfRefNum.getText().trim();
         String descr = jtfTransName.getText().trim();
         String memo = jtfMemo.getText().trim();
@@ -223,7 +309,7 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
 
 
 
-        GUI_ManualEntryTemporaialHolder.addTempUserManualEntry(accoutn, date, refN,descr, memo, amount,custom_category);
+        GUI_ManualEntryTemporaialHolder.addTempUserManualEntry(account, date, refN,descr, memo, amount,custom_category);
         setALLDefault_UserHelpTexts();
     }
 
