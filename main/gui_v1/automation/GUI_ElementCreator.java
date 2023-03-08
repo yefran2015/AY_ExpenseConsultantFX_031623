@@ -1,6 +1,5 @@
 package gui_v1.automation;
-import java.awt.Component;
-import java.awt.Font;
+import java.awt.*;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -11,6 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -37,8 +37,8 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables{
 		jtf.setBackground(clrB_JTextField);
 		 return jtf;
 	}
-	public static JComboBox newJComboBox(String[]  s){
-		JComboBox  jcmmo = new JComboBox(s);
+	public static JComboBox<String> newJComboBox(String[]  s){
+		JComboBox<String>  jcmmo = new JComboBox<String>(s);
 		jcmmo.setFont(newFont(jcmmo.getFont(), txtSize_JTextField+1));
 		return jcmmo;
 	}
@@ -58,8 +58,25 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables{
 		jta.setBackground(clrB_JTextArea);
 		 return jta;
 	}
-	
-	
+	public static JTextField newOutputTextField(String s) {
+		JTextField  jtf = new JTextField();
+		jtf.setFont(newFont(jtf.getFont(), txtSize_JTextFieldOutput));
+		jtf.setForeground(clrF_JTextField);
+//		jtf.setBackground(clrB_JTextField);
+		jtf.setBorder(new LineBorder(Color.RED, 1));
+		jtf.setHorizontalAlignment(JTextField.CENTER);
+		jtf.setText(s);
+		jtf.selectAll();
+		return jtf;
+	}
+	public static JLabel newOutputTextFieldLabel(String  msg) {
+		JLabel  lbl = new JLabel(checkTitleMsg(msg), JLabel.LEFT);
+		lbl.setFont(newFont(lbl.getFont(), txtSize_JTextFieldOutput-2));
+		lbl.setFont(new Font(lbl.getFont().getName(),Font.PLAIN, txtSize_JTextFieldOutput-2));
+		lbl.setForeground(clrF_Action_Selectors);
+//		lbl.setBackground(clrB_Title);
+		return lbl;
+	}
 	private static String checkTitleMsg(String msg) {
 		if(msg!=null) {
 			return msg;
