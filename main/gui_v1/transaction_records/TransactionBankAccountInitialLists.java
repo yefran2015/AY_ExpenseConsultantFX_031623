@@ -1,5 +1,8 @@
 package gui_v1.transaction_records;
 
+import main_logic.Result;
+import main_logic.PEC;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -8,16 +11,14 @@ import java.util.LinkedList;
  */
 public class TransactionBankAccountInitialLists {
 
-
-    private static LinkedList<String> bankList = new LinkedList<>(Arrays.asList("NEW BANK"));
-    private static LinkedList<String> acctNicksList = new LinkedList<>(Arrays.asList("NEW"));
-    private static LinkedList<String> transactionCategoriesList = new LinkedList<>(Arrays.asList("OTHER"));
+    private static LinkedList<String> bankList = new LinkedList<>(Arrays.asList(PEC.NEW_BANK));
+    private static LinkedList<String> acctNicksList = new LinkedList<>(Arrays.asList(PEC.NEW_ACCOUNT));
+    private static LinkedList<String> transactionCategoriesList = new LinkedList<>(Arrays.asList(PEC.OTHER));
 
     private static TransactionBankAccountInitialLists instance = null;
     private TransactionBankAccountInitialLists(){
         instance = this;
         loadTestingData();
-
     }
     public static TransactionBankAccountInitialLists getInstance(){
         if(instance == null){
@@ -27,11 +28,13 @@ public class TransactionBankAccountInitialLists {
     }
 
     private void loadTestingData(){
-        String[] bankTestingArr = new String[]{"Wells Fargo", "US Bank", "Bank Of America"};
+        Result res = new Result();
+        res = PEC.instance().downloadDropDownMenuEntries();
+        String[] bankTestingArr = res.getBankList();
         addBanksToList(bankTestingArr);
-        String[] accntNicksTestingArr = new String[]{ "Work Accnt","Family Use Accnt","Secret Saving Accnt"};
+        String[] accntNicksTestingArr = res.getNickList();
         addAccntNicksToList(accntNicksTestingArr);
-        String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun"};
+        String[] trnsCategoriesTestingArr = res.getCategoryList();
         addTransactionCategoriessToList(trnsCategoriesTestingArr);
 
     }

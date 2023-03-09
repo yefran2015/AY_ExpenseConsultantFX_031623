@@ -1,7 +1,14 @@
 package gui_v1.action_processors;
 
+import gui_v1.RecordsTable;
+import gui_v1.mainWindows.GUI_RecordsWindow;
+import main_logic.PEC;
+import main_logic.Request;
+import main_logic.Result;
+
 import javax.swing.*;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class ManualEntryProgrammableHandler {
     /**
@@ -28,19 +35,45 @@ public class ManualEntryProgrammableHandler {
         customCategory = _customCategory;
 
         showNewManualEntryInfo();
+
+        // we also need to save all Categories!!
     }
     public ManualEntryProgrammableHandler(LinkedList<String[]> manualEnteredAccountsList) {
         manualEntriesList = manualEnteredAccountsList;
         showNewManualEntryInfo(manualEntriesList);
+        transactionManualEntryProcessing();
     }
 
     /**
      *  This method is for put code to process User Transactions Manually Entered.
      *  manualEntriesList -- holding all transactions entered at TransactionManualEntryWindow
      */
-    private void transactionManualEntryProrcessing(){
+    private void transactionManualEntryProcessing(){
+        Request request = Request.instance();
+        Result result = new Result();
         for(String[] singleUserTransManuallyEntered: manualEntriesList){
+            request.reset();
+            request.setAccountNick(singleUserTransManuallyEntered[0]);
+            request.setTDate(singleUserTransManuallyEntered[1]);
+            request.setTRef(singleUserTransManuallyEntered[2]);
+            request.setTDesc(singleUserTransManuallyEntered[3]);
+            request.setTMemo(singleUserTransManuallyEntered[4]);
+            try {
+                request.setTAmount(Double.parseDouble(singleUserTransManuallyEntered[5]));
+            } catch (Exception e) {
+                request.setTAmount(0.0);
+            }
+            request.setTCat(singleUserTransManuallyEntered[6]);
+            PEC.instance().processSingleManualEntry(request);
         }
+        ListIterator<Result> it = PEC.instance().returnRListIterator();
+        while(it.hasNext()){
+            result = it.next();
+            RecordsTable.addRowToTable(result.getTDate(),
+                    result.getTRef(), result.getTDesc(),
+                    result.getTMemo(), result.getTAmount(), result.getTCat());
+        }
+        GUI_RecordsWindow.showRecordsWindow();
     }
 
 

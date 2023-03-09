@@ -9,7 +9,7 @@ public class Request extends DataTransfer {
 	public static final String MIN_FROM = "19000101000000";
 	public static final String MAX_TO = "20991231000000";
 
-
+	/*
 	public enum Button {
 		// buttons of Main Menu
 		START, PARSE_OFX, MANUAL, SUMMARY, ADVICE, SETTINGS, HELP, LOG_OUT,
@@ -22,11 +22,14 @@ public class Request extends DataTransfer {
 
 		// ...
 	}
+ 	*/
 
 	private static Request request;
 	// "button" identifies which button in GUI was pressed, and what type
 	// of action is required
-	private Button button;
+
+	// private Button button;
+
 	// dates "from" and "to" to specify the time scope of request
 	private Calendar from;
 	private Calendar to;
@@ -66,6 +69,7 @@ public class Request extends DataTransfer {
 	}
 	public void setMaxTo() { to = Transaction.returnCalendarFromOFX(MAX_TO); }
 
+	/*
 	public Button getButton() {
 		return button;
 	}
@@ -73,13 +77,14 @@ public class Request extends DataTransfer {
 	public void setButton(Button button) {
 		this.button = button;
 	}
+	*/
 
 	@Override
 	public void reset() {
 		super.reset();
 		setMinFrom();
 		setMaxTo();
-		button = Button.NONE;
+		// button = Button.NONE;
 	}
 
 }

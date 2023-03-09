@@ -13,13 +13,14 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import static main_logic.Request.Button.DATE;
 import static main_logic.Result.Code.*;
 import static parsers.OFXParser.ofxParser;
 
 public class PEC {
 
-	private static double THREE_MONTHS_IN_SECS = 7889238.0;
+	public static String NEW_BANK = "<NEW BANK>";
+	public static String NEW_ACCOUNT = "<NEW ACCOUNT>";
+	public static String OTHER = "<OTHER>";
 
 	// private main structure housing active Transaction data
 	// (no more than 3 months worth)
@@ -110,9 +111,20 @@ public class PEC {
 			rList.add(result);
 			return rList.listIterator();
 		}
+		//resetView();
+		return returnRListIterator();
+	}
+
+	/**
+	 * Returns an ListIterator of Results with fields filled out with all Transactions
+	 * from Transaction list.
+	 */
+	public ListIterator<Result> returnRListIterator() {
 		ListIterator<Transaction> it = tList.listIterator();
+		System.out.println(tList.size());
+		Result result = new Result();
+		ArrayList<Result> rList = new ArrayList<Result>();
 		result.setCode(SUCCESS);
-		resetView();
 		while (it.hasNext()) {
 			result.setTFields(it.next());
 			rList.add(result);
@@ -155,12 +167,14 @@ public class PEC {
 		return getNewView();
 	}
 
+	/*
 	/**
 	 * Switches between the active columns and prepares a newly sorted view.
 	 * @param request Request object preloaded with the button (column header)
 	 *                pressed
 	 * @return new IteratorList to view
 	 */
+	/*
 	public ListIterator<Result> sortedColumnSwitched(Request request) {
 		switch (request.getButton()) {
 			case DATE:
@@ -184,6 +198,30 @@ public class PEC {
 			default: ;
 		}
 		return getNewView();
+	}
+	*/
+
+	public boolean processSingleManualEntry(Request request) {
+		// if a new Category is present in request.tCat at time of syncing local<--->database, it will get
+		// written in Category table.
+		System.out.println(tList.size());
+		Transaction newT = new Transaction(Transaction.returnCalendarFromOFX(request.getTDate()),
+				request.getTRef(), request.getTDesc(), request.getTMemo(), request.getTAmount(), request.getTCat());
+		return tList.add(newT);
+	}
+
+	public Result downloadDropDownMenuEntries() {
+		Result output = new Result();
+		// code for downloading 3 lists from the database: all account nicks (unique),
+		// all bank names (unique), and all category names (unique; best make a table of categories,
+		// which can be encrypted).
+		String[] bankTestingArr = new String[]{"Wells Fargo", "US Bank", "Bank Of America"};
+		String[] accntNicksTestingArr = new String[]{ "Work Accnt","Family Use Accnt","Secret Saving Accnt"};
+		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun"};
+		output.setNickList(bankTestingArr);
+		output.setBankList(accntNicksTestingArr);
+		output.setCategoryList(trnsCategoriesTestingArr);
+		return output;
 	}
 
 	/*
