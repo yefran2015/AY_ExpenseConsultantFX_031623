@@ -55,6 +55,7 @@ public class ManualEntryProgrammableHandler {
             request.reset();
             request.setAccountNick(singleUserTransManuallyEntered[0]);
             request.setTDate(singleUserTransManuallyEntered[1]);
+            System.out.println("--->>>> "+singleUserTransManuallyEntered[1]);
             request.setTRef(singleUserTransManuallyEntered[2]);
             request.setTDesc(singleUserTransManuallyEntered[3]);
             request.setTMemo(singleUserTransManuallyEntered[4]);
@@ -69,11 +70,12 @@ public class ManualEntryProgrammableHandler {
         ListIterator<Result> it = PEC.instance().returnRListIterator();
         while(it.hasNext()){
             result = it.next();
+            System.out.println("--->>>> "+result.getTDate());
             RecordsTable.addRowToTable(result.getTDate(),
                     result.getTRef(), result.getTDesc(),
                     result.getTMemo(), result.getTAmount(), result.getTCat());
         }
-        GUI_RecordsWindow.showRecordsWindow();
+        GUI_RecordsWindow.getInstance().showRecordsWindow();
     }
 
 

@@ -6,22 +6,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serial;
 
 public class GUI_ManualEntryWindow extends JFrame implements GUI_Settings_Variables {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     private static GUI_ManualEntryWindow instance = null;
     private GUI_ManualEntryWindow() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-
+//        GUI_RecordsWindow.getInstance().hideRecordsWindoww();
 //        setBackground(guiFramesBackgroundColor);
 //        setForeground(guiFramesForegroundColor);
 
         setSize(manualEntryGUIWindowFrameSize);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-
 
         add(new GUI_ManualTransactionsEntryP(), BorderLayout.CENTER);
 
@@ -33,10 +33,7 @@ public class GUI_ManualEntryWindow extends JFrame implements GUI_Settings_Variab
                         JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
                 if(answr == JOptionPane.YES_OPTION){
                    instance.dispose();
-                   GUI_RecordsWindow.showRecordsWindow();
-
-                }else{
-
+                   GUI_RecordsWindow.getInstance().showRecordsWindow();
                 }
             }
         });
@@ -45,22 +42,23 @@ public class GUI_ManualEntryWindow extends JFrame implements GUI_Settings_Variab
     public Component getComponent() {
         return this;
     }
-    public static GUI_ManualEntryWindow createManualEntryWindow(){
+    public static GUI_ManualEntryWindow getInstance(){
         if(instance==null){
             instance = new GUI_ManualEntryWindow();
         }
         return instance;
     }
-    public static void showManualEntryWindow(){
-        createManualEntryWindow();
+    public void showManualEntryWindow(){
+//        createManualEntryWindow();
         instance.setVisible(true);
     }
-    public static void hideManualEntryWindow(){
-        createManualEntryWindow();
+    public void hideManualEntryWindow(){
+//        createManualEntryWindow();
         instance.setVisible(false);
     }
-    public static void disposeManualEntryWindow(){
+    public void disposeManualEntryWindow(){
         instance.dispose();
+        instance = null;
     }
 
 }

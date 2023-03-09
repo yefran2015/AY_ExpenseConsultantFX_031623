@@ -9,8 +9,7 @@ public class GUI_HowToWindow_Tester {
     }
 
     private void Test1() {
-        GUI_HowToWindow.createHowToWindow();
-        GUI_HowToWindow.showHowToWindow();
+        GUI_HowToWindow.getInstance().showHowToWindow();
     }
 
     public static void main(String[] args) {

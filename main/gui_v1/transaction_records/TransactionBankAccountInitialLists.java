@@ -4,6 +4,7 @@ import main_logic.Result;
 import main_logic.PEC;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -11,13 +12,13 @@ import java.util.LinkedList;
  */
 public class TransactionBankAccountInitialLists {
 
-    private static LinkedList<String> bankList = new LinkedList<>(Arrays.asList(PEC.NEW_BANK));
-    private static LinkedList<String> acctNicksList = new LinkedList<>(Arrays.asList(PEC.NEW_ACCOUNT));
-    private static LinkedList<String> transactionCategoriesList = new LinkedList<>(Arrays.asList(PEC.OTHER));
+    private LinkedList<String> bankList;
+    private LinkedList<String> acctNicksList;
+    private LinkedList<String> transactionCategoriesList;
 
     private static TransactionBankAccountInitialLists instance = null;
     private TransactionBankAccountInitialLists(){
-        instance = this;
+        initiate();
         loadTestingData();
     }
     public static TransactionBankAccountInitialLists getInstance(){
@@ -26,7 +27,11 @@ public class TransactionBankAccountInitialLists {
         }
         return instance;
     }
-
+    private void initiate(){
+        bankList = new LinkedList<>(Collections.singletonList(PEC.NEW_BANK));
+        acctNicksList = new LinkedList<>(Collections.singletonList(PEC.NEW_ACCOUNT));
+        transactionCategoriesList = new LinkedList<>(Collections.singletonList(PEC.OTHER));
+    }
     private void loadTestingData(){
         Result res = new Result();
         res = PEC.instance().downloadDropDownMenuEntries();
@@ -39,32 +44,33 @@ public class TransactionBankAccountInitialLists {
 
     }
 
-    protected void addTransactionCategoriessToList(String[] transactionCategoriesArr) {
+    public void addTransactionCategoriessToList(String[] transactionCategoriesArr) {
         String last = transactionCategoriesList.removeLast();
         transactionCategoriesList.addAll(Arrays.stream(transactionCategoriesArr).toList());
         transactionCategoriesList.addLast(last);
     }
-    protected void addTransactionCategoryToList(String transactionCategory) {
+    public void addTransactionCategoryToList(String transactionCategory) {
         transactionCategoriesList.add(bankList.size()-1, transactionCategory);
     }
-    protected static void addBanksToList(String[] banks){
+    public  void addBanksToList(String[] banks){
         String last = bankList.removeLast();
         bankList.addAll(Arrays.stream(banks).toList());
         bankList.addLast(last);
     }
-    protected static void addBankToList(String bank){
+    public  void addBankToList(String bank){
         bankList.add(bankList.size()-1, bank);
     }
-    protected static void addAccntNicksToList(String[] accountNicks){
+    public  void addAccntNicksToList(String[] accountNicks){
+        System.out.println("??????????? "+accountNicks.length);
         String last = acctNicksList.removeLast();
         acctNicksList.addAll(Arrays.stream(accountNicks).toList());
         acctNicksList.addLast(last);
     }
-    protected static void addAccntNickToList(String accountNick){
+    public void addAccntNickToList(String accountNick){
         acctNicksList.add(acctNicksList.size()-1, accountNick);
     }
 
-    protected  String[]  getTransCategoryist(){
+    public  String[]  getTransCategoryist(){
 
         return getAsStringArr(transactionCategoriesList);
 //        String[] out = new String[transactionCategoriesList.size()];
@@ -73,7 +79,7 @@ public class TransactionBankAccountInitialLists {
 //        }
 //        return out;
     }
-    protected  String[]  getBanksList(){
+    public   String[]  getBanksList(){
         return getAsStringArr(bankList);
 //        String[] out = new String[bankList.size()];
 //        for(int i=0; i< bankList.size(); i++){
@@ -81,7 +87,7 @@ public class TransactionBankAccountInitialLists {
 //        }
 //        return out;
     }
-    protected  String[]  getAccntNicksList(){
+    public   String[]  getAccntNicksList(){
 //        String[] out = new String[acctNicksList.size()];
 //        for(int i=0; i< acctNicksList.size(); i++){
 //            out[i] = new String(acctNicksList.get(i));
@@ -93,7 +99,7 @@ public class TransactionBankAccountInitialLists {
     private String[] getAsStringArr(LinkedList<String> ll){
         String[] out = new String[ll.size()];
         for(int i=0; i< ll.size(); i++){
-            out[i] = new String(ll.get(i));
+            out[i] = ll.get(i)+"";
         }
         return out;
     }

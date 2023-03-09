@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serial;
 import javax.swing.*;
 
 import gui_v1.GUI_RecordsBoxP;
@@ -12,18 +13,18 @@ import gui_v1.menu.GUI_Menu_Technical;
 import gui_v1.settings.GUI_Settings_Variables;
 
 public class GUI_RecordsWindow extends JFrame implements GUI_Settings_Variables{
-
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private static GUI_RecordsWindow instance = null;
+
 	private GUI_RecordsWindow() {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 
 //		setBackground(guiFramesBackgroundColor);
 //		setForeground(guiFramesForegroundColor);
-
-//		setJMenuBar(new GUI_Menu(this));
 		setTitle(recordsGUIWindowTitle);
+
 		if(gui_v1.settings.GUI_Static_Settings.workStage==1){
 			setJMenuBar(new GUI_Menu());
 		}else{
@@ -35,7 +36,6 @@ public class GUI_RecordsWindow extends JFrame implements GUI_Settings_Variables{
 
 
 		add(new GUI_RecordsBoxP(), BorderLayout.CENTER);
-
 		add(new JLabel(strCopyRigts, JLabel.CENTER), BorderLayout.SOUTH);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -44,29 +44,25 @@ public class GUI_RecordsWindow extends JFrame implements GUI_Settings_Variables{
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
 				if(answr == JOptionPane.YES_OPTION){
 					System.exit(JFrame.EXIT_ON_CLOSE);
-				}else{
-
 				}
 			}
 		});
-//		setVisible(true);
 	}
-	@Override
-	public Component getComponent() {
-		return this;
-	}
-	public static GUI_RecordsWindow createRecordViewWindow(){
+	public static GUI_RecordsWindow getInstance(){
 		if(instance==null){
 			instance = new GUI_RecordsWindow();
 		}
 		return instance;
 	}
-	public static void showRecordsWindow(){
-		createRecordViewWindow();
+	public void showRecordsWindow(){
 		instance.setVisible(true);
 	}
-	public static void hideRecordsWindoww(){
-		createRecordViewWindow();
+	public void hideRecordsWindoww(){
 		instance.setVisible(false);
 	}
+	@Override
+	public Component getComponent() {
+		return this;
+	}
+
 }

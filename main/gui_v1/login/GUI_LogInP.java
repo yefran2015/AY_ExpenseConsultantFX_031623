@@ -14,36 +14,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GUI_LogInP extends JPanel implements GUI_LoginSignUpWiindows_Settings, ActionListener {
-    private JFrame loginFrame;
-    private JTextField jtfLogInName;
-    private JPasswordField jtfPass;
-    private  JPasswordField jtfPass2;
+
+    private final JTextField jtfLogInName;
+    private final JPasswordField jtfPass;
 
 
-    public GUI_LogInP(JFrame loginFrame){
-        this.loginFrame=loginFrame;
+    public GUI_LogInP(){
         setLayout(new BorderLayout());
 //        add(new Label(strLogInHeadTitle), BorderLayout.NORTH);
         add(GUI_ElementCreator.newTitle(strLogInHeadTitle), BorderLayout.NORTH);
 
         JPanel inputBoxP = new JPanel();
         inputBoxP.setLayout(new GridLayout(3,2));
-        jtfLogInName =  new JTextField();
+        jtfLogInName =  GUI_ElementCreator.newTextField();
         jtfLogInName.setText("");
         jtfLogInName.selectAll();
-        jtfPass =  new JPasswordField();
+        jtfPass =  GUI_ElementCreator.newPasswordField();
         jtfPass.setText("");
 
 
-        JButton jbtOk = new JButton("OK");
-//        jbtOk.addActionListener(new LogIN_Actons());
-
+        JButton jbtOk = GUI_ElementCreator.newJButton("OK");
 
         jbtOk.addActionListener(this);
-        inputBoxP.add(new JLabel("Login Name:"));
+        inputBoxP.add(GUI_ElementCreator.newTextLabel("Login Name:"));
 
         inputBoxP.add(jtfLogInName);
-        inputBoxP.add(new JLabel("Password:"));
+        inputBoxP.add(GUI_ElementCreator.newTextLabel("Password:"));
         inputBoxP.add(jtfPass);
 
 
@@ -99,7 +95,7 @@ public class GUI_LogInP extends JPanel implements GUI_LoginSignUpWiindows_Settin
                     if (resultSet.getInt(1) == 1) {
 //                       GUI_MainWindow mg= new GUI_MainWindow();
 //                       mg.setVisible(true);
-                        GUI_MainWindow.showMainWindow();
+                        GUI_MainWindow.getInstance().showMainWindow();
                     } else {
                       JOptionPane.showMessageDialog(null,"Wrong Email or Password!");
                     }

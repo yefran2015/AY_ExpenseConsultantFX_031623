@@ -4,6 +4,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.util.Comparator;
 import java.util.Date;
+import java.lang.Integer;
 
 /**
  * @author Andrey Y
@@ -17,6 +18,16 @@ import java.util.Date;
  *
  */
 public class RecordsTable_CustomMethods {
+    private static RecordsTable_CustomMethods instance=null;
+    private RecordsTable_CustomMethods(){
+    }
+    public static RecordsTable_CustomMethods getInstance(){
+        if(instance ==null){
+            instance = new RecordsTable_CustomMethods();
+        }
+        return instance;
+    }
+
     /**
      * @param m  -- table model of table to set custom row sorting
      * @column -- column to which apply this sorting
@@ -25,7 +36,7 @@ public class RecordsTable_CustomMethods {
      *   table.setRowSorter(getCustomRowSorter(table.getModel()), culumnNum);
      *
      */
-    public static TableRowSorter getCustomRowSorter_v1(TableModel m, int column){
+    public TableRowSorter getCustomRowSorter_v1(TableModel m, int column){
         var sorter = new TableRowSorter<TableModel>(m);
         sorter.setComparator(column, new Comparator<String>() {
             @Override
@@ -51,7 +62,7 @@ public class RecordsTable_CustomMethods {
      *
      *
      */
-    public static TableRowSorter getCustomRowSorterByDate(TableModel m, int column){
+    public TableRowSorter<TableModel> getCustomRowSorterByDate(TableModel m, int column){
         var sorter = new TableRowSorter<TableModel>(m);
         sorter.setComparator(column, new Comparator<String>() {
             @Override
@@ -81,7 +92,7 @@ public class RecordsTable_CustomMethods {
      *
      * This  method is providing custom amount sorting of specified column by its number.
      */
-    public static TableRowSorter getCustomRowSorter(TableModel m, int column){
+    public TableRowSorter<TableModel> getCustomRowSorter(TableModel m, int column){
         var sorter = new TableRowSorter<TableModel>(m);
         sorter.setComparator(column, new Comparator<String>() {
             @Override
@@ -102,7 +113,7 @@ public class RecordsTable_CustomMethods {
                     n2*= -1;
                 }
 //                o(n1 + " "+ n2);
-                if (n1 <= n2) {
+                if (n1 < n2) {
                     return -1;
                 } else if (n1 > n2) {
                     return 1;
@@ -112,7 +123,7 @@ public class RecordsTable_CustomMethods {
         });
         return sorter;
     }
-    public static TableRowSorter getCustomRowSorterByDate2(TableModel m, int column){
+    public  TableRowSorter<TableModel> getCustomRowSorterByDate2(TableModel m, int column){
         var sorter = new TableRowSorter<TableModel>(m);
         sorter.setComparator(column, new Comparator<String>() {
             @Override
@@ -121,12 +132,12 @@ public class RecordsTable_CustomMethods {
                 Double n2 = null;
                 String[] date1arr = c1.split("/");
                 String[] date2arr = c2.split("/");
-                Integer y1 = Integer.parseInt(date1arr[0]);
-                Integer m1 = Integer.parseInt(date1arr[1]);
-                Integer d1 = Integer.parseInt(date1arr[2]);
-                Integer y2 = Integer.parseInt(date2arr[0]);
-                Integer m2 = Integer.parseInt(date2arr[1]);
-                Integer d2 = Integer.parseInt(date2arr[2]);
+                int y1 = Integer.parseInt(date1arr[0]);
+                int m1 = Integer.parseInt(date1arr[1]);
+                int d1 = Integer.parseInt(date1arr[2]);
+                int y2 = Integer.parseInt(date2arr[0]);
+                int m2 = Integer.parseInt(date2arr[1]);
+                int d2 = Integer.parseInt(date2arr[2]);
                 if((y1 == y2) && (m1 == m2) && (d1 == d2)){
                     return 0;
                 }else if((y1 == y2) && (m1 == m2) && (d1 < d2)) {

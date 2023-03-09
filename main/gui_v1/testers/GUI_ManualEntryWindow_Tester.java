@@ -4,7 +4,7 @@ import gui_v1.mainWindows.GUI_ManualEntryWindow;
 
 public class GUI_ManualEntryWindow_Tester {
     GUI_ManualEntryWindow_Tester(){
-        GUI_ManualEntryWindow.showManualEntryWindow();
+        GUI_ManualEntryWindow.getInstance().showManualEntryWindow();
 //        GUI_ManualEntryWindow.showManualEntryWindow("", -1, "");
     }
 

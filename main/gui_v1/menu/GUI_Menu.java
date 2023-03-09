@@ -9,16 +9,21 @@ import javax.swing.JSeparator;
 import gui_v1.action_processors.GUI_Menu_Actions;
 import gui_v1.automation.GUI_ElementCreator;
 import gui_v1.settings.GUI_Settings_Variables;
+
+import java.io.Serial;
+
 public class GUI_Menu extends JMenuBar implements GUI_Settings_Variables{
+	@Serial
 	private static final long serialVersionUID = 1L;
-	private GUI_Menu_Actions a;
+
+
 	public GUI_Menu(){
 		if(gui_v1.settings.GUI_Static_Settings.workStage==0){
 			setBackground(clrB_JMenuBar);
 		}else{
 			setForeground(clrF_JMenuBar);
 		}
-
+		final GUI_Menu_Actions a;
 
 		setFont(GUI_ElementCreator.newFont(this.getFont(), txtSize_JMenuBar));
 		a = new GUI_Menu_Actions();
