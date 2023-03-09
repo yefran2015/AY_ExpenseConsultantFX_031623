@@ -2,6 +2,7 @@ package entities;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -14,7 +15,14 @@ import java.util.ListIterator;
  */
 public class TransactionList {
 
+    public static final String STR_DATE_MIN = "19000101000000";
+    public static final String STR_DATE_MAX = "20991231000000";
+
     private ArrayList<Transaction> transactionList;
+    // Variables from and to indicate the first and last date of Transactions
+    // on the list, respectively. Not set initially.
+    // Only Transactions dated before "from" or after "to" will be added.
+    private Calendar from, to;
 
     /**
      * The constructor.
@@ -31,7 +39,21 @@ public class TransactionList {
      *         Transaction has NOT been added
      */
     public boolean add(Transaction transaction) {
-        return transactionList.add(transaction);
+        if (transactionList.size()==0) {
+            this.from = transaction.getPostedDate();
+            this.to = transaction.getPostedDate();
+            return transactionList.add(transaction);
+        }
+        if (transaction.getPostedDate().compareTo(this.from)>=0 &&
+                transaction.getPostedDate().compareTo(this.to)<0) return false;
+        else if (transaction.getPostedDate().compareTo(this.from)<0) {
+            transactionList.add(0, transaction);
+            this.from = transaction.getPostedDate();
+            return true;
+        } else {
+            this.to = transaction.getPostedDate();
+            return transactionList.add(transaction);
+        }
     }
 
     /**
@@ -58,6 +80,12 @@ public class TransactionList {
     public Transaction get(int index) {
         return transactionList.get(index);
     }
+
+    /**
+     * Returns the size of the Transaction List.
+     * @return size of the list
+     */
+    public int size() { return transactionList.size(); }
 
     /**
      * Method places a new Transaction ArrayList into its main container,
@@ -106,6 +134,20 @@ public class TransactionList {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the date of the first Transaction in the list.
+     */
+    public Calendar getStartDate() {
+        return this.from;
+    }
+
+    /**
+     * Returns the date of the last Transaction in the list.
+     */
+    public Calendar getEndDate() {
+        return this.to;
     }
 
 //	For sorting we used merge sort algorithm. It's FAST. The original idea was to reuse the code,

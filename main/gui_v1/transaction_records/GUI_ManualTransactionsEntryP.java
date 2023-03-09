@@ -208,7 +208,7 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
     }
 
     public void setJTFCustom_Texts( String date_helpText, String refnum_helpText, String TransName_helpText,
-                                                  String memo_helpText, String amount_helpText){
+                                    String memo_helpText, String amount_helpText){
 
         jtfDate.setText(date_helpText);
         jtfRefNum.setText(refnum_helpText);
@@ -322,5 +322,3 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
     public void focusLost(FocusEvent e) {
     }
 }
-
-

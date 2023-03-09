@@ -14,6 +14,10 @@ public class DataTransfer {
 	private String tCat;
 	// parse OFX file fields
 	private String fileWithPath;
+	private String accountNick;
+	private String[] nickList;
+	private String[] bankList;
+	private String[] categoryList;
 
 	// ... Both GUI programmers and LOGIC programmers are allowed to add fields and
 	// corresponding methods to convey functionality back and forth between LOGIC
@@ -34,7 +38,10 @@ public class DataTransfer {
 		tAmount = 0.0;
 		tCat = "";
 		fileWithPath = "";
-
+		accountNick = "";
+		nickList = new String[0];
+		bankList = new String[0];
+		categoryList = new String[0];
 		// ...
 	}
 
@@ -82,8 +89,8 @@ public class DataTransfer {
 		return tCat;
 	}
 
-	public void setTCat(int tCatValue) {
-		this.tCat = Transaction.getACategoryName(tCatValue);
+	public void setTCat(String tCat) {
+		this.tCat = tCat;
 	}
 
 	public String getFileWithPath() {
@@ -93,6 +100,10 @@ public class DataTransfer {
 	public void setFileWithPath(String fileWithPath) {
 		this.fileWithPath = fileWithPath;
 	}
+
+	public String getAccountNick() { return accountNick; }
+
+	public void setAccountNick(String accountNick) { this.accountNick = accountNick; }
 
 	// more getters and setters: ...
 
@@ -104,7 +115,31 @@ public class DataTransfer {
 //		if (transaction.getAmount()<0) { this.tAmount = String.format("$%.2f", transaction.getAmount()); }
 //		else { this.tAmount = String.format("$ %.2f", transaction.getAmount()); }
 		this.tAmount = ((int)(transaction.getAmount() * 100))/100.0;
-		this.tCat = transaction.getCategoryName();
+		this.tCat = transaction.getCategory();
+	}
+
+	public String[] getNickList() {
+		return nickList;
+	}
+
+	public void setNickList(String[] nickList) {
+		this.nickList = nickList;
+	}
+
+	public String[] getBankList() {
+		return bankList;
+	}
+
+	public void setBankList(String[] bankList) {
+		this.bankList = bankList;
+	}
+
+	public String[] getCategoryList() {
+		return categoryList;
+	}
+
+	public void setCategoryList(String[] categoryList) {
+		this.categoryList = categoryList;
 	}
 
 }

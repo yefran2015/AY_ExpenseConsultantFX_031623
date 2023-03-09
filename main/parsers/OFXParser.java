@@ -13,6 +13,7 @@ import java.util.ListIterator;
 
 import entities.Transaction;
 import entities.TransactionList;
+import main_logic.PEC;
 
 /**
  *
@@ -34,8 +35,8 @@ public class OFXParser {
 
 	private static TransactionList output;
 	//	min and max for dates of Transactions acceptable to the parser
-	private static String strDateMin = "19000101000000";
-	private static String strDateMax = "20991231000000";
+	private static String strDateMin = TransactionList.STR_DATE_MIN;
+	private static String strDateMax = TransactionList.STR_DATE_MAX;
 
 	private static Calendar startDate;
 	private static Calendar endDate;
@@ -321,8 +322,7 @@ public class OFXParser {
 			// Transaction object and check, if it's within the requested time window.
 			// If so, add it!
 			if (tag.equals("STMTTRN")) {
-				Transaction t = new Transaction(date, ref, name, mem, amt,
-						Transaction.getACategoryValue(Transaction.CAT_NAMES[0])); // First category in the list; default
+				Transaction t = new Transaction(date, ref, name, mem, amt, PEC.OTHER); // Default
 				if (t.isBetweenDates(getStartDate(), getEndDate())) { output.add(t); }
 			}
 			// when we close a tag we could implicitly close a bunch of
