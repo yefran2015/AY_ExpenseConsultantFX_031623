@@ -8,7 +8,7 @@ public class GUI_LogInWindow_Tester {
     }
 
     private void Test1() {
-        new LogInWindow();
+        LogInWindow.getInstance().showLogInWindow();
     }
 
     public static void main(String[] args) {

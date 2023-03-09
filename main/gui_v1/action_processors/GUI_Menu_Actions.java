@@ -62,7 +62,7 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 			JOptionPane.showMessageDialog(null, ""+strAboutApp,"About", JOptionPane.INFORMATION_MESSAGE);
 		}else if (e.getActionCommand().compareToIgnoreCase("Show Records Window")==0) {
 //			new GUI_RecordsWindow();
-			GUI_RecordsWindow.showRecordsWindow();
+			GUI_RecordsWindow.getInstance().showRecordsWindow();
 		}else if (e.getActionCommand().compareToIgnoreCase("Increse GUI Text Size (+)")==0) {
 			increaseAllElementsFont();
 		}else if (e.getActionCommand().compareToIgnoreCase("Decrese GUI Text Size (-)")==0) {
@@ -85,10 +85,10 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 
 		}else if (e.getActionCommand().compareToIgnoreCase("Show SignIn Window")==0) {
 
-			new SignUPWindow();
+			SignUPWindow.getInstance().showSignUpWindow();
 
 		}else if (e.getActionCommand().compareToIgnoreCase("Show LogIn Window")==0) {
-			new LogInWindow();
+			LogInWindow.getInstance().showLogInWindow();
 
 		}
 	}

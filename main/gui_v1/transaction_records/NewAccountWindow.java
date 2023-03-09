@@ -6,8 +6,24 @@ import javax.swing.*;
 import java.awt.*;
 
 public class NewAccountWindow  extends JFrame  implements GUI_Settings_Variables {
+    private static NewAccountWindow instance=null;
 
-    public NewAccountWindow() {
+    public static NewAccountWindow getInstance(){
+        if(instance == null){
+            instance = new NewAccountWindow();
+        }
+        return instance;
+    }
+    public void showNewAccntWindow(){
+        instance.setVisible(true);
+    }
+    public void hideNewAccntWindow(){
+        instance.setVisible(false);
+    }
+    public void disposeNewAccntWindow(){
+       instance.dispose();
+    }
+    private NewAccountWindow() {
         int width = 500;
         int height = 200;
         setTitle("New Account");
@@ -17,7 +33,7 @@ public class NewAccountWindow  extends JFrame  implements GUI_Settings_Variables
         setLayout(new BorderLayout());
         add(new JLabel(strCopyRigts, JLabel.CENTER), BorderLayout.SOUTH);
         add(new GUI_NewAccountP(this), BorderLayout.CENTER);
-        setVisible(true);
+//        setVisible(true);
     }
 
 

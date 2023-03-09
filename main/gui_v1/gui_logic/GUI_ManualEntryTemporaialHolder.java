@@ -2,55 +2,113 @@ package gui_v1.gui_logic;
 import java.util.*;
 
 public class GUI_ManualEntryTemporaialHolder {
+    private static GUI_ManualEntryTemporaialHolder instance = null;
 
     private static String[] manyalEntryDefaultJTextFieldText =new String[]{"Select Nick","Enter Date in Format: 02/22/2023","Enter Reference number",
             "Enter Transaction Name","Enter Memo","Enter Amount", "Select Category"};
-    private static LinkedList<String[]> accounts = new LinkedList<String[]>();
+    private static LinkedList<String[]> accounts;
     private static String[] currentTransactionOfManualEnetry;
-    private static GUI_ManualEntryTemporaialHolder instance = null;
     private static int currEntryIndex;
 
     private GUI_ManualEntryTemporaialHolder(){
-        currEntryIndex = -1;
-        currentTransactionOfManualEnetry = new String[7];
+        initiate();
     }
-    private static void clearAll(){
+    private static void initiate(){
         currentTransactionOfManualEnetry = new String[7];
-        accounts.clear();
-        currEntryIndex = -1;
+        accounts= new LinkedList<String[]>();
+        currEntryIndex = 0;
     }
 
-    public static GUI_ManualEntryTemporaialHolder createManualEntryProcessor(){
+    private static void createManualEntryProcessor(){
         if(instance == null){
             instance = new GUI_ManualEntryTemporaialHolder();
         }
-        return instance;
     }
-
-    public static void addTempUserManualEntry(String account, String date, String refN,String descr, String memo,
-                                         String amount, String category){
-        if(instance==null){
+    public static GUI_ManualEntryTemporaialHolder getInstance(){
+        if(instance == null){
             createManualEntryProcessor();
         }
-        String[] anotherManualEntry = new String[]{new String(account), new String(date), new String(refN),
-                new String(descr), new String(memo), new String(amount), new String(category)};
+        return  instance;
+    }
 
-        accounts.addLast(anotherManualEntry);
+    public void addTempUserManualEntry(String[] currEntry){
+//        if(instance==null){
+//            createManualEntryProcessor();
+//        }
+        if(currEntry == null){
+            return;
+        }
+        if(isThisEntryExists(currEntry)){
+            return;
+        }
+        accounts.addLast(trimAllStr(new String[]{currEntry[0], currEntry[1], currEntry[2],
+                currEntry[3], currEntry[4], currEntry[5], currEntry[6]}));
         currEntryIndex = accounts.size()-1;
         setCurrentByIndex(currEntryIndex);
+    }
 
+    public void addTempUserManualEntry(String account, String date, String refN,String descr, String memo,
+                                         String amount, String category){
+        addTempUserManualEntry(crateStrArr(account,  date,  refN, descr,  memo, amount,  category));
+    }
+
+    public void clearTemporalManualEntrylist(){
+        initiate();
+    }
+
+    public boolean isThisEntryExists(String[] itemToCheck){
+        itemToCheck = trimAllStr(itemToCheck);
+        for(String[] singleItm: accounts){
+            if(singleItm[0].compareToIgnoreCase(itemToCheck[0])==0){
+                for(int i=0; i< singleItm.length; i++){
+                    if(singleItm[i].compareToIgnoreCase(itemToCheck[0])!=0){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isThisEntryExists(String account, String date, String refN,String descr, String memo,
+                                             String amount, String category){
+        return isThisEntryExists(crateStrArr(account,  date,  refN, descr,  memo, amount,  category));
+    }
+
+    private String[] crateStrArr(String account, String date, String refN, String descr, String memo,
+                                        String amount, String category){
+//        return new String[]{ account.trim(),  date.trim(),  refN.trim(), descr.trim(),  memo.trim(), amount.trim(),  category.trim()};
+
+        return trimAllStr(new String[]{ account,  date,  refN, descr,  memo, amount,  category});
+    }
+
+    public String  trimStr(String s){
+        return s.trim();
 
     }
-    private static void setCurrentByIndex(int currEntryIndex){
+    public String[] trimAllStr(String[] sArr){
+        if(sArr == null){
+            return null;
+        }
+        String[]  clearArr = new String[sArr.length];
+        for(int i=0; i< sArr.length; i++ ){
+            clearArr[i]= trimStr(sArr[i])+"";
+        }
+
+        return  clearArr;
+    }
+
+    private void setCurrentByIndex(int currEntryIndex){
         setCurrent(accounts.get(currEntryIndex));
     }
 
-    private static void setCurrent(String[] currEntry){
-        currentTransactionOfManualEnetry =  new String[]{new String(currEntry[0]), new String(currEntry[1]), new String(currEntry[2]),
-                new String(currEntry[3]), new String(currEntry[4]), new String(currEntry[5]), new String(currEntry[6])};
+    private  void setCurrent(String[] currEntry){
+        currEntry = trimAllStr(currEntry);
+        currentTransactionOfManualEnetry =  new String[]{currEntry[0]+"", currEntry[1]+"", currEntry[2]+"",
+                currEntry[3]+"", currEntry[4]+"",currEntry[5]+"", currEntry[6]+""};
     }
 
-    public static String[]  getFirst() {
+    public String[]  getFirst() {
         createManualEntryProcessor();
         if(accounts.size()>0){
             currEntryIndex = 0;
@@ -60,7 +118,7 @@ public class GUI_ManualEntryTemporaialHolder {
         return manyalEntryDefaultJTextFieldText;
     }
 
-    public static String[] getPrev() {
+    public String[] getPrev() {
         createManualEntryProcessor();
         if(accounts.size()>0){
             if(currEntryIndex==0){
@@ -76,7 +134,7 @@ public class GUI_ManualEntryTemporaialHolder {
 
     }
 
-    public static String[] getNext() {
+    public String[] getNext() {
         createManualEntryProcessor();
         if(accounts.size()>0){
             if(currEntryIndex == (accounts.size()-1)){
@@ -91,7 +149,7 @@ public class GUI_ManualEntryTemporaialHolder {
         return manyalEntryDefaultJTextFieldText;
     }
 
-    public static String[] getLast() {
+    public String[] getLast() {
         createManualEntryProcessor();
         if(accounts.size()>0){
             currEntryIndex = accounts.size()-1;
@@ -102,10 +160,8 @@ public class GUI_ManualEntryTemporaialHolder {
         return manyalEntryDefaultJTextFieldText;
     }
 
-    public static LinkedList<String[]> getManuallYEnterredAccounts() {
+    public LinkedList<String[]> getManuallYEnterredAccounts() {
         return accounts;
     }
-    public static void clearTmporalManulEntrylist(){
-        clearAll();
-    }
+
 }

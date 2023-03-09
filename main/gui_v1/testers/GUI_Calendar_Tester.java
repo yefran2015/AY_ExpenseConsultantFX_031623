@@ -9,7 +9,7 @@ public class GUI_Calendar_Tester {
     public GUI_Calendar_Tester(){
         GUI_AY_Calendar.getYearsDesendingArr();
         o("DAAte--> "+Calendar.getInstance().get(Calendar.YEAR));
-        GUI_ManualEntryWindow.showManualEntryWindow();
+        GUI_ManualEntryWindow.getInstance().showManualEntryWindow();
     }
 
     public static void main(String[] args) {

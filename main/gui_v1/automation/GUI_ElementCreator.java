@@ -1,14 +1,6 @@
 package gui_v1.automation;
 import java.awt.*;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JRadioButton;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
+import javax.swing.*;
 
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -36,6 +28,13 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables{
 		jtf.setForeground(clrF_JTextField);
 		jtf.setBackground(clrB_JTextField);
 		 return jtf;
+	}
+	public static JPasswordField newPasswordField() {
+		JPasswordField  jtf = new JPasswordField();
+		jtf.setFont(newFont(jtf.getFont(), txtSize_JTextField+1));
+		jtf.setForeground(clrF_JTextField);
+		jtf.setBackground(clrB_JTextField);
+		return jtf;
 	}
 	public static JComboBox<String> newJComboBox(String[]  s){
 		JComboBox<String>  jcmmo = new JComboBox<String>(s);
@@ -84,7 +83,13 @@ public final class GUI_ElementCreator implements GUI_Settings_Variables{
 			return strDefaultString;
 		}
 	}
-	
+	public static JLabel newCopyRightsLabel(String  msg) {
+		JLabel  lbl = new JLabel(checkTitleMsg(msg), JLabel.CENTER);
+		lbl.setFont(newFont(lbl.getFont(), txtSize_Regular));
+		lbl.setForeground(clrF_HeadTitle);
+		lbl.setBackground(clrB_HeadTitle);
+		return lbl;
+	}
 	public static JLabel newHead(String  msg) {
 		JLabel  lbl = new JLabel(checkTitleMsg(msg), JLabel.CENTER);
 		lbl.setFont(newFont(lbl.getFont(), txtSize_Heading));

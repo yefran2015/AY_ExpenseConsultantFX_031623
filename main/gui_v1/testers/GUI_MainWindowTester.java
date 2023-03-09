@@ -7,7 +7,7 @@ public class GUI_MainWindowTester {
 
 	public static void main(String[] args) {
 //		new GUI_MainWindow();
-		GUI_MainWindow.showMainWindow();
+		GUI_MainWindow.getInstance().showMainWindow();
 	}
 
 }

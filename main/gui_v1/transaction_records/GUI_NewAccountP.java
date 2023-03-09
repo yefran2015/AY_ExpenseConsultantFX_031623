@@ -2,6 +2,7 @@ package gui_v1.transaction_records;
 
 import gui_v1.action_processors.NewAccountProgrammableHandler;
 import gui_v1.automation.GUI_ElementCreator;
+import main_logic.PEC;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,13 +16,13 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
 //    private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America" };
 //    private static DropDownItems bankNames = new DropDownItems(bankList, "<--no bank-->", NEW_BANK);
 
-    private static String[] bankList  = TransactionBankAccountInitialLists.getInstance().getBanksList();
+//    private static String[] bankList  = TransactionBankAccountInitialLists.getInstance().getBanksList();
 
-    private JComboBox  jcmbBank = GUI_ElementCreator.newJComboBox(TransactionBankAccountInitialLists.getInstance().getBanksList());
-    private JTextField jtfAcctNum= GUI_ElementCreator.newTextField("Account Number");
-    private JTextField jtfAcctNick= GUI_ElementCreator.newTextField("Account Nick");
-    private JButton jbtnAdd = GUI_ElementCreator.newJButton("Add This Account");
-    private JFrame frame;
+    private final JComboBox<String>  jcmbBank = GUI_ElementCreator.newJComboBox(TransactionBankAccountInitialLists.getInstance().getBanksList());
+    private final JTextField jtfAcctNum= GUI_ElementCreator.newTextField("Account Number");
+    private final JTextField jtfAcctNick= GUI_ElementCreator.newTextField("Account Nick");
+    private final JButton jbtnAdd = GUI_ElementCreator.newJButton("Add This Account");
+    private final JFrame frame;
 
     public GUI_NewAccountP(JFrame f){
         setLayout(new BorderLayout());
@@ -51,7 +52,7 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
             msg+="\n";
             msg+="Account Nick:"+ jtfAcctNick.getText().trim();
             msg+="\n";
-            msg+="Bank of Account:"+ jcmbBank.getSelectedItem().toString().trim();
+            msg+="Bank of Account:"+ (jcmbBank.getSelectedItem()+"").trim();
             msg+="\n";
             msg+="After Clicking Yes button this account will be added to your accounts";
             int answr = JOptionPane.showOptionDialog(null, msg, "Adding and Storing Account!",
@@ -59,16 +60,14 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
             if(answr == JOptionPane.YES_OPTION){
                 frame.dispose();
                 new NewAccountProgrammableHandler(jtfAcctNum.getText().trim(), jtfAcctNick.getText().trim(),
-                        jcmbBank.getSelectedItem().toString().trim());
-            }else{
-
+                        (jcmbBank.getSelectedItem()+"").trim());
             }
 
-            
         }else  if(e.getSource() == jcmbBank){
-            if(jcmbBank.getSelectedItem().toString().trim().compareToIgnoreCase(bankList[bankList.length-1])==0){
+//            if(jcmbBank.getSelectedItem().toString().trim().compareToIgnoreCase(bankList[bankList.length-1])==0){
+            if((jcmbBank.getSelectedItem()+"").trim().compareToIgnoreCase(PEC.NEW_BANK)==0){
                 JOptionPane.showOptionDialog(null, "New Bank Window will be created soon", "New Bank",
-                        JOptionPane.YES_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.YES_OPTION);
+                        JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.YES_OPTION);
             }
 
         }

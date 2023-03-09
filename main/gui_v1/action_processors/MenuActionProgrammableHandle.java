@@ -1,6 +1,4 @@
 package gui_v1.action_processors;
-
-import entities.Transaction;
 import gui_v1.RecordsTable;
 import gui_v1.mainWindows.GUI_HowToWindow;
 import gui_v1.mainWindows.GUI_ManualEntryWindow;
@@ -8,11 +6,8 @@ import gui_v1.mainWindows.GUI_RecordsWindow;
 import main_logic.PEC;
 import main_logic.Request;
 import main_logic.Result;
-import parsers.OFXParser;
-
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ListIterator;
 
 //import static gui_v1.settings.GUI_Static_Settings.pathToFile;
@@ -22,7 +17,7 @@ public class MenuActionProgrammableHandle {
 
 
     void doHowToStartProcessing(){
-        GUI_HowToWindow.showHowToWindow();
+        GUI_HowToWindow.getInstance().showHowToWindow();
     }
 
     /**
@@ -35,7 +30,7 @@ public class MenuActionProgrammableHandle {
      */
     public  void doParsOFXFileProcessing(){
       //  GUI_RecordsFrame records = new GUI_RecordsFrame();
-        GUI_RecordsWindow.createRecordViewWindow();
+        GUI_RecordsWindow.getInstance().showRecordsWindow();
         File f = null;
 
         File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
@@ -80,7 +75,7 @@ public class MenuActionProgrammableHandle {
         }
 //        records.setVisible(true);
 
-        GUI_RecordsWindow.showRecordsWindow();
+        GUI_RecordsWindow.getInstance().showRecordsWindow();
     }
 
     public void out(Object o){
@@ -92,7 +87,7 @@ public class MenuActionProgrammableHandle {
 
     }
     void doManualEntryProcessing(){
-        GUI_ManualEntryWindow.showManualEntryWindow();
+        GUI_ManualEntryWindow.getInstance().showManualEntryWindow();
     }
     void doGenerateSummaryProcessing(){
 

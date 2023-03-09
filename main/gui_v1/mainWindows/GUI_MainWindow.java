@@ -4,22 +4,26 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.io.Serial;
 import javax.swing.*;
 
 import gui_v1.GUI_MainBoxP;
 import gui_v1.menu.GUI_Menu;
 import gui_v1.menu.GUI_Menu_Technical;
 import gui_v1.settings.GUI_Settings_Variables;
+
 public class GUI_MainWindow extends JFrame implements GUI_Settings_Variables  {
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private static GUI_MainWindow instance=null;
-	public static GUI_MainWindow createMainGUIWindow(){
+
+	public static GUI_MainWindow getInstance(){
 		if(instance==null){
 			instance = new GUI_MainWindow();
 		}
 		return instance;
 	}
+
 	 private GUI_MainWindow() {
 		 setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 //		setBackground(guiFramesBackgroundColor);
@@ -46,18 +50,14 @@ public class GUI_MainWindow extends JFrame implements GUI_Settings_Variables  {
 						 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
 				 if(answr == JOptionPane.YES_OPTION){
 					 System.exit(JFrame.EXIT_ON_CLOSE);
-				 }else{
-
 				 }
 			 }
 		 });
 	}
-	public static void showMainWindow(){
-		createMainGUIWindow();
+	public void showMainWindow(){
 		instance.setVisible(true);
 	}
-	public static void hideMainWindow(){
-		createMainGUIWindow();
+	public void hideMainWindow(){
 		instance.setVisible(false);
 	}
 	@Override
