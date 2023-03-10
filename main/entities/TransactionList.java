@@ -32,7 +32,9 @@ public class TransactionList {
     }
 
     /**
-     * Method allows to add a single transaction at the end of the list.
+     * Method allows to add a single transaction at the beginning or at the end,
+     * of the list, as long as its date is <= the first date, or >= the last date
+     * in the list.
      *
      * @param transaction - the Transaction being added
      * @return TRUE - if everything goes well FALSE - if there's trouble and
@@ -44,9 +46,9 @@ public class TransactionList {
             this.to = transaction.getPostedDate();
             return transactionList.add(transaction);
         }
-        if (transaction.getPostedDate().compareTo(this.from)>=0 &&
+        if (transaction.getPostedDate().compareTo(this.from)>0 &&
                 transaction.getPostedDate().compareTo(this.to)<0) return false;
-        else if (transaction.getPostedDate().compareTo(this.from)<0) {
+        else if (transaction.getPostedDate().compareTo(this.from)<=0) {
             transactionList.add(0, transaction);
             this.from = transaction.getPostedDate();
             return true;

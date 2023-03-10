@@ -6,7 +6,7 @@ public class Result extends main_logic.DataTransfer {
 	// of the front/back end of the house.
 
 	public enum Code {
-		SUCCESS, IO_ERROR, LONG_LIST_ERROR,
+		SUCCESS, IO_ERROR, WRONG_FILE, NO_ITEMS_TO_READ,
 	} // ...
 
 	private Code resultCode;

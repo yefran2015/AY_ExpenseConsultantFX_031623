@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 import entities.Transaction;
 import entities.TransactionList;
@@ -33,11 +32,10 @@ import main_logic.PEC;
  */
 public class OFXParser {
 
-	private static TransactionList output;
-	//	min and max for dates of Transactions acceptable to the parser
-	private static String strDateMin = TransactionList.STR_DATE_MIN;
-	private static String strDateMax = TransactionList.STR_DATE_MAX;
+	private static Calendar startNoParseDate;
+	private static Calendar endNoParseDate;
 
+	private static TransactionList output;
 	private static Calendar startDate;
 	private static Calendar endDate;
 	private static boolean isCreditCard;
@@ -73,8 +71,10 @@ public class OFXParser {
 	 */
 	public static void clearParser() {
 		output = new TransactionList();
-		startDate = Transaction.returnCalendarFromOFX(strDateMin);
-		endDate = Transaction.returnCalendarFromOFX(strDateMax);
+		startNoParseDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+		endNoParseDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+		startDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+		endDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MAX);
 		isCreditCard = false;
 		currency = "";
 		acctType = "";
@@ -90,9 +90,7 @@ public class OFXParser {
 	}
 
 	private static void setStartDate(Calendar startDate) {
-		if (OFXParser.startDate.compareTo(startDate) < 0) {
-			OFXParser.startDate = startDate;
-		}
+		OFXParser.startDate = startDate;
 	}
 
 	public static Calendar getEndDate() {
@@ -100,9 +98,7 @@ public class OFXParser {
 	}
 
 	private static void setEndDate(Calendar endDate) {
-		if (OFXParser.endDate.compareTo(endDate) > 0) {
-			OFXParser.endDate = endDate;
-		}
+		OFXParser.endDate = endDate;
 	}
 
 	public static boolean isCreditCard() {
@@ -167,18 +163,20 @@ public class OFXParser {
 	 * Overloaded method.
 	 * Parses OFX file and returns a list of Transactions. It doesn't check the file
 	 * for existence, readability, etc. It leaves this up to the calling method. It
-	 * only worries about the file content.
+	 * only worries about the file content. It adds Transactions, whose date is either
+	 * <= startRestrictDate, or >= endRestrictDate. Nothing in between.
 	 *
 	 * @param source - Open Financial Exchange (OFX) file
-	 * @param start - minimum date for returned Transactions
-	 * @param end - maximum date for returned Transactions
+	 * @param startRestrictDate - minimum date restricts Transactions from top
+	 * @param endRestrictDate - maximum date restricts Transactions from bottom
 	 * @return - list of Transactions
 	 * @throws IOException - in case of problems with the file
 	 */
-	public static TransactionList ofxParser(File source, Calendar start, Calendar end) throws IOException {
+	public static TransactionList ofxParser(File source, Calendar startRestrictDate,
+											Calendar endRestrictDate) throws IOException {
 		clearParser();
-		setStartDate(start);
-		setEndDate(end);
+		startNoParseDate = startRestrictDate;
+		endNoParseDate = endRestrictDate;
 		return ofxParser(new FileInputStream(source));
 	}
 
@@ -323,7 +321,13 @@ public class OFXParser {
 			// If so, add it!
 			if (tag.equals("STMTTRN")) {
 				Transaction t = new Transaction(date, ref, name, mem, amt, PEC.OTHER); // Default
-				if (t.isBetweenDates(getStartDate(), getEndDate())) { output.add(t); }
+				// following if statement checks if the Transaction date is outside of
+				// restricted time period; being a "border date" is allowed
+				if ((!t.isBetweenDates(startNoParseDate, endNoParseDate)) ||
+						date.compareTo(startNoParseDate)==0 ||
+						date.compareTo(endNoParseDate)==0) {
+					output.add(t);
+				}
 			}
 			// when we close a tag we could implicitly close a bunch of
 			// tags in between. For example consider: <a><b><c><d></a>

@@ -37,7 +37,6 @@ public class MenuActionProgrammableHandle {
         if(chosenFile == null ){
             JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
         } else{
-            out( "OFX Chosen File for parsing is " + chosenFile.getAbsolutePath() + ".");
             Request request = Request.instance();
             request.reset();
             ListIterator<Result> it;
@@ -57,9 +56,16 @@ public class MenuActionProgrammableHandle {
             it = PEC.instance().sortedColumnSwitched(request);
             */
             Result result = new Result();
-            result = it.next();
-            if (result.getCode()!=Result.Code.SUCCESS) {
-                JOptionPane.showMessageDialog(null, "The file is not OFX/QFX\nfile or could NOT be read.","Error", JOptionPane.INFORMATION_MESSAGE);
+            if (it.hasNext()) result = it.next();
+            if (result.getCode()==Result.Code.WRONG_FILE ||
+                    result.getCode()==Result.Code.IO_ERROR) {
+                JOptionPane.showMessageDialog(null,
+                        "The file is not OFX/QFX\nfile or could NOT be read.",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+            } else if (result.getCode()==Result.Code.NO_ITEMS_TO_READ) {
+                JOptionPane.showMessageDialog(null,
+                        "The file doesn't contain\nany new account activity\nthat could be added.",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 RecordsTable.addRowToTable(result.getTDate(),
                         result.getTRef(), result.getTDesc(),

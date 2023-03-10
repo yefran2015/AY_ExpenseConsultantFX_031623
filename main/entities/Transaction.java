@@ -231,9 +231,9 @@ public class Transaction {
      *
      * @param firstDate, secondDate - the boundaries, inside which the Transaction
      *                   should be
-     * @return TRUE - the Transaction has been time-stamped between the boundary
-     *         dates FALSE - the Transaction has been time-stamped outside the
-     *         boundary dates
+     * @return TRUE - the Transaction has been time-stamped between the boundary dates
+     *                (boundary dates included)
+     *         FALSE - the Transaction has been time-stamped outside the boundary dates
      */
     public boolean isBetweenDates(Calendar firstDate, Calendar secondDate) {
         return (!postedDate.before(firstDate) && !postedDate.after(secondDate));
