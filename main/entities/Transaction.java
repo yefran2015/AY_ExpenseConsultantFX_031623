@@ -82,12 +82,18 @@ public class Transaction {
     /**
      * Returns a Calendar type of date from a String format, used in the table.
      *
-     * @param stringDate - format YYYY/MM/DD
+     * @param stringDate - formats YYYY/MM/DD, MM/DD/YYYY
      * @return same date as a Calendar type
      */
     public static Calendar returnCalendarFromYYYYMMDD(String stringDate) {
-        stringDate = stringDate.substring(0, 4) + stringDate.substring(5, 7) +
-                stringDate.substring(8, 10) + "000000";
+        String[] ymd = stringDate.split("[/ . -]");
+        if (ymd.length<3) stringDate = "19000101000000";
+        else
+        if (ymd[0].length()==4) {
+            stringDate = ymd[0] + ymd[1] + ymd[2] + "000000";
+        } else if (ymd[2].length()==4){
+            stringDate = ymd[2] + ymd[0] + ymd[1] + "000000";
+        }
         return returnCalendarFromOFX(stringDate);
     }
 

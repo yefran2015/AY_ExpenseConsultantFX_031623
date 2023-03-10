@@ -18,7 +18,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.Calendar;
-import java.util.Date;
 
 public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings_Variables, ActionListener, FocusListener {
     private final static String[] ERROR_IN_USER_INPUT = null;
