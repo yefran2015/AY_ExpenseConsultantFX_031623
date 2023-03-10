@@ -1,11 +1,14 @@
 package gui_v1.gui_logic;
+import entities.Transaction;
+
 import java.util.*;
 
 public class GUI_ManualEntryTemporaialHolder {
     private static GUI_ManualEntryTemporaialHolder instance = null;
 
-    private static String[] manyalEntryDefaultJTextFieldText =new String[]{"Select Nick","Enter Date in Format: 02/22/2023","Enter Reference number",
-            "Enter Transaction Name","Enter Memo","Enter Amount", "Select Category"};
+    private static String[] manyalEntryDefaultJTextFieldText = new String[]{"Select Account",
+            Transaction.returnYYYYMMDDFromCalendar(Calendar.getInstance()),
+            "Enter Reference number", "Enter Transaction Name", "Enter Memo", "Enter Amount", "Select Category"};
     private static LinkedList<String[]> accounts;
     private static String[] currentTransactionOfManualEnetry;
     private static int currEntryIndex;

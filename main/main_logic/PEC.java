@@ -238,8 +238,7 @@ public class PEC {
 	public boolean processSingleManualEntry(Request request) {
 		// if a new Category is present in request.tCat at time of syncing local<--->database, it will get
 		// written in Category table.
-		System.out.println(tList.size());
-		Transaction newT = new Transaction(Transaction.returnCalendarFromOFX(request.getTDate()),
+		Transaction newT = new Transaction(Transaction.returnCalendarFromYYYYMMDD(request.getTDate()),
 				request.getTRef(), request.getTDesc(), request.getTMemo(), request.getTAmount(), request.getTCat());
 		return tList.add(newT);
 	}
