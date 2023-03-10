@@ -25,6 +25,12 @@ public class PEC {
 	// private main structure housing active Transaction data
 	// (no more than 3 months worth)
 	private TransactionList tList;
+	// these variables contain the date of the first and last transaction
+	// in the database, both initialized with STR_DATE_MIN of
+	// TransactionList.java (1900/01/01)--that way, if the database is empty,
+	// the parsing or manual entries can start anytime after that initial date
+	private Calendar beginDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+	private Calendar endDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
 	// array of booleans to remember if a particular column is sorted
 	// in a descending (or ascending) direction
 	private boolean[] descColumn = { true, true, true, true, true, true };
@@ -38,6 +44,15 @@ public class PEC {
 	 */
 	private PEC() {
 		tList = new TransactionList();
+		// code for reaching out to database, and if there are records, load
+		// the last "batch" (last 3 months or less--last time index
+		// (transaction_date)--whatever is included in the last encrypted
+		// String of Transactions) into tList and display; IF NOTHING FOUND,
+		// DISPLAY EMPTY TABLE AND A WINDOW: "To start, choose IMPORT ACCOUNT
+		// ACTIVITY, MANUAL ENTRY, or HOW TO START from the Menu. <OK>".
+
+		// beginning = <the first time index (transaction_date) in the database>;
+		// ending = <the date of the last Transaction in tList>;
 	}
 
 	/**
@@ -83,6 +98,22 @@ public class PEC {
 		sortedColumn = Transaction.POSTED_DATE;
 	}
 
+	public Calendar getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(Calendar beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public Calendar getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Calendar endDate) {
+		this.endDate = endDate;
+	}
+
 	/**
 	 * Gets the name + abs. path from the Request object, checks the file for
 	 * readability, hands the job over to OFX parser and collects and expedites
@@ -94,20 +125,24 @@ public class PEC {
 	 */
 	public ListIterator<Result> parseOFX(Request request) {
 		File file = null;
-		boolean exception = false;
 		Result result = new Result();
 		ArrayList<Result> rList = new ArrayList<Result>();
 		try {
 			file = new File(request.getFileWithPath());
+			System.out.println(tList.size());
 			tList = OFXParser.ofxParser(file, request.getFrom(), request.getTo());
+			System.out.println(tList.size());
 			if (tList==null) {
-				exception = true;
+				result.setCode(WRONG_FILE);
+			} else if (tList.size()==0){
+				result.setCode(NO_ITEMS_TO_READ);
+			} else {
+				result.setCode(SUCCESS);
 			}
 		} catch (Exception e) {
-			exception = true;
-		}
-		if (exception) {
 			result.setCode(IO_ERROR);
+		}
+		if (result.getCode()!=SUCCESS) {
 			rList.add(result);
 			return rList.listIterator();
 		}
@@ -121,7 +156,6 @@ public class PEC {
 	 */
 	public ListIterator<Result> returnRListIterator() {
 		ListIterator<Transaction> it = tList.listIterator();
-		System.out.println(tList.size());
 		Result result = new Result();
 		ArrayList<Result> rList = new ArrayList<Result>();
 		result.setCode(SUCCESS);
@@ -216,10 +250,10 @@ public class PEC {
 		// all bank names (unique), and all category names (unique; best make a table of categories,
 		// which can be encrypted).
 		String[] bankTestingArr = new String[]{"Wells Fargo", "US Bank", "Bank Of America"};
-		String[] accntNicksTestingArr = new String[]{ "Work Accnt","Family Use Accnt","Secret Saving Accnt"};
+		String[] accntNicksTestingArr = new String[]{ "", "Work Accnt","Family Use Accnt","Secret Saving Accnt"};
 		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun"};
-		output.setNickList(bankTestingArr);
-		output.setBankList(accntNicksTestingArr);
+		output.setBankList(bankTestingArr);
+		output.setNickList(accntNicksTestingArr);
 		output.setCategoryList(trnsCategoriesTestingArr);
 		return output;
 	}

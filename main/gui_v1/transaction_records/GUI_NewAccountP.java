@@ -56,11 +56,13 @@ public class GUI_NewAccountP extends JPanel implements ActionListener {
             msg+="\n";
             msg+="After Clicking Yes button this account will be added to your accounts";
             int answr = JOptionPane.showOptionDialog(null, msg, "Adding and Storing Account!",
-                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
             if(answr == JOptionPane.YES_OPTION){
                 frame.dispose();
                 new NewAccountProgrammableHandler(jtfAcctNum.getText().trim(), jtfAcctNick.getText().trim(),
                         (jcmbBank.getSelectedItem()+"").trim());
+            } else {
+                GUI_ManualTransactionsEntryP.setAcctSelection(GUI_ManualTransactionsEntryP.getPreviousAcctSelection());
             }
 
         }else  if(e.getSource() == jcmbBank){
