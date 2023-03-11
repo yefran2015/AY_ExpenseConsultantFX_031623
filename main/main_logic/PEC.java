@@ -10,7 +10,6 @@ import parsers.OFXParser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.ListIterator;
 
 import static main_logic.Result.Code.*;
@@ -26,11 +25,11 @@ public class PEC {
 	// (no more than 3 months worth)
 	private TransactionList tList;
 	// these variables contain the date of the first and last transaction
-	// in the database, both initialized with STR_DATE_MIN of
+	// in the whole database, both initialized with STR_DATE_MIN of
 	// TransactionList.java (1900/01/01)--that way, if the database is empty,
 	// the parsing or manual entries can start anytime after that initial date
-	private Calendar beginDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
-	private Calendar endDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+	private Calendar dbBeginDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+	private Calendar dbEndDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
 	// array of booleans to remember if a particular column is sorted
 	// in a descending (or ascending) direction
 	private boolean[] descColumn = { true, true, true, true, true, true };
@@ -51,8 +50,9 @@ public class PEC {
 		// DISPLAY EMPTY TABLE AND A WINDOW: "To start, choose IMPORT ACCOUNT
 		// ACTIVITY, MANUAL ENTRY, or HOW TO START from the Menu. <OK>".
 
-		// beginning = <the first time index (transaction_date) in the database>;
-		// ending = <the date of the last Transaction in tList>;
+		// VERY IMPORTANT:
+		// beginDate = <the first time index (transaction_date) in the database>;
+		// endDate = <the date of the last Transaction in tList>;
 	}
 
 	/**
@@ -98,20 +98,20 @@ public class PEC {
 		sortedColumn = Transaction.POSTED_DATE;
 	}
 
-	public Calendar getBeginDate() {
-		return beginDate;
+	public Calendar getDbBeginDate() {
+		return dbBeginDate;
 	}
 
-	public void setBeginDate(Calendar beginDate) {
-		this.beginDate = beginDate;
+	public void setDbBeginDate(Calendar dbBeginDate) {
+		this.dbBeginDate = dbBeginDate;
 	}
 
-	public Calendar getEndDate() {
-		return endDate;
+	public Calendar getDbEndDate() {
+		return dbEndDate;
 	}
 
-	public void setEndDate(Calendar endDate) {
-		this.endDate = endDate;
+	public void setDbEndDate(Calendar dbEndDate) {
+		this.dbEndDate = dbEndDate;
 	}
 
 	/**
@@ -126,15 +126,14 @@ public class PEC {
 	public ListIterator<Result> parseOFX(Request request) {
 		File file = null;
 		Result result = new Result();
+		TransactionList parsedTlist = new TransactionList();
 		ArrayList<Result> rList = new ArrayList<Result>();
 		try {
 			file = new File(request.getFileWithPath());
-			System.out.println(tList.size());
-			tList = OFXParser.ofxParser(file, request.getFrom(), request.getTo());
-			System.out.println(tList.size());
-			if (tList==null) {
+			parsedTlist = OFXParser.ofxParser(file, request.getFrom(), request.getTo());
+			if (parsedTlist ==null) {
 				result.setCode(WRONG_FILE);
-			} else if (tList.size()==0){
+			} else if (parsedTlist.size()==0){
 				result.setCode(NO_ITEMS_TO_READ);
 			} else {
 				result.setCode(SUCCESS);
@@ -146,8 +145,47 @@ public class PEC {
 			rList.add(result);
 			return rList.listIterator();
 		}
-		//resetView();
+		//SUCCESS: parsedTList is merged into the beginning or ending of the database
+		mergeNewTList(parsedTlist);
 		return returnRListIterator();
+	}
+
+	/**
+	 * Merges a new list (from parsing or manual entry) into the database.
+	 * @param list - list to be merged
+	 * @return - TRUE if succeeded, FALSE if nothing got merged
+	 */
+	private boolean mergeNewTList(TransactionList list) {
+		Calendar listStart = list.getStartDate();
+		Calendar listEnd = list.getEndDate();
+		TransactionList resultTList = new TransactionList();
+		if (listStart.compareTo(dbBeginDate)<=0) {
+			// fetch the first 3-or-less-month chunk of the db and load it in tList
+			int i = 0;
+			// do this until the end of the parsedTList or beginning of the db
+			while (i< list.size() &&
+					list.get(i).getPostedDate().compareTo(dbBeginDate)<=0) {
+				resultTList.add(list.get(i));
+				i++;
+			}
+			for (int j=0;j<tList.size();j++) resultTList.add(tList.get(j));
+			setDbBeginDate(resultTList.getStartDate());
+			tList = resultTList;
+			return true;
+		} else if (listEnd.compareTo(dbEndDate)>=0) {
+			// fetch the last 3-or-less-month chunk of db and load it in tList
+			for (int i=0;i<tList.size();i++) resultTList.add(tList.get(i));
+			int i = 0;
+			while (i< list.size() &&
+					list.get(i).getPostedDate().compareTo(dbEndDate)<0) i++;
+			for (int j = i; j< list.size(); j++) resultTList.add(list.get(j));
+			setDbEndDate(resultTList.getEndDate());
+			// If database is empty, do:
+			if (tList.size()==0) setDbBeginDate(listStart);
+			tList = resultTList;
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -240,7 +278,9 @@ public class PEC {
 		// written in Category table.
 		Transaction newT = new Transaction(Transaction.returnCalendarFromYYYYMMDD(request.getTDate()),
 				request.getTRef(), request.getTDesc(), request.getTMemo(), request.getTAmount(), request.getTCat());
-		return tList.add(newT);
+		TransactionList list = new TransactionList();
+		list.add(newT);
+		return mergeNewTList(list);
 	}
 
 	public Result downloadDropDownMenuEntries() {

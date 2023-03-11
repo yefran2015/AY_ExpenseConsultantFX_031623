@@ -118,6 +118,16 @@ public class RecordsTable  extends JPanel{
         }
     }
     /**
+     *  This method is for remove all data rows from Table.
+     */
+    public static void clearTable() {
+        m = (DefaultTableModel) (instance.getModel());
+        int recN = m.getRowCount();
+        for(int i= recN-1; i>=0 ; i--){
+            m.removeRow(i);
+        }
+    }
+    /**
      * @param ofxDate  -- Transaction date
      * @param ref -- Transaction Refference num
      * @param name -- Transaction Nick name

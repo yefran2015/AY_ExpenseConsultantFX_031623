@@ -14,7 +14,7 @@ public class ManualEntryProgrammableHandler {
     /**
      * This List of String[] arrays has all manually added transactions from GUI_ManualEntryWindow.
      */
-    private LinkedList<String[]> manualEntriesList;
+    private LinkedList<String[]> manualEntriesList = new LinkedList<String[]>();
 
     private String acct;
     private String date;
@@ -55,7 +55,6 @@ public class ManualEntryProgrammableHandler {
             request.reset();
             request.setAccountNick(singleUserTransManuallyEntered[0]);
             request.setTDate(singleUserTransManuallyEntered[1]);
-            System.out.println("--->>>> "+singleUserTransManuallyEntered[1]);
             request.setTRef(singleUserTransManuallyEntered[2]);
             request.setTDesc(singleUserTransManuallyEntered[3]);
             request.setTMemo(singleUserTransManuallyEntered[4]);
@@ -68,9 +67,9 @@ public class ManualEntryProgrammableHandler {
             PEC.instance().processSingleManualEntry(request);
         }
         ListIterator<Result> it = PEC.instance().returnRListIterator();
+        RecordsTable.clearTable();
         while(it.hasNext()){
             result = it.next();
-            System.out.println("--->>>> "+result.getTDate());
             RecordsTable.addRowToTable(result.getTDate(),
                     result.getTRef(), result.getTDesc(),
                     result.getTMemo(), result.getTAmount(), result.getTCat());
