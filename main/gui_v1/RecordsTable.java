@@ -19,9 +19,15 @@ public class RecordsTable  extends JPanel{
     private static JTable instance;
     private static int recordCount = 0;
     private static String[] columnNames = { "Date", "Ref", "Name", "Memo", "Amount", "Category"};
-    private static String[][] testData = {};
+//    private static String[][] testData = {};
     private static DefaultTableModel m;
-
+    private static String[][] testData = {{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"} ,
+            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"}};
     public RecordsTable() {
         setLayout(new BorderLayout());
         createTableWithCustomSorting();
@@ -109,8 +115,20 @@ public class RecordsTable  extends JPanel{
         rowItems[5] = cat + "";
         m = (DefaultTableModel) (instance.getModel());
         m.addRow(rowItems);
-
+        System.out.println("Adding "+m.getRowCount());
     }
+
+    /**
+     *  This method is for remove all data rows from Table.
+     */
+    public static void clearTable() {
+        m = (DefaultTableModel) (instance.getModel());
+        int recN = m.getRowCount();
+        for(int i= recN-1; i>=0 ; i--){
+            m.removeRow(i);
+        }
+    }
+
     /**
      * @param ofxDate  -- Transaction date
      * @param ref -- Transaction Refference num
