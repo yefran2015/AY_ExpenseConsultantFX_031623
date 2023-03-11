@@ -97,8 +97,15 @@ public class OFXParser {
 		return endDate;
 	}
 
+	/**
+	 * Sets the endDate to be no longer away from the startDate than 3 months
+	 */
 	private static void setEndDate(Calendar endDate) {
-		OFXParser.endDate = endDate;
+		// the date is copied without coping the whole object's reference
+		Calendar startPlus3Months = Transaction.returnCalendarFromOFX(Transaction.returnOFXFromCalendar(startDate));
+		startPlus3Months.add(Calendar.MONTH, 3);
+		if (endDate.compareTo(startPlus3Months)>0) OFXParser.endDate = startPlus3Months;
+		else OFXParser.endDate = endDate;
 	}
 
 	public static boolean isCreditCard() {
@@ -177,6 +184,8 @@ public class OFXParser {
 		clearParser();
 		startNoParseDate = startRestrictDate;
 		endNoParseDate = endRestrictDate;
+		System.out.println(Transaction.returnYYYYMMDDFromCalendar(startNoParseDate)+"-"+
+				Transaction.returnYYYYMMDDFromCalendar(endNoParseDate));
 		return ofxParser(new FileInputStream(source));
 	}
 
@@ -322,10 +331,11 @@ public class OFXParser {
 			if (tag.equals("STMTTRN")) {
 				Transaction t = new Transaction(date, ref, name, mem, amt, PEC.OTHER); // Default
 				// following if statement checks if the Transaction date is outside of
-				// restricted time period; being a "border date" is allowed
-				if ((!t.isBetweenDates(startNoParseDate, endNoParseDate)) ||
+				// restricted time period; being a "border date" is allowed;
+				// also, it's being checked the output list is no longer than 3 months
+				if (((!t.isBetweenDates(startNoParseDate, endNoParseDate)) ||
 						date.compareTo(startNoParseDate)==0 ||
-						date.compareTo(endNoParseDate)==0) {
+						date.compareTo(endNoParseDate)==0) && date.compareTo(getEndDate())<=0) {
 					output.add(t);
 				}
 			}

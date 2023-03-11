@@ -34,7 +34,8 @@ public class TransactionList {
     /**
      * Method allows to add a single transaction at the beginning or at the end,
      * of the list, as long as its date is <= the first date, or >= the last date
-     * in the list.
+     * in the list. Another condition is that the added Transaction's reference
+     * number must NOT be present in the list yet.
      *
      * @param transaction - the Transaction being added
      * @return TRUE - if everything goes well FALSE - if there's trouble and
@@ -46,6 +47,7 @@ public class TransactionList {
             this.to = transaction.getPostedDate();
             return transactionList.add(transaction);
         }
+        if (isInTheList(transaction.getRefNumber())) return false;
         if (transaction.getPostedDate().compareTo(this.from)>0 &&
                 transaction.getPostedDate().compareTo(this.to)<0) return false;
         else if (transaction.getPostedDate().compareTo(this.from)<=0) {
@@ -69,6 +71,21 @@ public class TransactionList {
         for (Transaction transaction : transactionList) {
             if (transaction.getRefNumber().equalsIgnoreCase(refNumber)) {
                 return transactionList.remove(transaction);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Finds a Transaction, identified by its reference number, in the list.
+     * @param refNumber - a reference number of the Transaction searched for
+     * @return TRUE - if Transaction was found in the list
+     *         FALSE - if Transaction is not in the list
+     */
+    public boolean isInTheList(String refNumber) {
+        for (Transaction transaction : transactionList) {
+            if (transaction.getRefNumber().equalsIgnoreCase(refNumber)) {
+                return true;
             }
         }
         return false;

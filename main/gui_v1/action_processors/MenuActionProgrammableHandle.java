@@ -41,13 +41,12 @@ public class MenuActionProgrammableHandle {
             request.reset();
             ListIterator<Result> it;
             request.setFileWithPath(chosenFile.getAbsolutePath());
-            /*
             //For limiting the time window for parsed Transactions.
-            request.setFrom(...);
-            request.setTo(...);
+            //It should be set to: beginning date of database - ending date of database
+            request.setFrom(PEC.instance().getDbBeginDate());
+            request.setTo(PEC.instance().getDbEndDate());
             // technically, we don't want more than 3 months of Transactions:
-            // date.add(Calendar.MONTH, 3);
-            */
+            // <beginning date>.add(Calendar.MONTH, 3);
             it = PEC.instance().parseOFX(request);
             /*
             //Applying sorting, if a Transaction column header/title has been clicked.
@@ -67,6 +66,7 @@ public class MenuActionProgrammableHandle {
                         "The file doesn't contain\nany new account activity\nthat could be added.",
                         "Error", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                RecordsTable.clearTable();
                 RecordsTable.addRowToTable(result.getTDate(),
                         result.getTRef(), result.getTDesc(),
                         result.getTMemo(), result.getTAmount(), result.getTCat());
