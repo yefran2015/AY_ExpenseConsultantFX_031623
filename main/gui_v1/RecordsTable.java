@@ -10,8 +10,8 @@ import java.text.DecimalFormat;
  * @author Andrey Y
  * @author  Pavel
  * @author Sam
- * @version 0.0.1
- * @serial 030220231659
+ * @version 0.1.0
+ * @serial 031020231947
  *
  * This class is for crating and handling Table of Transaction records shown in GUI_v1.
  */
@@ -98,15 +98,6 @@ public class RecordsTable  extends JPanel{
      */
     public static void addRowToTable(String ofxDate, String ref, String name, String memo, Double amount, String cat) {
         Object[] rowItems = new Object[6];
-//        String[] date = ofxDate.split("/");
-//        System.out.println("-1->>>"+"L "+date.length+" 0 "+date[0]+"  1 "+ date[1] +" 2 "+date[2]);
-
-//        if(date[0].length()==4){
-//            rowItems[0] = ofxDate + "";
-//        }else{
-//            rowItems[0] = date[2]+"/"+date[0]+"/"+date[1];
-//        }
-//System.out.println("-2->>>"+rowItems[0]+"  "+ ofxDate);
         rowItems[0] = ofxDate + "";
         rowItems[1] = ref + "";
         rowItems[2] = name + "";
@@ -115,9 +106,7 @@ public class RecordsTable  extends JPanel{
         rowItems[5] = cat + "";
         m = (DefaultTableModel) (instance.getModel());
         m.addRow(rowItems);
-        System.out.println("Adding "+m.getRowCount());
     }
-
     /**
      *  This method is for remove all data rows from Table.
      */
@@ -128,7 +117,6 @@ public class RecordsTable  extends JPanel{
             m.removeRow(i);
         }
     }
-
     /**
      * @param ofxDate  -- Transaction date
      * @param ref -- Transaction Refference num
