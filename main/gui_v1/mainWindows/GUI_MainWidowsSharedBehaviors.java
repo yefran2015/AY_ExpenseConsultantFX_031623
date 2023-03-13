@@ -37,6 +37,7 @@ public interface GUI_MainWidowsSharedBehaviors {
            int answr = JOptionPane.showOptionDialog(null, "Do you Really want to close this window, and return to main?", "This window will be close.",
                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
            if(answr == JOptionPane.YES_OPTION){
+               GUI_ManualEntryWindow.getInstance().disposeManualEntryWindow();
                GUI_RecordsWindow.getInstance().showRecordsWindow();
            }
        }

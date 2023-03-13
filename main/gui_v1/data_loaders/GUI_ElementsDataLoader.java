@@ -5,7 +5,15 @@ import main_logic.Result;
 
 public class GUI_ElementsDataLoader {
     private static GUI_ElementsDataLoader instance = null;
-
+    private GUI_ElementsDataLoader(){
+     //   loadTestingData();
+    }
+    public static GUI_ElementsDataLoader getInstance(){
+        if(instance == null){
+            instance = new GUI_ElementsDataLoader();
+        }
+        return instance;
+    }
 
     /**
      *  This array is holder of Short help tips for input elements located at
@@ -36,26 +44,18 @@ public class GUI_ElementsDataLoader {
     public static String[] newAccountElements_HelpMessages = new String[]{"Enter Account Number","Enter Account Nickname",
             "Select Bank"};
 
-   private static  String[]  availableBanks;
+    private static  String[]  availableBanks;
     private static  String[]  availableNicks;
     private static  String[]  availableCategories;
-    private void loadTestingData(){
-        Result res = new Result();
-        res = PEC.instance().downloadDropDownMenuEntries();
-        availableBanks = res.getBankList();
-        availableNicks = res.getNickList();
-        availableCategories = res.getCategoryList();
-    }
+//    private void loadTestingData(){
+//        Result res = new Result();
+//        res = PEC.instance().downloadDropDownMenuEntries();
+//        availableBanks = res.getBankList();
+//        availableNicks = res.getNickList();
+//        availableCategories = res.getCategoryList();
+//    }
 
-    private GUI_ElementsDataLoader(){
-        loadTestingData();;
-    }
-    public static GUI_ElementsDataLoader getInstance(){
-        if(instance == null){
-            instance = new GUI_ElementsDataLoader();
-        }
-        return instance;
-    }
+
     public static  ManualEntryDataLoader getMEntHelpMsgs(){
       return ManualEntryDataLoader.getInst();
     }

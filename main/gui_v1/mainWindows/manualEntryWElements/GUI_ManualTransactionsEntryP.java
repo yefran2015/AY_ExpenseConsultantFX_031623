@@ -10,13 +10,12 @@ import gui_v1.mainWindows.GUI_ManualEntryWindow;
 import gui_v1.mainWindows.GUI_RecordsWindow;
 import gui_v1.mainWindows.GUI_NewAccountWindow;
 import gui_v1.settings.GUI_Settings_Variables;
-//import main_logic.PEC;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Calendar;
+//import java.util.Calendar;
 
 public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings_Variables, ActionListener, FocusListener, WindowStateListener {
     private final static String[] ERRORS_IN_USER_INPUT = null;
@@ -413,17 +412,17 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
 
             jcmbYears = GUI_ElementCreator.newJComboBox(GUI_AY_Calendar.getYearsDescendingArr());
             jcmbYears.setActionCommand("YEAR");
-            jcmbYears.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
+            jcmbYears.setSelectedItem(GUI_AY_Calendar.getTodayYear());
             jcmbYears.addActionListener(actionListenerForDatesJCMboxes());
 
             jcmbMonths = GUI_ElementCreator.newJComboBox(GUI_AY_Calendar.monthsArr);
-            jcmbMonths.setSelectedItem((Calendar.getInstance().get(Calendar.MONTH) + 1) + "");
+            jcmbMonths.setSelectedItem(GUI_AY_Calendar.getTodayMonth());
             jcmbMonths.addActionListener(actionListenerForDatesJCMboxes());
             jcmbMonths.setActionCommand("MONTH");
 
             jcmbDays = GUI_ElementCreator.newJComboBox(GUI_AY_Calendar.getDaysAsStrArrForMountOfYear(Integer.parseInt(jcmbMonths.getSelectedItem() + ""),
                     Integer.parseInt(jcmbYears.getSelectedItem() + "")));
-            jcmbDays.setSelectedItem(Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "");
+            jcmbDays.setSelectedItem(GUI_AY_Calendar.getTodayDayOfMonth());
             jcmbDays.addActionListener(actionListenerForDatesJCMboxes());
             jcmbDays.setActionCommand("DAY");
 

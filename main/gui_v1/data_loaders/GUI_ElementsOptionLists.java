@@ -1,8 +1,5 @@
 package gui_v1.data_loaders;
-
-import main_logic.Result;
 import main_logic.PEC;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -50,6 +47,9 @@ public class GUI_ElementsOptionLists {
         return false;
     }
     public void addTransactionCategoriessToList(String[] transactionCategoriesArr) {
+        if(transactionCategoriesArr==null || transactionCategoriesArr.length<0){
+            return;
+        }
         String last = transactionCategoriesList.removeLast();
 //        transactionCategoriesList.addAll(Arrays.stream(transactionCategoriesArr).toList());
         for(int i=0; i< transactionCategoriesArr.length; i++){
@@ -61,6 +61,9 @@ public class GUI_ElementsOptionLists {
         transactionCategoriesList.add(bankList.size()-1, transactionCategory);
     }
     public  void addBanksToList(String[] banks){
+        if(banks==null || banks.length<0){
+            return;
+        }
         String last = bankList.removeLast();
         for(int i=0; i< banks.length; i++){
             bankList.add(banks[i]);
@@ -71,6 +74,9 @@ public class GUI_ElementsOptionLists {
         bankList.add(bankList.size()-1, bank);
     }
     public  void addAccntNicksToList(String[] accountNicks){
+        if(accountNicks==null || accountNicks.length<0){
+            return;
+        }
         String last = acctNicksList.removeLast();
 //        acctNicksList.addAll(Arrays.stream(accountNicks).toList());
         for(int i=0; i< accountNicks.length; i++){
