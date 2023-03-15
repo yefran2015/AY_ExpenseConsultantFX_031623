@@ -40,7 +40,7 @@ public class GUI_Menu_Technical  extends JMenuBar implements GUI_Settings_Variab
         jmiAddDataManually.setMnemonic('M');
         jmiAddDataManually.addActionListener(a);
         jmAction.add(jmiAddDataManually);
-        JMenuItem jmiParseOFX = GUI_ElementCreator.newJMenuItem("Parse OFX File");
+        JMenuItem jmiParseOFX = GUI_ElementCreator.newJMenuItem("Import Account Activity");
         jmiParseOFX.setMnemonic('P');
         jmiParseOFX.addActionListener(a);
         jmAction.add(jmiParseOFX);
