@@ -30,6 +30,8 @@ public class PEC {
 	// the parsing or manual entries can start anytime after that initial date
 	private Calendar dbBeginDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
 	private Calendar dbEndDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+	private String[] allBanks;
+	private String[] allAccounts;
 	// array of booleans to remember if a particular column is sorted
 	// in a descending (or ascending) direction
 	private boolean[] descColumn = { true, true, true, true, true, true };
@@ -285,17 +287,36 @@ public class PEC {
 
 	public Result downloadDropDownMenuEntries() {
 		Result output = new Result();
-		// code for downloading 3 lists from the database: all account nicks (unique),
-		// all bank names (unique), and all category names (unique; best make a table of categories,
-		// which can be encrypted).
+		// code for downloading table accounts from the database: all account nicks (unique),
+		// all account numbers (unique, decrypted), all bank names (unique). Also all
+		// category names (unique; best make a table of categories, which can be encrypted).
+		//
+		// int accountCount = <number of lines of the account list in database>;
+		// int bankCount = <number of banks in the account list in database>;
+		int accountCount = 0;
+		int bankCount = 0;
+		allAccounts = new String[accountCount];
+		for (int i = 0; i < accountCount; i++) {
+			String accountDescription = "";
+			// accountDescription= <account nick> + " …" + <last 4 digits of account number> +
+			//					  " (" + <bank name> + ")";
+			allAccounts[i] = accountDescription;
+		}
+		allBanks = new String[bankCount];
+		for (int i = 0; i < bankCount; i++) {
+			allBanks[i] = ""; // allBanks[i] = <bank name>;
+		}
 		String[] bankTestingArr = new String[]{"Wells Fargo", "US Bank", "Bank Of America"};
-		String[] accntNicksTestingArr = new String[]{ "", "Work Accnt","Family Use Accnt","Secret Saving Accnt"};
-		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun"};
+		String[] accntNicksTestingArr = new String[]{ "", "Work Accnt …5147 (Wells Fargo)",
+				"Family Use Accnt …1440 (US Bank)","Secret Saving Accnt …4777 (Bank Of America)"};
+		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun", "<OTHER>"};
 		output.setBankList(bankTestingArr);
 		output.setNickList(accntNicksTestingArr);
 		output.setCategoryList(trnsCategoriesTestingArr);
 		return output;
 	}
+
+
 
 	/*
 	public static void main(String[] args) {
