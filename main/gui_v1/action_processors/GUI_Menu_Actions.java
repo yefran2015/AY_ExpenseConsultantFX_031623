@@ -33,7 +33,7 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 		}else if (e.getActionCommand().compareToIgnoreCase("Manual Entry")==0) {
 			ac.doManualEntryProcessing();
 
-		}else if (e.getActionCommand().compareToIgnoreCase("Parse OFX File")==0) {
+		}else if (e.getActionCommand().compareToIgnoreCase("Import Account Activity")==0) {
 			ac.doParsOFXFileProcessing();
 		}else if (e.getActionCommand().compareToIgnoreCase("Get Advise")==0) {
 			ac.doAdvisingProcessing();
@@ -68,7 +68,7 @@ public class GUI_Menu_Actions extends MenuActionProgrammableHandle implements Ac
 			decreaseAllElementsFont();
 		}else if (e.getActionCommand().compareToIgnoreCase("Manual Entry")==0) {
 			JOptionPane.showMessageDialog(null, "Manual Entry Menu","About", JOptionPane.INFORMATION_MESSAGE);
-		}else if (e.getActionCommand().compareToIgnoreCase("Parse OFX File")==0) {
+		}else if (e.getActionCommand().compareToIgnoreCase("Import Account Activity")==0) {
 			ac.doParsOFXFileProcessing();
 		}else if (e.getActionCommand().compareToIgnoreCase("Get Advise")==0) {
 			JOptionPane.showMessageDialog(null, "Get Advise Menu","About", JOptionPane.INFORMATION_MESSAGE);

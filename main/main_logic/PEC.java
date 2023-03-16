@@ -10,6 +10,7 @@ import parsers.OFXParser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.ListIterator;
 
 import static main_logic.Result.Code.*;
@@ -160,6 +161,13 @@ public class PEC {
 
 	public void setActiveAccount(String activeAccount) {
 		this.activeAccount = activeAccount;
+	}
+
+	public static boolean isTextInList(String text, LinkedList<String> list) {
+		for (String item : list) {
+			if (item.compareToIgnoreCase(text)==0) return true;
+		}
+		return false;
 	}
 
 	/**
