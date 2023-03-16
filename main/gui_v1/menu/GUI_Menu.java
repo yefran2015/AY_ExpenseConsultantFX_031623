@@ -59,7 +59,7 @@ public class GUI_Menu extends JMenuBar implements GUI_Settings_Variables{
 		jmiHowStart.addActionListener(a);
 		jmVMenu.add(jmiHowStart);
 
-		JMenuItem jmiParseOFX = GUI_ElementCreator.newJMenuItem("Import Account Activity");
+		JMenuItem jmiParseOFX = GUI_ElementCreator.newJMenuItem("Parse OFX File");
 		jmiParseOFX.setMnemonic('P');
 		jmiParseOFX.addActionListener(a);
 		jmVMenu.add(jmiParseOFX);
