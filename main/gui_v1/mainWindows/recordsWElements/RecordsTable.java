@@ -21,13 +21,13 @@ public class RecordsTable  extends JPanel{
     private static String[] columnNames = { "Date", "Ref", "Name", "Memo", "Amount", "Category"};
     //    private static String[][] testData = {};
     private static DefaultTableModel m;
-    private static String[][] testData = {{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
-            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
-            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"} ,
-            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
-            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
-            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
-            {"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"}};
+    private static String[][] testData = {{"", "", "", "", "", ""},
+            {"", "", "", "", "", ""},
+            {"", "", "Start By Choosing   Menu", "--> How To Start", "", ""},
+            {"", "", "", "", "", ""},
+            {"", "", "", "", "", ""},
+            {"", "", "", "", "", ""},
+            {"", "", "", "", "", ""}};
     public RecordsTable() {
         setLayout(new BorderLayout());
         createTableWithCustomSorting();

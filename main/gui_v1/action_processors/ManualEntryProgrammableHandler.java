@@ -52,6 +52,7 @@ public class ManualEntryProgrammableHandler{
     private void transactionManualEntryProcessing(){
         Request request = Request.instance();
         Result result = new Result();
+        boolean fail = false;
         for(String[] singleUserTransManuallyEntered: manualEntriesList){
             request.reset();
             request.setAccountNick(singleUserTransManuallyEntered[0]);
@@ -65,7 +66,7 @@ public class ManualEntryProgrammableHandler{
                 request.setTAmount(0.0);
             }
             request.setTCat(singleUserTransManuallyEntered[6]);
-            PEC.instance().processSingleManualEntry(request);
+            if (!PEC.instance().processSingleManualEntry(request)) fail = true;
         }
         ListIterator<Result> it = PEC.instance().returnRListIterator();
         RecordsTable.clearTable();
@@ -75,6 +76,10 @@ public class ManualEntryProgrammableHandler{
                     result.getTRef(), result.getTDesc(),
                     result.getTMemo(), result.getTAmount(), result.getTCat());
         }
+        if (fail) JOptionPane.showMessageDialog(null,
+                "Your Manual Additions contained an\n" +
+                        "entry/entries that could be added.",
+                "Error", JOptionPane.INFORMATION_MESSAGE);
         GUI_RecordsWindow.getInstance().showRecordsWindow();
     }
 

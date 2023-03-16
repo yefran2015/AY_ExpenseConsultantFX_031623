@@ -15,7 +15,9 @@ public class DataTransfer {
 	// parse OFX file fields
 	private String fileWithPath;
 	private String accountNick;
-	private String[] nickList;
+	private String accountNumber;
+	private String bankName;
+	private String[] acctList;
 	private String[] bankList;
 	private String[] categoryList;
 
@@ -39,7 +41,9 @@ public class DataTransfer {
 		tCat = "";
 		fileWithPath = "";
 		accountNick = "";
-		nickList = new String[0];
+		accountNumber = "";
+		bankName = "";
+		acctList = new String[0];
 		bankList = new String[0];
 		categoryList = new String[0];
 		// ...
@@ -105,6 +109,14 @@ public class DataTransfer {
 
 	public void setAccountNick(String accountNick) { this.accountNick = accountNick; }
 
+	public String getAccountNumber() { return accountNumber; }
+
+	public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
+
+	public String getBankName() { return bankName; }
+
+	public void setBankName(String bankName) { this.bankName = bankName; }
+
 	// more getters and setters: ...
 
 	public void setTFields(Transaction transaction) {
@@ -118,13 +130,11 @@ public class DataTransfer {
 		this.tCat = transaction.getCategory();
 	}
 
-	public String[] getNickList() {
-		return nickList;
+	public String[] getAcctList() {
+		return acctList;
 	}
 
-	public void setNickList(String[] nickList) {
-		this.nickList = nickList;
-	}
+	public void setAcctList(String[] acctList) { this.acctList = acctList; }
 
 	public String[] getBankList() {
 		return bankList;

@@ -43,8 +43,8 @@ public class MenuActionProgrammableHandle {
             request.setFileWithPath(chosenFile.getAbsolutePath());
             //For limiting the time window for parsed Transactions.
             //It should be set to: beginning date of database - ending date of database
-            request.setFrom(PEC.instance().getDbBeginDate());
-            request.setTo(PEC.instance().getDbEndDate());
+            request.setFrom(PEC.instance().getAcctBeginDate(PEC.instance().getActiveAccount()));
+            request.setTo(PEC.instance().getAcctEndDate(PEC.instance().getActiveAccount()));
             // technically, we don't want more than 3 months of Transactions:
             // <beginning date>.add(Calendar.MONTH, 3);
             it = PEC.instance().parseOFX(request);
