@@ -323,11 +323,14 @@ public class PEC {
 		return rList.listIterator();
 	}
 
+
+	/*
 	/**
 	 * Fetches the Transaction list, sorts it by the active column criterion
 	 * and distinguishes whether the data are in descending or ascending order.
 	 * @return the Result object list with all Transaction fields filled out
 	 */
+	/*
 	private ListIterator<Result> getNewView() {
 		ListIterator<Transaction> it = tList.sort(sortedColumn);
 		ArrayList<Result> resIt = new ArrayList<Result>();
@@ -352,41 +355,9 @@ public class PEC {
 	 * Switches the view between descending and ascending order.
 	 * @return new IteratorList to view
 	 */
+	/*
 	public ListIterator<Result> sortingOrientationSwitched() {
 		descColumn[sortedColumn] = !descColumn[sortedColumn];
-		return getNewView();
-	}
-
-	/*
-	/**
-	 * Switches between the active columns and prepares a newly sorted view.
-	 * @param request Request object preloaded with the button (column header)
-	 *                pressed
-	 * @return new IteratorList to view
-	 */
-	/*
-	public ListIterator<Result> sortedColumnSwitched(Request request) {
-		switch (request.getButton()) {
-			case DATE:
-				sortedColumn = Transaction.POSTED_DATE;
-				break;
-			case REF:
-				sortedColumn = Transaction.REF_NUMBER;
-				break;
-			case NAME:
-				sortedColumn = Transaction.DESCRIPTION;
-				break;
-			case MEMO:
-				sortedColumn = Transaction.MEMO;
-				break;
-			case AMOUNT:
-				sortedColumn = Transaction.AMOUNT;
-				break;
-			case CAT:
-				sortedColumn = Transaction.CATEGORY;
-				break;
-			default: ;
-		}
 		return getNewView();
 	}
 	*/
@@ -459,11 +430,61 @@ public class PEC {
 	}
 
 	public ListIterator<Result> initialDBaseDownload() {
-		// set activeAccount = ...;
 		// for each account fetch begin date and end date and store in the
 		// arrays acctBeginDate and acctEndDate, in the order of accounts
+
+		// fetch the user's first account's last 3-month-block
+		// set activeAccount = ...;
+
 		return returnRListIterator();
 	}
+
+	public void uploadCurrentList() {
+		// if there's no record in database and the current list is smaller than 3 months,
+		// upload the current list, its start date, end date, check its categories against
+		// their list and update it, banks, account nicks, and account numbers
+
+		// if there's no record in database and the current list is longer than 3 months,
+		// SPLIT THE LIST, upload first 3 months + everything, keep going, 3-month increments
+		// until the whole list is uploaded, keep the last portion active
+
+		// if there IS record in database and the current list is goes BEFORE the record, download
+		// the first record below the current list, count backwards 3 months, SPLIT and upload INSTEAD
+		// the first record, keep splitting and uploading BEFORE the first record until done. Each
+		// time you upload do the begin-end date check, category check, bank, nick, and acct number check
+
+		// if there IS record in database and the current list is goes AFTER the record, download
+		// the last record above the current list, count onwards 3 months, SPLIT and upload INSTEAD
+		// the last record, keep splitting and uploading AFTER the last record until done. Each
+		// time you upload do the begin-end date check, category check, bank, nick, and acct number check
+	}
+
+	public ListIterator<Result> goFirst() {
+		// upload the current list
+		// fetch the first 3-month block from user's database and download it to tList
+		return returnRListIterator();
+	}
+
+	public ListIterator<Result> goPrevious() {
+		// upload the current list
+		// use tList.getStartDate() to figure out previous transaction_date,
+		// fetch that block from user's database and download it to tList
+		return returnRListIterator();
+	}
+
+	public ListIterator<Result> goNext() {
+		// upload the current list
+		// use tList.getStartDate() to figure out next transaction_date,
+		// fetch that block from user's database and download it to tList
+		return returnRListIterator();
+	}
+
+	public ListIterator<Result> goLast() {
+		// upload the current list
+		// fetch the last 3-month block from user's database and download it to tList
+		return returnRListIterator();
+	}
+
 
 	/*
 	public static void main(String[] args) {
