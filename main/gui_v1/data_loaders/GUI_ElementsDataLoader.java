@@ -1,7 +1,5 @@
 package gui_v1.data_loaders;
 
-import main_logic.PEC;
-import main_logic.Result;
 
 public class GUI_ElementsDataLoader {
     private static GUI_ElementsDataLoader instance = null;
