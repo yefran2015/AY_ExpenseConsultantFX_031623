@@ -50,14 +50,13 @@ public class GUI_ManualEntryTemporaialHolder implements GUI_Routines {
             return false;
         }
         itemToCheck = trimAllStr(itemToCheck);
-        boolean check = true;
+        boolean check = false;
         for(String[] singleItm: accounts){
             if(singleItm[0].compareToIgnoreCase(itemToCheck[0])==0){
-                check = true;
+                check = false;
                 for(int i=0; i< singleItm.length; i++){
-                    //System.out.println(singleItm[i]+" ? "+itemToCheck[i]+" --> "+ ( singleItm[i].compareToIgnoreCase(itemToCheck[i])==0));
                     if(singleItm[i].compareToIgnoreCase(itemToCheck[i])!=0){
-                        check = false;
+                        check = true;
                     }
                 }
                 if(check){
