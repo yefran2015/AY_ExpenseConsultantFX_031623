@@ -25,13 +25,15 @@ public class PEC {
 	// (no more than 3 months worth)
 	private TransactionList tList;
 	// these variables contain the date of the first and last transaction
-	// in the whole database, both initialized with STR_DATE_MIN of
-	// TransactionList.java (1900/01/01)--that way, if the database is empty,
-	// the parsing or manual entries can start anytime after that initial date
-	private Calendar dbBeginDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
-	private Calendar dbEndDate = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
-	private String[] allBanks;
-	private String[] allAccounts;
+	// in each account of the authenticated user in the database, both initialized
+	// with STR_DATE_MIN of TransactionList.java (1900/01/01)--that way, if the
+	// database is empty, the parsing or manual entries can start anytime after that
+	// initial date
+	private Calendar[] acctBeginDate = new Calendar[0];
+	private Calendar[] acctEndDate = new Calendar[0];
+	private String[] allBanks = {};
+	private String[] allAccounts = {};
+	private String activeAccount;
 	// array of booleans to remember if a particular column is sorted
 	// in a descending (or ascending) direction
 	private boolean[] descColumn = { true, true, true, true, true, true };
@@ -100,20 +102,91 @@ public class PEC {
 		sortedColumn = Transaction.POSTED_DATE;
 	}
 
-	public Calendar getDbBeginDate() {
-		return dbBeginDate;
+	public Calendar getAcctBeginDate(int position) {
+		if (position>=acctBeginDate.length || position<0)
+			return Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+		return acctBeginDate[position];
 	}
 
-	public void setDbBeginDate(Calendar dbBeginDate) {
-		this.dbBeginDate = dbBeginDate;
+	public Calendar getAcctBeginDate(String account) {
+		int count = 0;
+		for (count = 0; count < allAccounts.length; count++) {
+			if (allAccounts[count].startsWith(account)) return acctBeginDate[count];
+		}
+		return Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
 	}
 
-	public Calendar getDbEndDate() {
-		return dbEndDate;
+	public void setAcctBeginDate(int position, Calendar acctBegin) {
+		if (position>=0 && position<acctBeginDate.length)
+			acctBeginDate[position] = acctBegin;
 	}
 
-	public void setDbEndDate(Calendar dbEndDate) {
-		this.dbEndDate = dbEndDate;
+	public void setAcctBeginDate(String account, Calendar acctBegin) {
+		int count = 0;
+		for (count = 0; count < allAccounts.length; count++) {
+			if (allAccounts[count].startsWith(account)) acctBeginDate[count] = acctBegin;
+		}
+	}
+
+	public Calendar getAcctEndDate(int position) {
+		if (position>=acctEndDate.length || position<0)
+			return Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+		return acctEndDate[position];
+	}
+
+	public Calendar getAcctEndDate(String account) {
+		int count = 0;
+		for (count = 0; count < allAccounts.length; count++) {
+			if (allAccounts[count].startsWith(account)) return acctEndDate[count];
+		}
+		return Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+	}
+
+	public void setAcctEndDate(int position, Calendar acctEnd) {
+		if (position>=0 && position<acctEndDate.length)
+			acctEndDate[position] = acctEnd;
+	}
+
+	public void setAcctEndDate(String account, Calendar acctEnd) {
+		int count = 0;
+		for (count = 0; count < allAccounts.length; count++) {
+			if (allAccounts[count].startsWith(account)) acctEndDate[count] = acctEnd;
+		}
+	}
+
+	public String getActiveAccount() {
+		return activeAccount;
+	}
+
+	public void setActiveAccount(String activeAccount) {
+		this.activeAccount = activeAccount;
+	}
+
+	/**
+	 * Returns the account position in the allAccounts array,
+	 * searched either by accountNick (if accountNick!=""), or
+	 * by accountNumber's last four digits (if accountNumber>three digits)
+	 * @param accountNick identifying account nick (or "" for search by number)
+	 * @param accountNumber identifying account number (or "" for search by nick)
+	 * @return position of the account in the array if found, -1 if not found
+	 */
+	private int accountPosition(String accountNick, String accountNumber) {
+		// if the array is empty, return -1 right away
+		if (allAccounts.length < 1) return -1;
+		if (accountNick.length()>0) {
+			int count = 0;
+			for (count = 0; count < allAccounts.length; count++) {
+				if (allAccounts[count].startsWith(accountNick)) return count;
+			}
+		} else if (accountNumber.length()>=4) {
+			int count = 0;
+			accountNumber = accountNumber.substring(accountNumber.length()-4, accountNumber.length());
+			for (count = 0; count < allAccounts.length; count++) {
+				String[] tempStr = allAccounts[count].split(" …");
+				if (tempStr[1].startsWith(accountNumber)) return count;
+			}
+		}
+		return -1;
 	}
 
 	/**
@@ -148,8 +221,37 @@ public class PEC {
 			return rList.listIterator();
 		}
 		//SUCCESS: parsedTList is merged into the beginning or ending of the database
-		mergeNewTList(parsedTlist);
-		return returnRListIterator();
+		String acctNum = OFXParser.getAcctNumber();
+		int acctPos = accountPosition("", acctNum);
+		if (acctPos==-1) {
+			// set up a new account, clear the table; the following is temporary
+			String[] tempAccounts = new String[(allAccounts.length+1)];
+			System.arraycopy(allAccounts, 0, tempAccounts, 0, allAccounts.length);
+			allAccounts = tempAccounts;
+			allAccounts[allAccounts.length-1] = "My "+OFXParser.getAcctType()+" …"+
+					acctNum.substring(acctNum.length()-4, acctNum.length());
+			if (OFXParser.getBankName().length()>0)
+				allAccounts[allAccounts.length-1] += " ("+ OFXParser.getBankName()+")";
+			activeAccount = "My "+OFXParser.getAcctType();
+			Calendar[] tempBegin = new Calendar[acctBeginDate.length+1];
+			Calendar[] tempEnd = new Calendar[acctEndDate.length+1];
+			System.arraycopy(acctBeginDate, 0, tempBegin, 0, acctBeginDate.length);
+			System.arraycopy(acctEndDate, 0, tempEnd, 0, acctEndDate.length);
+			tempBegin[tempBegin.length-1] = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+			tempEnd[tempEnd.length-1] = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+			acctBeginDate = tempBegin;
+			acctEndDate = tempEnd;
+		} else {
+			// if the parsed account is not the active account, fetch it and make it active
+			String[] tempStr = allAccounts[acctPos].split(" …");
+			setActiveAccount(tempStr[0]);
+		}
+		if (mergeNewTList(parsedTlist)) return returnRListIterator();
+		else {
+			result.setCode(NO_ITEMS_TO_READ);
+			rList.add(result);
+			return rList.listIterator();
+		}
 	}
 
 	/**
@@ -158,36 +260,42 @@ public class PEC {
 	 * @return - TRUE if succeeded, FALSE if nothing got merged
 	 */
 	private boolean mergeNewTList(TransactionList list) {
-		Calendar listStart = list.getStartDate();
-		Calendar listEnd = list.getEndDate();
+		boolean change = false;
+		System.out.println("POTENTIALLY ADDING "+list.size()+", active acct: "+activeAccount);
+		for (int i = 0; i < allAccounts.length; i++) { System.out.println(allAccounts[i]); }
+		System.out.println("\n");
+		for (int i = 0; i < acctBeginDate.length; i++) { System.out.println(Transaction.returnYYYYMMDDFromCalendar
+				(acctBeginDate[i])+"-"+Transaction.returnYYYYMMDDFromCalendar(acctEndDate[i])); }
 		TransactionList resultTList = new TransactionList();
-		if (listStart.compareTo(dbBeginDate)<=0) {
+		if (list.getStartDate().compareTo(getAcctBeginDate(activeAccount))<=0) {
 			// fetch the first 3-or-less-month chunk of the db and load it in tList
 			int i = 0;
+			for (int j=0;j<tList.size();j++) resultTList.add(tList.get(j));
 			// do this until the end of the parsedTList or beginning of the db
 			while (i< list.size() &&
-					list.get(i).getPostedDate().compareTo(dbBeginDate)<=0) {
-				resultTList.add(list.get(i));
+					list.get(i).getPostedDate().compareTo(getAcctBeginDate(activeAccount))<=0) {
+				if (resultTList.add(list.get(i))) change = true;
 				i++;
 			}
-			for (int j=0;j<tList.size();j++) resultTList.add(tList.get(j));
-			setDbBeginDate(resultTList.getStartDate());
+			setAcctBeginDate(activeAccount, resultTList.getStartDate());
 			tList = resultTList;
-			return true;
-		} else if (listEnd.compareTo(dbEndDate)>=0) {
+			return change;
+		} else if (list.getEndDate().compareTo(getAcctEndDate(activeAccount))>=0) {
 			// fetch the last 3-or-less-month chunk of db and load it in tList
 			for (int i=0;i<tList.size();i++) resultTList.add(tList.get(i));
 			int i = 0;
 			while (i< list.size() &&
-					list.get(i).getPostedDate().compareTo(dbEndDate)<0) i++;
-			for (int j = i; j< list.size(); j++) resultTList.add(list.get(j));
-			setDbEndDate(resultTList.getEndDate());
+					list.get(i).getPostedDate().compareTo(getAcctEndDate(activeAccount))<0) i++;
+			for (int j = i; j< list.size(); j++) {
+				if (resultTList.add(list.get(j))) change = true;
+			}
+			setAcctEndDate(activeAccount, resultTList.getEndDate());
 			// If database is empty, do:
-			if (tList.size()==0) setDbBeginDate(listStart);
+			if (tList.size()==0) setAcctBeginDate(activeAccount, list.getStartDate());
 			tList = resultTList;
-			return true;
+			return change;
 		}
-		return false;
+		return change;
 	}
 
 	/**
@@ -276,6 +384,32 @@ public class PEC {
 	*/
 
 	public boolean processSingleManualEntry(Request request) {
+		int acctPos = accountPosition(request.getAccountNick(), "");
+		if (acctPos==-1) {
+			// set up a new account, clear the table; the following is temporary
+			String[] tempAccounts = new String[(allAccounts.length+1)];
+			System.arraycopy(allAccounts, 0, tempAccounts, 0, allAccounts.length);
+			allAccounts = tempAccounts;
+			String acctNum = request.getAccountNumber();
+			if (acctNum.length()<4) acctNum = "    ";
+			allAccounts[allAccounts.length-1] = request.getAccountNick()+" …"+
+					acctNum.substring(acctNum.length()-4, acctNum.length());
+			if (request.getBankName().length()>0)
+				allAccounts[allAccounts.length-1] += " ("+ request.getBankName()+")";
+			System.out.println("NEW ACCT: "+allAccounts[allAccounts.length-1]);
+			activeAccount = request.getAccountNick();
+			Calendar[] tempBegin = new Calendar[acctBeginDate.length+1];
+			Calendar[] tempEnd = new Calendar[acctEndDate.length+1];
+			System.arraycopy(acctBeginDate, 0, tempBegin, 0, acctBeginDate.length);
+			System.arraycopy(acctEndDate, 0, tempEnd, 0, acctEndDate.length);
+			tempBegin[tempBegin.length-1] = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+			tempEnd[tempEnd.length-1] = Transaction.returnCalendarFromYYYYMMDD(TransactionList.STR_DATE_MIN);
+			acctBeginDate = tempBegin;
+			acctEndDate = tempEnd;
+		} else {
+			// if the added account is not the active account, fetch it and make it active
+			setActiveAccount(request.getAccountNick());
+		}
 		// if a new Category is present in request.tCat at time of syncing local<--->database, it will get
 		// written in Category table.
 		Transaction newT = new Transaction(Transaction.returnCalendarFromYYYYMMDD(request.getTDate()),
@@ -311,12 +445,17 @@ public class PEC {
 				"Family Use Accnt …1440 (US Bank)","Secret Saving Accnt …4777 (Bank Of America)"};
 		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun", "<OTHER>"};
 		output.setBankList(bankTestingArr);
-		output.setNickList(accntNicksTestingArr);
+		output.setAcctList(accntNicksTestingArr);
 		output.setCategoryList(trnsCategoriesTestingArr);
 		return output;
 	}
 
-
+	public ListIterator<Result> initialDBaseDownload() {
+		// set activeAccount = ...;
+		// for each account fetch begin date and end date and store in the
+		// arrays acctBeginDate and acctEndDate, in the order of accounts
+		return returnRListIterator();
+	}
 
 	/*
 	public static void main(String[] args) {
