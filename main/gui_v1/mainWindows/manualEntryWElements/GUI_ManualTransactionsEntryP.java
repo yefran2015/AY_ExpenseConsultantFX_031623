@@ -19,8 +19,6 @@ import java.awt.event.*;
 
 public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings_Variables, ActionListener, FocusListener, WindowStateListener {
     private final static String[] ERRORS_IN_USER_INPUT = null;
-//    private final static int DEFAULT_SELECTED_ITEM = 0;
-//    private static int selectedItem;;
     private final static int INPUT_ELEMENTS_ON_VIEW_COUNTER = GUI_ElementsDataLoader.getMEntHelpMsgs().numOfInputElementsManualEntryHas();
     private int[] listsSelectedItems;
     private JTextField jtfDate;
@@ -126,9 +124,6 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
         jtfAmount.addFocusListener(this);
 
         userInputElementsBox.add(GUI_ElementCreator.newTextLabel("Category:"));
-//        jcmbCategory.removeItem(manyalEntryDefaultJTextFieldText[manyalEntryDefaultJTextFieldText.length - 1]);
-//        jcmbCategory.insertItemAt(manyalEntryDefaultJTextFieldText[manyalEntryDefaultJTextFieldText.length - 1], 0);
-//        jcmbCategory.setSelectedItem(PEC.instance().OTHER);
 
         jcmbCategory.setSelectedIndex(DEFAULT_SELECTED_ITEM);
         jcmbCategory.addActionListener(this);
@@ -159,9 +154,6 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
     }
 
 
-//    public static String getPreviousAcctSelection() {
-//        return previousAcctSelection;
-//    }
 
     public static void setAcctSelection(String selection) {
         jcmbAccount.setSelectedItem(selection);
@@ -171,10 +163,6 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
         jtfOutputDate.setText(jcmbMonths.getSelectedItem() + "/" + jcmbDays.getSelectedItem() + "/" + jcmbYears.getSelectedItem());
     }
 
-
-//    private void o(Object o) {
-//        System.out.println(o + "");
-//    }
 
     private void replaceItemsAtJCMBoWith(JComboBox<String> jcb, String[] items) {
         jcb.removeAllItems();
@@ -322,8 +310,6 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
         setElementsDefaultHelpTexts();
     }
     private void processDoneBtnClick(){
-        //          new ManualEntryProgrammableHandler(accoutn, date, refN,descr, memo, amount,custom_category);
-//          processAnotherClick();
 
         GUI_ManualEntryTemporaialHolder.getInstance().addTempUserManualEntry(getAllInputElementsData());
         new ManualEntryProgrammableHandler(GUI_ManualEntryTemporaialHolder.getInstance().getManuallYEnterredAccounts());
@@ -455,75 +441,3 @@ public class GUI_ManualTransactionsEntryP extends JPanel implements GUI_Settings
     }
 
 }
-
-
-//
-//
-//    private boolean checkInputData(String[] inputData){
-//        boolean[] result = new boolean[INPUT_ELEMENTS_ON_VIEW_COUNTER];
-//        if(inputData.length != INPUT_ELEMENTS_ON_VIEW_COUNTER){
-//            return false;
-//        }
-//
-//        setAllFalse(result);
-//
-//        String account = inputData[0].trim();
-//
-//        String custom_category = inputData[6].trim();
-//        if(account.compareToIgnoreCase(jcmbAccount.getItemAt(DEFAULT_SELECTED_ITEM))==0){
-//            result[0]=false;
-//        }
-//        if(custom_category.compareToIgnoreCase(jcmbCategory.getItemAt(DEFAULT_SELECTED_ITEM))==0){
-//            result[6]=false;
-//        }
-//
-//        return true;
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-//    private String[] getAllInputs() {
-//        String account = (jcmbAccount.getSelectedItem() + "").trim();
-//        String custom_category = (jcmbCategory.getSelectedItem() + "").trim();
-////        boolean err = false;
-////        if (account.compareToIgnoreCase(manyalEntryDefaultJTextFieldText[0]) == 0) {
-////            jcmbAccount.setBorder(new LineBorder(Color.RED, 1));
-////            err = true;
-////
-////        }
-////        if (custom_category.compareToIgnoreCase(manyalEntryDefaultJTextFieldText[manyalEntryDefaultJTextFieldText.length - 1]) == 0) {
-////            jcmbCategory.setBorder(new LineBorder(Color.RED, 1));
-////            err = true;
-////        }
-////        if (err) {
-////            return ERROR_IN_USER_INPUT;
-////        }
-////        String date= jtfOutputDate.getText().trim();
-//        String[] dateArr = jtfOutputDate.getText().split("/");
-//        if (dateArr[0].length() == 1) {
-//            dateArr[0] = "0" + dateArr[0];
-//        }
-//        if (dateArr[1].length() == 1) {
-//            dateArr[1] = "0" + dateArr[1];
-//        }
-//
-//        // String date= dateArr[2]+"/"+dateArr[0]+"/"+dateArr[1];
-//        String date = dateArr[0] + "/" + dateArr[1] + "/" + dateArr[2];
-//
-//        String refN = jtfRefNum.getText().trim();
-//        String descr = jtfTransName.getText().trim();
-//        String memo = jtfMemo.getText().trim();
-//        String amount = jtfAmount.getText().trim();
-////        GUI_ManualEntryTemporaialHolder.addTempUserManualEntry(account, date, refN,descr, memo, amount,custom_category);
-//
-//        return new String[]{account, date, refN, descr, memo, amount, custom_category};
-//    }

@@ -32,10 +32,6 @@ public class GUI_MainBoxP extends JPanel implements GUI_Settings_Variables{
 
 	private JPanel jpUserInputBox3P = new JPanel();
 
-
-//	private JLabel jlblHeadTitle = new JLabel(strHeadTitle_GUIMainWindow, JLabel.CENTER);
-//	private JLabel jlblSubTitle = new JLabel("Sub Title", JLabel.CENTER);
-//	private JLabel jlblUserInputTitle = new JLabel("Action Input Title", JLabel.CENTER);
 	
 	private JLabel jlblHeadTitle = GUI_ElementCreator.newHead(strHeadTitle_GUIMainWindow);
 	private JLabel jlblSubTitle = GUI_ElementCreator.newSubHead(strDefaultString);
@@ -60,7 +56,6 @@ public class GUI_MainBoxP extends JPanel implements GUI_Settings_Variables{
 	private void setVisualSettings() {
 		this.setBackground(allGuiBoxesBackgroundCColor);
 		this.setForeground(allGuiBoxesForegroundCColor);
-//		jlblHeadTitle.setFont(GUI_ElementCreator.newFont(jlblHeadTitle.getFont(), txtSize_Heading));
 	}
 
 	public GUI_MainBoxP() {

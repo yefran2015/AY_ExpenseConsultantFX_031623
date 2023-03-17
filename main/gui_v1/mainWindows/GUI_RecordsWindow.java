@@ -17,7 +17,7 @@ public class GUI_RecordsWindow extends JFrame implements GUI_MainWidowsSharedBeh
 	private static GUI_RecordsWindow instance = null;
 
 	private GUI_RecordsWindow() {
-		GUI_ElementsDataLoader.getInstance();
+		GUI_ElementsDataLoader.loadDataInitializeGUI();
 //		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //		setBackground(guiFramesBackgroundColor);
 //		setForeground(guiFramesForegroundColor);

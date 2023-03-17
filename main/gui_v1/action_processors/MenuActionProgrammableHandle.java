@@ -43,8 +43,8 @@ public class MenuActionProgrammableHandle {
             request.setFileWithPath(chosenFile.getAbsolutePath());
             //For limiting the time window for parsed Transactions.
             //It should be set to: beginning date of database - ending date of database
-            request.setFrom(PEC.instance().getAcctBeginDate(PEC.instance().getActiveAccount()));
-            request.setTo(PEC.instance().getAcctEndDate(PEC.instance().getActiveAccount()));
+//            request.setFrom(PEC.instance().setAcctBeginDate({PEC.instance().getActiveAccount()s);
+//            request.setTo(PEC.instance().getDbEndDate());
             // technically, we don't want more than 3 months of Transactions:
             // <beginning date>.add(Calendar.MONTH, 3);
             it = PEC.instance().parseOFX(request);
@@ -108,74 +108,3 @@ public class MenuActionProgrammableHandle {
 
 }
 
-
-
-
-
-        /*
-            request.setButton(Request.Button.NAME); // sorted by different attribute (NAME)
-            it = PEC.instance().sortedColumnSwitched(request);
-            */
-
-    /*
-    void doParsOFXFileProcessing() {
-
-        GUI_RecordsFrame records = new GUI_RecordsFrame();
-        File f = null;
-//         GUI_FileChooser.getFileOrDirectory(f);
-        File chosenFile= GUI_FileChooser.getFileOrDirectory(f);
-        if(chosenFile == null ){
-            JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        TransactionList t;
-        instance();
-        try {
-            t = OFXParser.ofxParser(chosenFile);
-
-            ListIterator<Transaction> i = t.listIterator(); // t.sort(Transaction.DESCRIPTION);
-            int count  = 0;
-            while (i.hasNext()) {
-                //RecordsTable.addRowToTable(i.next());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        records.setVisible(true);
-
-    }
-*/
-
-
-//
-//    void doParsOFXFileProcessing(){
-//        File chosenFile= GUI_FileChooser.getFileOrDirectory();
-//
-//        if(chosenFile == null ){
-//            JOptionPane.showMessageDialog(null, "File not Selected","Info", JOptionPane.ERROR_MESSAGE);
-//        } else{
-//
-//            out( "OFX Chosen File for pParse is" + chosenFile.getName() );
-//
-//            Request request = Request.instance();
-//            ListIterator<Transaction> it;
-//            request.setFileWithPath(chosenFile.getAbsolutePath());
-//            it = PEC.instance().parseOFX(request);
-////            ListIterator<Transaction> i = t.listIterator();
-//            while (it.hasNext()) {
-//                RecordsTable.addRowToTable((Transaction)(it.next()));
-//            }
-//        }
-//    }
-//
-//    TransactionList t;
-//    //        File file = new File("/home/");
-//    instance();
-//
-//    File file = new File("CreditCardSAMPLE.qfx");
-//    t = OFXParser.ofxParser(file);
-//            ListIterator<Transaction> i = t.listIterator(); // t.sort(Transaction.DESCRIPTION);
-//        int count  = 0;
-//        while (i.hasNext()) {
-////            System.out.println(i.next());
-//        addRowToTable(i.next(),m);
