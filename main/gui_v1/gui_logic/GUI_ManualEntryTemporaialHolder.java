@@ -2,8 +2,6 @@ package gui_v1.gui_logic;
 import gui_v1.help_utils.GUI_Routines;
 import java.util.*;
 
-import static main_logic.PEC.isTextInList;
-
 public class GUI_ManualEntryTemporaialHolder implements GUI_Routines {
     private static GUI_ManualEntryTemporaialHolder instance = null;
     public enum ENTRY_PREVIW {NO_CYCLES};
@@ -87,7 +85,7 @@ public class GUI_ManualEntryTemporaialHolder implements GUI_Routines {
                         check = true;
                     }
                 }
-                if(check){
+                if(!check){
                     return true;
                 }
             }

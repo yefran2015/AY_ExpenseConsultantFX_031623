@@ -48,15 +48,15 @@ public interface GUI_Settings_Variables extends GUI_Constants, GUI_FontSizeAdjus
 	String strDefaultString  = "SPAM Team \nSam, Pavel, Andrey, and not Musab";
 	String strDefaultActionString  = "Action Title NOT SET";
 
-	String strDefaultSubTitleString  = "";
+	String strDefaultSubTitleString  = "This Sub Title NOT-SET";
 
 
 	String strAppOfficialName = "Personal Expense Consultant by SPAM Team";
 	String strCopyRigts = "Copyright \u00a9 SPAM Team 2023";
-	String strAboutApp = "This App is Capstone Project of SPAM Team";
+	String strAboutApp = "This App is Capstone project of SPAM Team";
 
 	String strHeadTitle_GUIMainWindow = "Welcome to Personal Expenses Manager ";
-	String strHeadTitle_GUIRecordsWindow = "Personal Expense Consultant (P.E.C.)";
+	String strHeadTitle_GUIRecordsWindow = "Records Handler Personal Expenses Manager ";
 
 
 

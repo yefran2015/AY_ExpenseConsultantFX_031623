@@ -15,12 +15,6 @@ public class GUI_InsertDataP extends JPanel implements GUI_Settings_Variables{
 
 	private static final long serialVersionUID = 1L;
 
-//	private JRadioButton jrbtNewBank = new JRadioButton("New Bank");
-//	private JRadioButton jrbtAccount = new JRadioButton("Account");
-//	private JRadioButton jrbtRecord = new JRadioButton("Transaction Record");
-//	private JRadioButton jrbtRecurrentExpense = new JRadioButton("Recurrent Expense");
-//	private JRadioButton jrbtRecurrentProfit = new JRadioButton("Recurrent Profit");
-
 
 	private JRadioButton jrbtNewBank =GUI_ElementCreator.newRadioButton("New Bank");
 	private JRadioButton jrbtAccount = GUI_ElementCreator.newRadioButton("Account");
@@ -43,7 +37,6 @@ public class GUI_InsertDataP extends JPanel implements GUI_Settings_Variables{
 		actionRBTNsGroup.add(jrbtRecurrentExpense);
 		actionRBTNsGroup.add(jrbtRecurrentProfit);
 
-//		add(new JLabel("Select What you Want to Insert"));
 		add( GUI_ElementCreator.newTitle("Select What you Want to Insert"));
 		add(jrbtNewBank);
 		add(jrbtAccount);
