@@ -19,13 +19,13 @@ public class GUI_RecordsBoxP extends JPanel implements GUI_Settings_Variables{
 	private JLabel jlblRecordsSubTitle =  GUI_ElementCreator.newSubHead(strDefaultSubTitleString);
 	
 	private static String[] columnNames = {"Date", "Ref", "Name", "Memo", "Amount", "OTHER"};
-	private static String[][] testData = {{"", "", "", "", "", ""},
-			{"", "", "", "", "", ""},
-			{"", "", "Start By Choosing   Menu", "--> How To Start", "", ""},
-			{"", "", "", "", "", ""},
-			{"", "", "", "", "", ""},
-			{"", "", "", "", "", ""},
-			{"", "", "", "", "", ""}};
+	private static String[][] testData = {{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+			{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+			{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"} ,
+			{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+			{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+			{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"},
+			{"Rec Num", "Explain", "Bank", "Acct #", "Amount", "OTHER"}};
 //	private static final JTable jtRecordsTable = GUI_ElementCreator.newJTable(testData, columnNames);
 ////	private static JTable jtRecordsTable = GUI_ElementCreator.newJTable();
 //	public static JTable getTableView(){

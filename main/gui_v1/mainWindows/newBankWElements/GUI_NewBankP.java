@@ -3,8 +3,10 @@ import gui_v1.action_processors.NewBankProgrammableHandler;
 import gui_v1.automation.GUI_ElementCreator;
 import gui_v1.data_loaders.GUI_ElementsDataLoader;
 import gui_v1.data_loaders.GUI_ElementsOptionLists;
+import gui_v1.gui_logic.GUI_ManualEntryTemporaialHolder;
 import gui_v1.mainWindows.GUI_NewAccountWindow;
 import gui_v1.mainWindows.GUI_NewBankWindow;
+import gui_v1.mainWindows.GUI_ShowingPupUpMsgAAbility;
 import gui_v1.settings.GUI_Settings_Variables;
 
 import javax.swing.*;
@@ -14,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class GUI_NewBankP extends JPanel implements GUI_Settings_Variables, ActionListener {
+public class GUI_NewBankP extends JPanel implements GUI_Settings_Variables, ActionListener, GUI_ShowingPupUpMsgAAbility {
     private JTextField jtfBankName;
     private JButton jbtnAdd;
     private void init(){
@@ -23,7 +25,6 @@ public class GUI_NewBankP extends JPanel implements GUI_Settings_Variables, Acti
 
         jbtnAdd.addActionListener(this);
     }
-
     public GUI_NewBankP(){
 
         init();
@@ -53,43 +54,53 @@ public class GUI_NewBankP extends JPanel implements GUI_Settings_Variables, Acti
             }
         });
     }
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==jbtnAdd){
             processAddBankBtnClick();
         }
     }
+    AbstractAction a = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            GUI_NewBankWindow.getInstance().disposeNewBankWindow();
+            GUI_NewAccountWindow.getInstance().showNewAccntWindow();
+        }
+    };
 
-    private boolean getConfirmationFromUserAboutBankNameEmpty(){
-        int answr = JOptionPane.showOptionDialog(null, "Bank Name Not Entered, Do you want close this window, and return to Adding Accounts?, ", "Bank name is not Entered.",
-                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, JOptionPane.NO_OPTION);
-        return answr == JOptionPane.YES_OPTION;
-    }
     private void processAddBankBtnClick() {
         String bankName = jtfBankName.getText().trim() ;
-        if(bankName.compareToIgnoreCase("")==0 ||
-                bankName.compareToIgnoreCase(GUI_ElementsDataLoader.getNBHelpMsgs().newBankNameInputHelpMsg())==0){
-                if(getConfirmationFromUserAboutBankNameEmpty()){
-                    GUI_NewBankWindow.getInstance().disposeNewBankWindow();
-                    GUI_NewAccountWindow.getInstance().showNewAccntWindow();
-                }
-        }else{
-            if(GUI_ElementsOptionLists.getInstance().isBankInList(bankName)){
-                showBannkExistMessage();
-            }else{
-//              GUI_NewAccountP.addAccountNickToComboBox( jtfBankName.getText().trim() );
-                GUI_NewBankWindow.getInstance().disposeNewBankWindow();
-                GUI_NewAccountWindow.getInstance().showNewAccntWindow();
-                new NewBankProgrammableHandler(bankName);
-            }
+        if( bankName.compareToIgnoreCase(GUI_ElementsDataLoader.getNBHelpMsgs().newBankNameInputHelpMsg())==0 || bankName.trim().compareToIgnoreCase("")==0 ) {
+            showBankNotEnteredMsg();
+        }else if(GUI_ManualEntryTemporaialHolder.getInstance().isBankInUnsavedList(bankName)){
+            showAlreadyEnteredBankMsg();
+        }else  if(GUI_ElementsOptionLists.getInstance().isBankExist(bankName)){
+            showBankExistsMMsg();
+        }else {
+            new NewBankProgrammableHandler(bankName);
+             showSuccessMsgStoreBankAndReturnToAddAcctWindow();
+
         }
+
+
     }
 
-    private void showBannkExistMessage() {
-        JOptionPane.showMessageDialog(null, "This bank is already in your record", "Bank Exists", JOptionPane.INFORMATION_MESSAGE);
+    private void showSuccessMsgStoreBankAndReturnToAddAcctWindow() {
+
+        showConfirmationMessge("You Successfully Added new Bank To Your Records",a);
     }
+
+
+    private void  showBankNotEnteredMsg() {
+        showErrMessageAndAskWhaatToDo("Bank Name Not Entered, Do you want close this window, and return to Adding Accounts", "Bank Adding Error", a) ;
+    }
+    private void showBankExistsMMsg() {
+        showErrMessageAndAskWhaatToDo("This bank is already in your record. Do you want close this window, and return to Adding Accounts",  "Bank Adding Error", a);
+    }
+    private void showAlreadyEnteredBankMsg() {
+        showErrMessageAndAskWhaatToDo("This Bank Already Been Entered and will be saved.Do you want close this window, and return to Adding Accounts",  "Bank Adding Error", a);
+    }
+
 
 
     @Override

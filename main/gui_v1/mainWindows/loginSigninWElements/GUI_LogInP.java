@@ -93,8 +93,6 @@ public class GUI_LogInP extends JPanel implements GUI_LoginSignUpWiindows_Settin
 
                 try {
                     if (resultSet.getInt(1) == 1) {
-//                       GUI_MainWindow mg= new GUI_MainWindow();
-//                       mg.setVisible(true);
                         GUI_MainWindow.getInstance().showMainWindow();
                     } else {
                       JOptionPane.showMessageDialog(null,"Wrong Email or Password!");
@@ -105,14 +103,6 @@ public class GUI_LogInP extends JPanel implements GUI_LoginSignUpWiindows_Settin
             }
         }
 
-
-
-
-
-
-//            JOptionPane.showMessageDialog(null, userInfo,"Confirm", JOptionPane.INFORMATION_MESSAGE);
-//            loginFrame.setVisible(false);
-            //new MainGUIWindow();
 
         }
     }

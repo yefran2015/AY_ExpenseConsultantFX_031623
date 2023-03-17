@@ -71,7 +71,6 @@ public class GUI_NewAccountP extends JPanel implements GUI_Settings_Variables, A
     private void processBankSelection(){
         selectedItem = jcmbBank.getSelectedIndex();
 
-        // if(jcmbBank.getSelectedItem().toString().trim().compareToIgnoreCase(bankList[bankList.length-1])==0){
         if((jcmbBank.getSelectedItem()+"").trim().compareToIgnoreCase(PEC.NEW_BANK)==0){
             JOptionPane.showOptionDialog(null, "New Bank Window will be created soon", "New Bank",
                     JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.YES_OPTION);
@@ -100,7 +99,6 @@ public class GUI_NewAccountP extends JPanel implements GUI_Settings_Variables, A
             GUI_NewAccountWindow.getInstance().hideNewAccntWindow();
             GUI_ManualEntryWindow.getInstance().showManualEntryWindow();
         } else {
-            //     GUI_ManualTransactionsEntryP.setAcctSelection(GUI_ManualTransactionsEntryP.getPreviousAcctSelection());
         }
     }
     public static void addAccountNickToComboBox(String acctNick) {
