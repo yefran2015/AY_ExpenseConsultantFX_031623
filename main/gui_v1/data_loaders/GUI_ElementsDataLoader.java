@@ -59,7 +59,7 @@ public class GUI_ElementsDataLoader implements GUI_Routines {
         cSelectActionOption = PEC.OTHER;
         String[] tmp = PEC.instance().downloadDropDownMenuEntries().getBankList();
         availableBanks= sanitizeStrArr(tmp);
-        tmp = PEC.instance().downloadDropDownMenuEntries().getNickList();
+        tmp = PEC.instance().downloadDropDownMenuEntries().getAcctList();
         availableNicks= sanitizeStrArr(tmp);
         tmp = PEC.instance().downloadDropDownMenuEntries().getCategoryList();
         availableCategories= sanitizeStrArr(tmp);
