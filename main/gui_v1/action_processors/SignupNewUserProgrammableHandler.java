@@ -1,7 +1,6 @@
 package gui_v1.action_processors;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 public class SignupNewUserProgrammableHandler  {
     private String email;

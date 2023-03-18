@@ -1,12 +1,13 @@
 package gui_v1.data_loaders;
-import main_logic.PEC;
-import java.util.Collections;
+import gui_v1.help_utils.GUI_Routines;
+
 import java.util.LinkedList;
+import java.util.MissingResourceException;
 
 /**
  *  This class to handle all Categories Lists of GUI RUN TIme.
  */
-public class GUI_ElementsOptionLists {
+public class GUI_ElementsOptionLists implements GUI_Routines {
 
     private LinkedList<String> bankList;
     private LinkedList<String> acctNicksList;
@@ -14,44 +15,35 @@ public class GUI_ElementsOptionLists {
 
     private static GUI_ElementsOptionLists instance = null;
 
-    private void initiate(){
-        bankList = new LinkedList<>(Collections.singletonList(PEC.NEW_BANK));
-        acctNicksList = new LinkedList<>(Collections.singletonList(PEC.NEW_ACCOUNT));
-        transactionCategoriesList = new LinkedList<>(Collections.singletonList(PEC.OTHER));
+    private GUI_ElementsOptionLists(String bankActionOption, String acctActionOption, String tranActionOption){
+        bankList = new LinkedList<>();
+        bankList.add(bankActionOption);
+        acctNicksList = new LinkedList<>();
+        acctNicksList.add(acctActionOption);
+        transactionCategoriesList = new LinkedList<>();
+        transactionCategoriesList.add(tranActionOption);
     }
+    public static void setGuiRequiredData(String bankActionOption, String acctActionOption, String tranActionOption){
+        if(instance == null){
+            instance = new GUI_ElementsOptionLists(bankActionOption, acctActionOption, tranActionOption);
+        }
 
-    private GUI_ElementsOptionLists(){
-        initiate();
-        loadTestingData();
-        addBanksToList(GUI_ElementsDataLoader.getBanks().availableBanks());
-        addAccntNicksToList(GUI_ElementsDataLoader.getAcctNicks().availableNicks());
-        addTransactionCategoriessToList(GUI_ElementsDataLoader.getTranCategory().availableCategories());;
     }
     public static GUI_ElementsOptionLists getInstance(){
-        if(instance == null){
-            instance = new GUI_ElementsOptionLists();
-        }
+        if(instance == null)
+            throw new MissingResourceException("","","");
         return instance;
     }
-
-    private void loadTestingData(){
-
+    public boolean isBankExist(String bank) {
+        return  isTextInList(bank, bankList);
     }
-    public boolean isBankInList(String bank) {
-        for(String existBank: bankList){
-            if(bank.compareToIgnoreCase(existBank)==0){
-                return true;
-            }
-        }
 
-        return false;
-    }
+
     public void addTransactionCategoriessToList(String[] transactionCategoriesArr) {
         if(transactionCategoriesArr==null || transactionCategoriesArr.length<0){
             return;
         }
         String last = transactionCategoriesList.removeLast();
-//        transactionCategoriesList.addAll(Arrays.stream(transactionCategoriesArr).toList());
         for(int i=0; i< transactionCategoriesArr.length; i++){
             transactionCategoriesList.add(transactionCategoriesArr[i]);
         }
@@ -78,7 +70,6 @@ public class GUI_ElementsOptionLists {
             return;
         }
         String last = acctNicksList.removeLast();
-//        acctNicksList.addAll(Arrays.stream(accountNicks).toList());
         for(int i=0; i< accountNicks.length; i++){
             acctNicksList.add(accountNicks[i]);
         }
@@ -98,13 +89,6 @@ public class GUI_ElementsOptionLists {
         return getAsStringArr(acctNicksList);
     }
 
-    private String[] getAsStringArr(LinkedList<String> ll){
-        String[] out = new String[ll.size()];
-        for(int i=0; i< ll.size(); i++){
-            out[i] = ll.get(i)+"";
-        }
-        return out;
-    }
 
 
 }

@@ -1,6 +1,9 @@
 package gui_v1.action_processors;
 
 import javax.swing.*;
+import main_logic.PEC;
+import gui_v1.gui_logic.GUI_ManualEntryTemporaialHolder;
+
 
 import static gui_v1.mainWindows.manualEntryWElements.GUI_ManualTransactionsEntryP.addAccountNickToComboBox;
 
@@ -12,7 +15,9 @@ public class NewAccountProgrammableHandler {
         strAcctNum = _strAcctNum;
         strAccntNick = _strAccntNick;
         strBank = _strBank;
-        addAccountNickToComboBox(_strAccntNick);
+        //GUI_ManualEntryTemporaialHolder.getInstance().
+                //addAcctNickAsUnstored(PEC.instance().createAcctIdentifier(_strAccntNick, _strAcctNum, _strBank));
+        addAccountNickToComboBox(PEC.instance().createAcctIdentifier(_strAccntNick, _strAcctNum, _strBank));
         showNewManualEntryInfo();
     }
     private void showNewManualEntryInfo(){

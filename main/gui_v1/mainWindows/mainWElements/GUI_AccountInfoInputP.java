@@ -12,10 +12,6 @@ import gui_v1.settings.GUI_Settings_Variables;
 public class GUI_AccountInfoInputP  extends JPanel implements GUI_Settings_Variables{
 
 	private static final long serialVersionUID = 1L;
-//
-//	private JTextField jtfBankInfoIn1 = new JTextField();
-//	private JTextField jtfBankInfoIn2 = new JTextField();
-//	private JTextField jtfBankInfoIn3 = new JTextField();
 
 	private JTextField jtfBankInfoIn1 = GUI_ElementCreator.newTextField();
 	private JTextField jtfBankInfoIn2 = GUI_ElementCreator.newTextField();

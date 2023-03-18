@@ -15,13 +15,6 @@ public class GUI_AvailableActionsSelectionP extends JPanel implements GUI_Settin
 
 	private static final long serialVersionUID = 1L;
 
-//		private JRadioButton jrbtInsertData = new JRadioButton("Insert Data");
-//		private JRadioButton jrbtSearchData = new JRadioButton("Search Data");
-//		private JRadioButton jrbtGetAdvice = new JRadioButton("Get Advice");
-//		private JRadioButton jrbtHowToUse = new JRadioButton("Learn How to Use");
-//		private JRadioButton jrbtSaveData = new JRadioButton("Save Data");
-//		private JRadioButton jrbtLoadData = new JRadioButton("Load Data");
-//		private JRadioButton jrbtObtainDataReport = new JRadioButton("Obtain Data Report");
 	private JRadioButton jrbtInsertData = GUI_ElementCreator.newRadioButton("Insert Data");
 	private JRadioButton jrbtSearchData = GUI_ElementCreator.newRadioButton("Search Data");
 	private JRadioButton jrbtGetAdvice = GUI_ElementCreator.newRadioButton("Get Advice");
@@ -45,8 +38,6 @@ public class GUI_AvailableActionsSelectionP extends JPanel implements GUI_Settin
 		actionRBTNsGroup.add(jrbtSaveData);
 		actionRBTNsGroup.add(jrbtLoadData);
 		actionRBTNsGroup.add(jrbtObtainDataReport);
-
-//		add(new JLabel("Available Actions:"));
 
 		add(GUI_ElementCreator.newTitle("Available Actions:"));
 		add(jrbtInsertData);

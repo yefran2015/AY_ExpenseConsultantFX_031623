@@ -24,10 +24,6 @@ public class GUI_MainWindow extends JFrame implements  GUI_MainWidowsSharedBehav
 
 	 private GUI_MainWindow() {
 		 setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-//		setBackground(guiFramesBackgroundColor);
-//		setForeground(guiFramesForegroundColor);
-//		setJMenuBar(new GUI_Menu_Technical(this));
-//		setJMenuBar(new GUI_Menu(this));
 		if(gui_v1.settings.GUI_Static_Settings.workStage==1){
 			setJMenuBar(new GUI_Menu());
 		}else{

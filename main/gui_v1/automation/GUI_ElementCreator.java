@@ -2,8 +2,6 @@ package gui_v1.automation;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import javax.swing.*;
 
 import javax.swing.border.LineBorder;

@@ -3,6 +3,8 @@ import db_connectors.Connectivity;
 import gui_v1.automation.GUI_ElementCreator;
 import gui_v1.mainWindows.GUI_MainWindow;
 import gui_v1.settings.GUI_LoginSignUpWiindows_Settings;
+import main_logic.PEC;
+import main_logic.Request;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,68 +54,23 @@ public class GUI_LogInP extends JPanel implements GUI_LoginSignUpWiindows_Settin
     @Override
     public void actionPerformed(ActionEvent a) {
         if (a.getActionCommand().compareToIgnoreCase("OK")==0) {
-
-
-
-            Connectivity connectivity = new Connectivity();
-            Connection connection = connectivity.getConnection();
-            String query = "select count(1) from  users where email = ? and password = ? ";
-            PreparedStatement statement = null;
-            System.out.println(String.valueOf(jtfPass.getPassword()));
-            System.out.println(String.valueOf(jtfLogInName.getText()));
+            Request req = Request.instance();
+            int userID = -1;
+            req.setEmail(String.valueOf(jtfLogInName.getText()));
+            req.setPass1(String.valueOf(jtfPass.getPassword()));
             try {
-                statement = connection.prepareStatement(query);
+                userID = PEC.instance().login(req);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            try {
-                statement.setString(1, jtfLogInName.getText());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            if (userID!=-1) {
+                GUI_MainWindow.getInstance().showMainWindow();
+            } else {
+                JOptionPane.showMessageDialog(null,"Wrong Email or Password!");
             }
-            try {
-                statement.setString(2, String.valueOf(jtfPass.getPassword()));
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-
-
-            }
-            ResultSet resultSet = null;
-            try {
-                resultSet = statement.executeQuery();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            while (true) {
-                try {
-                    if (!resultSet.next()) break;
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-
-                try {
-                    if (resultSet.getInt(1) == 1) {
-//                       GUI_MainWindow mg= new GUI_MainWindow();
-//                       mg.setVisible(true);
-                        GUI_MainWindow.getInstance().showMainWindow();
-                    } else {
-                      JOptionPane.showMessageDialog(null,"Wrong Email or Password!");
-                    }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-
-
-
-
-
-
-//            JOptionPane.showMessageDialog(null, userInfo,"Confirm", JOptionPane.INFORMATION_MESSAGE);
-//            loginFrame.setVisible(false);
-            //new MainGUIWindow();
 
         }
     }
+
+}
 

@@ -48,8 +48,6 @@ public class GUI_MessagesDislplayBoxP extends JPanel implements GUI_Settings_Var
 		jtaMessagesDisplayOutput.setText(strTestData);
 	}
 	public GUI_MessagesDislplayBoxP() {
-//		setBackground(allGuiBoxesBackgroundCColor);
-//		setForeground(allGuiBoxesForegroundCColor);
 
 		setLayout(new BorderLayout());
 

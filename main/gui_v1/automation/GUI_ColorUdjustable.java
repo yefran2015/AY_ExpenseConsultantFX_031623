@@ -6,7 +6,7 @@ import java.awt.Container;
 
 public interface GUI_ColorUdjustable {
 
-	public default void setFontColor(Component c, Color color) {
+	 default void setFontColor(Component c, Color color) {
 		if(((Container)c).getComponentCount()>0){
 			for(Component children: ((Container) c).getComponents()) {
 				setFontColor(children, color);
@@ -16,7 +16,7 @@ public interface GUI_ColorUdjustable {
 			c.setForeground(color);
 		}
 	}
-	public default void setBackgroundColor(Component c, Color color) {
+	 default void setBackgroundColor(Component c, Color color) {
 		if(((Container)c).getComponentCount()>0){
 			for(Component children: ((Container) c).getComponents()) {
 				setBackgroundColor(children, color);

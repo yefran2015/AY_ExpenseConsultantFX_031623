@@ -14,9 +14,6 @@ public class GUI_AddAccountP extends JPanel implements GUI_Settings_Variables{
 
 	private static final long serialVersionUID = 1L;
 
-//		private JRadioButton jrbtAddAcctToExistingBank = new JRadioButton("Add New Account To Exist Bank");
-//	private JRadioButton jrbtAddAcctOfNewBank = new JRadioButton("Add New Account Of New Bank");
-
 		private JRadioButton jrbtAddAcctToExistingBank = GUI_ElementCreator.newRadioButton("Add New Account To Exist Bank");
 		private JRadioButton jrbtAddAcctOfNewBank =  GUI_ElementCreator.newRadioButton("Add New Account Of New Bank");
 
@@ -30,7 +27,6 @@ public class GUI_AddAccountP extends JPanel implements GUI_Settings_Variables{
 		addAccntRBTNsGroup.add(jrbtAddAcctOfNewBank);
 
 
-//		add(new JLabel("Select Adding Accont Action To Perform"));
 
 		add(GUI_ElementCreator.newTitle("Select Adding Accont Action To Perform"));
 		add(jrbtAddAcctToExistingBank);

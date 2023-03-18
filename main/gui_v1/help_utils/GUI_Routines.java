@@ -94,7 +94,21 @@ public interface GUI_Routines {
         return  clearArr;
     }
 
-
+    default boolean  isTextInList(String text, LinkedList<String> list) {
+        for(String existBank: list){
+            if(text.compareToIgnoreCase(existBank)==0){
+                return true;
+            }
+        }
+        return false;
+    }
+    default String[] getAsStringArr(LinkedList<String> ll){
+        String[] out = new String[ll.size()];
+        for(int i=0; i< ll.size(); i++){
+            out[i] = ll.get(i)+"";
+        }
+        return out;
+    }
 }
 
 

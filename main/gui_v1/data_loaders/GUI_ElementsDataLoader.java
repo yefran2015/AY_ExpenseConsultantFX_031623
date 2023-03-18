@@ -1,17 +1,27 @@
 package gui_v1.data_loaders;
 
+import gui_v1.help_utils.GUI_Routines;
+import main_logic.PEC;
+import main_logic.Result;
 
-public class GUI_ElementsDataLoader {
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class GUI_ElementsDataLoader implements GUI_Routines {
     private static GUI_ElementsDataLoader instance = null;
-    private GUI_ElementsDataLoader(){
-     //   loadTestingData();
+    private GUI_ElementsDataLoader() throws SQLException {
+        loadData();
     }
-    public static GUI_ElementsDataLoader getInstance(){
+    public static GUI_ElementsDataLoader loadDataInitializeGUI() throws SQLException {
         if(instance == null){
             instance = new GUI_ElementsDataLoader();
         }
         return instance;
     }
+
+
 
     /**
      *  This array is holder of Short help tips for input elements located at
@@ -41,19 +51,34 @@ public class GUI_ElementsDataLoader {
     public static String[] newBankElements_HelpMessages = new String[]{"Enter New Bank Name",""};
     public static String[] newAccountElements_HelpMessages = new String[]{"Enter Account Number","Enter Account Nickname",
             "Select Bank"};
-
+    private static String bSelectActionOption;
     private static  String[]  availableBanks;
+    private static String anSelectActionOption;
     private static  String[]  availableNicks;
+    private static String cSelectActionOption;
     private static  String[]  availableCategories;
-//    private void loadTestingData(){
-//        Result res = new Result();
-//        res = PEC.instance().downloadDropDownMenuEntries();
-//        availableBanks = res.getBankList();
-//        availableNicks = res.getNickList();
-//        availableCategories = res.getCategoryList();
-//    }
+    private void loadData() throws SQLException {
 
+        bSelectActionOption = PEC.NEW_BANK;
+        anSelectActionOption = PEC.NEW_ACCOUNT;
+        cSelectActionOption = PEC.OTHER;
+        Result res = PEC.instance().downloadDropDownMenuEntries();
+        availableBanks= res.getBankList();
+        availableNicks= res.getAcctList();
+        availableCategories= res.getCategoryList();
+        GUI_ElementsOptionLists.setGuiRequiredData(bSelectActionOption,anSelectActionOption, cSelectActionOption);
+        GUI_ElementsOptionLists.getInstance().addBanksToList(availableBanks);
+        GUI_ElementsOptionLists.getInstance().addAccntNicksToList(availableNicks);
+        GUI_ElementsOptionLists.getInstance().addTransactionCategoriessToList(availableCategories);
+    }
 
+    private String[] sanitizeStrArr( String[] from){
+        String[] newArr = new String[from.length];
+        for(int i=0; i< newArr.length; i++){
+            newArr[i] = from[i].trim();
+        }
+        return newArr;
+    }
     public static  ManualEntryDataLoader getMEntHelpMsgs(){
       return ManualEntryDataLoader.getInst();
     }
@@ -84,9 +109,6 @@ public class GUI_ElementsDataLoader {
             }
             return inst;
         }
-//        public String[]  manualEntryElementsHelp(){
-//            return manualEntryElements_HelpMessages;
-//        }
         public int numOfInputElementsManualEntryHas(){
             return NUMBER_ENABLED_INPUT_ELEMENTS_ON_THIS_VIEW;
         }
@@ -208,14 +230,5 @@ public class GUI_ElementsDataLoader {
             return availableCategories.length;
         }
     }
-
-    private static class GUI_TestingData {
-            private static final String NEW_BANK = "<NEW BANK>";
-
-    // WILL BE LOADED FROM THE DATABASE
-    private static String[] bankList = new String[] { "Wells Fargo", "US Bank", "Bank Of America" };
-
-    }
-
 
 }
