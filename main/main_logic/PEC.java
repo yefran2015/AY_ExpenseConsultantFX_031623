@@ -170,6 +170,16 @@ public class PEC {
 		return false;
 	}
 
+	public static String createAcctIdentifier(String acctNick, String acctNum, String bankName) {
+		String output = "";
+		if (acctNick.length()>0) output += acctNick;
+		if (acctNick.length()>0 && (acctNum.length()>4 || bankName.length()>0)) output += " ";
+		if (acctNum.length()>4) output += "…" + acctNum.substring(acctNum.length()-4, acctNum.length());
+		if (acctNum.length()>4 && bankName.length()>0) output += " ";
+		if (bankName.length()>0) output += "(" + bankName +")";
+		return output;
+	}
+
 	/**
 	 * Returns the account position in the allAccounts array,
 	 * searched either by accountNick (if accountNick!=""), or
@@ -236,11 +246,10 @@ public class PEC {
 			String[] tempAccounts = new String[(allAccounts.length+1)];
 			System.arraycopy(allAccounts, 0, tempAccounts, 0, allAccounts.length);
 			allAccounts = tempAccounts;
-			allAccounts[allAccounts.length-1] = "My "+OFXParser.getAcctType()+" …"+
-					acctNum.substring(acctNum.length()-4, acctNum.length());
-			if (OFXParser.getBankName().length()>0)
-				allAccounts[allAccounts.length-1] += " ("+ OFXParser.getBankName()+")";
-			activeAccount = "My "+OFXParser.getAcctType();
+			String newParsedNick = "My "+OFXParser.getAcctType();
+			allAccounts[allAccounts.length-1] = createAcctIdentifier(newParsedNick,
+					OFXParser.getAcctNumber(), OFXParser.getBankName());
+			activeAccount = newParsedNick;
 			Calendar[] tempBegin = new Calendar[acctBeginDate.length+1];
 			Calendar[] tempEnd = new Calendar[acctEndDate.length+1];
 			System.arraycopy(acctBeginDate, 0, tempBegin, 0, acctBeginDate.length);
@@ -269,6 +278,7 @@ public class PEC {
 	 */
 	private boolean mergeNewTList(TransactionList list) {
 		boolean change = false;
+		if (list==null) return change;
 		System.out.println("POTENTIALLY ADDING "+list.size()+", active acct: "+activeAccount);
 		for (int i = 0; i < allAccounts.length; i++) { System.out.println(allAccounts[i]); }
 		System.out.println("\n");
@@ -277,13 +287,13 @@ public class PEC {
 		TransactionList resultTList = new TransactionList();
 		if (list.getStartDate().compareTo(getAcctBeginDate(activeAccount))<=0) {
 			// fetch the first 3-or-less-month chunk of the db and load it in tList
-			int i = 0;
 			for (int j=0;j<tList.size();j++) resultTList.add(tList.get(j));
+			int i = list.size()-1;
 			// do this until the end of the parsedTList or beginning of the db
-			while (i< list.size() &&
+			while (i>=0 &&
 					list.get(i).getPostedDate().compareTo(getAcctBeginDate(activeAccount))<=0) {
 				if (resultTList.add(list.get(i))) change = true;
-				i++;
+				i--;
 			}
 			setAcctBeginDate(activeAccount, resultTList.getStartDate());
 			tList = resultTList;
@@ -369,13 +379,8 @@ public class PEC {
 			String[] tempAccounts = new String[(allAccounts.length+1)];
 			System.arraycopy(allAccounts, 0, tempAccounts, 0, allAccounts.length);
 			allAccounts = tempAccounts;
-			String acctNum = request.getAccountNumber();
-			if (acctNum.length()<4) acctNum = "    ";
-			allAccounts[allAccounts.length-1] = request.getAccountNick()+" …"+
-					acctNum.substring(acctNum.length()-4, acctNum.length());
-			if (request.getBankName().length()>0)
-				allAccounts[allAccounts.length-1] += " ("+ request.getBankName()+")";
-			System.out.println("NEW ACCT: "+allAccounts[allAccounts.length-1]);
+			allAccounts[allAccounts.length-1] =createAcctIdentifier(request.getAccountNick(),
+					request.getAccountNumber(), request.getBankName());
 			activeAccount = request.getAccountNick();
 			Calendar[] tempBegin = new Calendar[acctBeginDate.length+1];
 			Calendar[] tempEnd = new Calendar[acctEndDate.length+1];
@@ -411,18 +416,17 @@ public class PEC {
 		allAccounts = new String[accountCount];
 		for (int i = 0; i < accountCount; i++) {
 			String accountDescription = "";
-			// accountDescription= <account nick> + " …" + <last 4 digits of account number> +
-			//					  " (" + <bank name> + ")";
+			// accountDescription = createAcctIdentifier(<account nick>, <account number>, <bank name>);
 			allAccounts[i] = accountDescription;
 		}
 		allBanks = new String[bankCount];
 		for (int i = 0; i < bankCount; i++) {
 			allBanks[i] = ""; // allBanks[i] = <bank name>;
 		}
-		String[] bankTestingArr = new String[]{"Wells Fargo", "US Bank", "Bank Of America"};
+		String[] bankTestingArr = new String[]{"", "Wells Fargo", "US Bank", "Bank Of America"};
 		String[] accntNicksTestingArr = new String[]{ "", "Work Accnt …5147 (Wells Fargo)",
 				"Family Use Accnt …1440 (US Bank)","Secret Saving Accnt …4777 (Bank Of America)"};
-		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun", "<OTHER>"};
+		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun"};
 		output.setBankList(bankTestingArr);
 		output.setAcctList(accntNicksTestingArr);
 		output.setCategoryList(trnsCategoriesTestingArr);
