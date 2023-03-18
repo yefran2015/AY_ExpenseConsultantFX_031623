@@ -8,6 +8,7 @@ import main_logic.Request;
 import main_logic.Result;
 import javax.swing.*;
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ListIterator;
 
 //import static gui_v1.settings.GUI_Static_Settings.pathToFile;
@@ -101,8 +102,12 @@ public class MenuActionProgrammableHandle {
     void doSettingsProcessing(){
 
     }
-    void dologOutProcessing(){
-
+    void dologOutProcessing() {
+        try {
+            PEC.instance().addCategoriesForUser();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

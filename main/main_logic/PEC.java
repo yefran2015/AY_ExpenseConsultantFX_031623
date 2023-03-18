@@ -3,15 +3,19 @@ package main_logic;
 //import java.util.ArrayList;
 //import java.util.ListIterator;
 
+import db_connectors.Connectivity;
 import entities.Transaction;
 import entities.TransactionList;
 import parsers.OFXParser;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static main_logic.Result.Code.*;
 import static parsers.OFXParser.ofxParser;
@@ -21,6 +25,9 @@ public class PEC {
 	public static String NEW_BANK = "<NEW BANK>";
 	public static String NEW_ACCOUNT = "<NEW ACCOUNT>";
 	public static String OTHER = "<OTHER>";
+
+	private static String[] presetCategories = new String[]
+			{"Food","Car Repair","Mortgage", "Car insurance", "Fun"};
 
 	// private main structure housing active Transaction data
 	// (no more than 3 months worth)
@@ -34,12 +41,17 @@ public class PEC {
 	private Calendar[] acctEndDate = new Calendar[0];
 	private String[] allBanks = {};
 	private String[] allAccounts = {};
+	private String[] allCategories = {};
 	private String activeAccount;
 	// array of booleans to remember if a particular column is sorted
 	// in a descending (or ascending) direction
 	private boolean[] descColumn = { true, true, true, true, true, true };
 	// sortedColumn indicates which column is active and sorted on screen
 	private int sortedColumn = Transaction.POSTED_DATE;
+	// current user (after authentication) will have their own space in the database,
+	// their own presets, and communicate with the system in their own, unique way
+
+	private int currentUserID = 0;
 
 	private static PEC singleton = null;
 
@@ -101,6 +113,12 @@ public class PEC {
 			descColumn[i] = true;
 		}
 		sortedColumn = Transaction.POSTED_DATE;
+	}
+
+	public int getCurrentUserID() { return currentUserID; }
+
+	public void setCurrentUserID(int currentUserID) {
+		this.currentUserID = currentUserID;
 	}
 
 	public Calendar getAcctBeginDate(int position) {
@@ -403,36 +421,6 @@ public class PEC {
 		return mergeNewTList(list);
 	}
 
-	public Result downloadDropDownMenuEntries() {
-		Result output = new Result();
-		// code for downloading table accounts from the database: all account nicks (unique),
-		// all account numbers (unique, decrypted), all bank names (unique). Also all
-		// category names (unique; best make a table of categories, which can be encrypted).
-		//
-		// int accountCount = <number of lines of the account list in database>;
-		// int bankCount = <number of banks in the account list in database>;
-		int accountCount = 0;
-		int bankCount = 0;
-		allAccounts = new String[accountCount];
-		for (int i = 0; i < accountCount; i++) {
-			String accountDescription = "";
-			// accountDescription = createAcctIdentifier(<account nick>, <account number>, <bank name>);
-			allAccounts[i] = accountDescription;
-		}
-		allBanks = new String[bankCount];
-		for (int i = 0; i < bankCount; i++) {
-			allBanks[i] = ""; // allBanks[i] = <bank name>;
-		}
-		String[] bankTestingArr = new String[]{"", "Wells Fargo", "US Bank", "Bank Of America"};
-		String[] accntNicksTestingArr = new String[]{ "", "Work Accnt …5147 (Wells Fargo)",
-				"Family Use Accnt …1440 (US Bank)","Secret Saving Accnt …4777 (Bank Of America)"};
-		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun"};
-		output.setBankList(bankTestingArr);
-		output.setAcctList(accntNicksTestingArr);
-		output.setCategoryList(trnsCategoriesTestingArr);
-		return output;
-	}
-
 	public ListIterator<Result> initialDBaseDownload() {
 		// for each account fetch begin date and end date and store in the
 		// arrays acctBeginDate and acctEndDate, in the order of accounts
@@ -489,6 +477,283 @@ public class PEC {
 		return returnRListIterator();
 	}
 
+	public int login(Request r) throws SQLException {
+		int userId = -1;
+		boolean result = false;
+
+		Connectivity connectivity = new Connectivity();
+		Connection connection = connectivity.getConnection();
+		String query = "SELECT user_id FROM users WHERE email = ? AND password = ?";
+		PreparedStatement statement = null;
+		try {
+			statement = connection.prepareStatement(query);
+			statement.setString(1, r.getEmail());
+			statement.setString(2, r.getPass1());
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				userId = resultSet.getInt("user_id");
+				result = true;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+		if (result) {
+			currentUserID = userId;
+			return userId;
+		} else {
+			return -1;
+		}
+	}
+
+	public int signup(Request r) throws SQLException {
+
+		int checkCode = 0;
+		// Connect to the database
+		Connectivity connectivity = new Connectivity();
+		Connection conn = connectivity.getConnection();
+
+		String email = r.getEmail();
+		String pass1 = r.getPass1();
+		String pass2 = r.getPass2();
+		String question1 = r.getQuestion1();
+		String question2 = r.getQuestion2();
+		String answer1 = r.getAnswer1();
+		String answer2 = r.getAnswer2();
+
+		// Check if the email is in the right format
+		if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+			checkCode = 1;
+		} else {
+			String checkSql = "SELECT COUNT(*) FROM users WHERE email=?";
+			PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+			checkStmt.setString(1, email);
+
+			// Execute the query to check if the user already exists
+			ResultSet rs = checkStmt.executeQuery();
+			rs.next();
+			int count = rs.getInt(1);
+
+			if (count == 0) {
+				if (pass1.length() >= 8 && pass1.length() < 20) {
+					System.out.println(pass1 + "123");
+					if (!pass1.equals(pass2)) {
+						checkCode = 4;
+					} else {
+
+
+						// Create a PreparedStatement to insert a new user
+						String sql = "INSERT INTO users (email,password,Question1,Question2,answer1,answer2,created_date) " +
+								"VALUES ( ?,?,?,?,?,?,now())";
+						PreparedStatement stmt = conn.prepareStatement(sql);
+						stmt.setString(1, email);
+						stmt.setString(2, pass1);
+						stmt.setString(3, question1);
+						stmt.setString(4, question2);
+						stmt.setString(5, answer1);
+						stmt.setString(6, answer2);
+
+
+						// Execute the query and check the number of rows affected
+						int rowsAffected = stmt.executeUpdate();
+						if (rowsAffected > 0) {
+							checkCode = 5;
+						} else {
+							checkCode = 6;
+						}
+
+						// Close the connection and statement
+						stmt.close();
+						conn.close();
+
+					}
+				} else {
+					checkCode = 3;
+				}
+
+			} else {
+				checkCode = 2;
+			}
+
+
+		}
+		return checkCode;
+	}
+
+	public Result downloadDropDownMenuEntries() throws SQLException {
+		Result result = new Result();
+		List<String> banks = new ArrayList<String>();
+		List<String> accounts = new ArrayList<String>();
+		List<String> categories = new ArrayList<String>();
+		Connectivity connectivity = new Connectivity();
+		Connection connection = connectivity.getConnection();
+		String query = "SELECT DISTINCT bank_name FROM transaction WHERE user_id = ?";
+		PreparedStatement stmt = connection.prepareStatement(query);
+		stmt.setInt(1, getCurrentUserID());
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next()) {
+			banks.add(rs.getString("bank_name"));
+		}
+		allBanks = new String[banks.size()];
+		for (int i = 0; i < banks.size(); i++) {
+			allBanks[i] = banks.get(i);
+		}
+		result.setBankList(allBanks);
+		connectivity = new Connectivity();
+		connection = connectivity.getConnection();
+		query = "SELECT DISTINCT account_nick FROM transaction WHERE user_id = ?";
+		stmt = connection.prepareStatement(query);
+		stmt.setInt(1, getCurrentUserID());
+		rs = stmt.executeQuery();
+		while (rs.next()) {
+			accounts.add(rs.getString("account_nick"));
+		}
+		allAccounts = new String[accounts.size()];
+		for (int i = 0; i < accounts.size(); i++) {
+			allAccounts[i] = accounts.get(i);
+		}
+		result.setAcctList(allAccounts);
+		connectivity = new Connectivity();
+		connection = connectivity.getConnection();
+		query = "SELECT category_name FROM category WHERE user_id = ?";
+		stmt = connection.prepareStatement(query);
+		stmt.setInt(1, getCurrentUserID());
+		rs = stmt.executeQuery();
+		while (rs.next()) {
+			categories.add(rs.getString("category_name"));
+		}
+		if (categories.size()==0) {
+			allCategories = new String[presetCategories.length];
+			for (int i = 0; i < presetCategories.length; i++) {
+				allCategories[i] = presetCategories[i];
+			}
+		} else {
+			allCategories = new String[categories.size()];
+			for (int i = 0; i < categories.size(); i++) {
+				allCategories[i] = categories.get(i);
+			}
+		}
+		result.setCategoryList(allCategories);
+		return result;
+	}
+
+	public void addCategoriesForUser() throws SQLException {
+		Connectivity connectivity = new Connectivity();
+		Connection connection = connectivity.getConnection();
+		String query = "INSERT INTO category (category_name, user_id) VALUES (?, ?)";
+		try (PreparedStatement stmt = connection.prepareStatement(query)) {
+			for (String categoryName : allCategories) {
+				stmt.setString(1, categoryName);
+				stmt.setInt(2, getCurrentUserID());
+				stmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			throw e;
+		}
+	}
+
+	/*
+
+	// --------------------------------------------------------------------------
+	public List<String> getTransactionHistory1(Request r) throws SQLException {
+		List<String> transactionHistories = new ArrayList<>();
+		String query = "SELECT transaction_history FROM transaction "
+				+ "WHERE user_id = ? AND transaction_date = ? AND account_nick = ?";
+		Connectivity connectivity = new Connectivity();
+		Connection connection = connectivity.getConnection();
+
+		PreparedStatement stmt = connection.prepareStatement(query);
+
+
+		stmt.setInt(1, getCurrentUserID());
+		stmt.setString(2, r.getDate_range());
+		stmt.setString(3, r.getAccountNick());
+		ResultSet rs = stmt.executeQuery();
+
+		while (rs.next()) {
+			// Get the encrypted transaction history
+			String encryptedTransactionHistory = rs.getString("transaction_history");
+
+			// Decrypt the transaction history using the encryption algorithm
+			String decryptedTransactionHistory = decryptTransactionHistory(encryptedTransactionHistory);
+
+			// Add the decrypted transaction history to the list
+			transactionHistories.add(decryptedTransactionHistory);
+		}
+
+
+		return transactionHistories;
+	}
+	private String decryptTransactionHistory(String encryptedTransactionHistory) {
+		// Decrypt the transaction history using the encryption algorithm
+		// ...
+		String decryptedTransactionHistory="";
+		return decryptedTransactionHistory;
+	}
+
+
+
+
+
+	public String getTransactionHistory(Request r) throws SQLException, ParseException {
+		Connectivity connectivity = new Connectivity();
+		Connection connection = connectivity.getConnection();
+		String transactionHistory = "";
+		int transactionId = Integer.parseInt(r.getParameter("transaction_id"));
+
+
+		// Create a database connection
+
+
+		// Get the date range and user_id for the specified transaction_id
+		PreparedStatement ps = connection.prepareStatement("SELECT date_range, user_id FROM transaction WHERE transaction_id = ?");
+		ps.setInt(1, transactionId);
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		String dateRange = rs.getString("date_range");
+		int userId = rs.getInt("user_id");
+
+		// Parse the date range string into its start and end date components
+		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+		String startDateStr = dateRange.substring(0, 8);
+		String endDateStr = dateRange.substring(8);
+		Date startDate = dateFormat.parse(startDateStr);
+		Date endDate = dateFormat.parse(endDateStr);
+
+		// Calculate the date 3 months prior to the start date
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(startDate);
+		cal.add(Calendar.MONTH, -3);
+		Date prevStartDate = cal.getTime();
+
+		// Retrieve the transaction history for the same user_id within the previous 3 months
+		ps = connection.prepareStatement("SELECT transaction_history FROM transaction WHERE user_id = ? AND transaction_date BETWEEN ? AND ? ORDER BY transaction_date DESC");
+		ps.setInt(1, userId);
+		ps.setString(2, dateFormat.format(prevStartDate));
+		ps.setString(3, endDateStr);
+		rs = ps.executeQuery();
+
+		// Concatenate the transaction histories into a single string
+		while (rs.next()) {
+			transactionHistory += rs.getString("transaction_history") + "\n";
+		}
+
+		// Close the database connection
+		connection.close();
+
+
+		return transactionHistory;
+	}
+
+	// ---------------------------------------------------------------------------------
+	 */
 
 	/*
 	public static void main(String[] args) {

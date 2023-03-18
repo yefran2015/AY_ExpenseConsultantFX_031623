@@ -3,6 +3,7 @@ package gui_v1.mainWindows;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.Serial;
+import java.sql.SQLException;
 import javax.swing.*;
 
 import gui_v1.data_loaders.GUI_ElementsDataLoader;
@@ -17,7 +18,11 @@ public class GUI_RecordsWindow extends JFrame implements GUI_MainWidowsSharedBeh
 	private static GUI_RecordsWindow instance = null;
 
 	private GUI_RecordsWindow() {
-		GUI_ElementsDataLoader.loadDataInitializeGUI();
+		try {
+			GUI_ElementsDataLoader.loadDataInitializeGUI();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 //		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //		setBackground(guiFramesBackgroundColor);
 //		setForeground(guiFramesForegroundColor);
