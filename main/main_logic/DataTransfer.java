@@ -2,6 +2,9 @@ package main_logic;
 
 import entities.Transaction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DataTransfer {
 
 
@@ -17,9 +20,21 @@ public class DataTransfer {
 	private String accountNick;
 	private String accountNumber;
 	private String bankName;
+	// drop down lists for the main logic
 	private String[] acctList;
 	private String[] bankList;
 	private String[] categoryList;
+	// fields for sign up
+	private String email;
+	private String password1;
+	private String password2;
+	private String question1;
+	private String question2;
+	private String answer1;
+	private String answer2;
+
+
+
 
 	// ... Both GUI programmers and LOGIC programmers are allowed to add fields and
 	// corresponding methods to convey functionality back and forth between LOGIC
@@ -46,6 +61,13 @@ public class DataTransfer {
 		acctList = new String[0];
 		bankList = new String[0];
 		categoryList = new String[0];
+		email = "";
+		password1 = "";
+		password2 = "";
+		question1 = "";
+		question2 = "";
+		answer1 = "";
+		answer2 = "";
 		// ...
 	}
 
@@ -130,26 +152,71 @@ public class DataTransfer {
 		this.tCat = transaction.getCategory();
 	}
 
-	public String[] getAcctList() {
-		return acctList;
-	}
+	public String[] getAcctList() { return acctList; }
 
 	public void setAcctList(String[] acctList) { this.acctList = acctList; }
 
-	public String[] getBankList() {
-		return bankList;
+	public String[] getBankList() { return bankList; }
+
+	public void setBankList(String[] bankList) { this.bankList = bankList; }
+
+	public String[] getCategoryList() { return categoryList; }
+
+	public void setCategoryList(String[] categoryList) { this.categoryList = categoryList; }
+
+	public String getEmail() {
+		return email;
 	}
 
-	public void setBankList(String[] bankList) {
-		this.bankList = bankList;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String[] getCategoryList() {
-		return categoryList;
+	public String getPass1() {
+		return password1;
 	}
 
-	public void setCategoryList(String[] categoryList) {
-		this.categoryList = categoryList;
+	public void setPass1(String password1) {
+		this.password1 = password1;
 	}
 
+	public String getPass2() {
+		return password2;
+	}
+
+	public void setPass2(String password2) {
+		this.password2 = password2;
+	}
+
+	public String getQuestion1() {
+		return question1;
+	}
+
+	public void setQuestion1(String question1) {
+		this.question1 = question1;
+	}
+
+	public String getQuestion2() {
+		return question2;
+	}
+
+	public void setQuestion2(String question2) {
+		this.question2 = question2;
+	}
+
+	public String getAnswer1() {
+		return answer1;
+	}
+
+	public void setAnswer1(String answer1) {
+		this.answer1 = answer1;
+	}
+
+	public String getAnswer2() {
+		return answer2;
+	}
+
+	public void setAnswer2(String answer2) {
+		this.answer2 = answer2;
+	}
 }

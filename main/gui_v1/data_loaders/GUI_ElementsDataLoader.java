@@ -4,13 +4,17 @@ import gui_v1.help_utils.GUI_Routines;
 import main_logic.PEC;
 import main_logic.Result;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class GUI_ElementsDataLoader implements GUI_Routines {
     private static GUI_ElementsDataLoader instance = null;
-    private GUI_ElementsDataLoader(){
+    private GUI_ElementsDataLoader() throws SQLException {
         loadData();
     }
-    public static GUI_ElementsDataLoader loadDataInitializeGUI(){
+    public static GUI_ElementsDataLoader loadDataInitializeGUI() throws SQLException {
         if(instance == null){
             instance = new GUI_ElementsDataLoader();
         }
@@ -53,7 +57,7 @@ public class GUI_ElementsDataLoader implements GUI_Routines {
     private static  String[]  availableNicks;
     private static String cSelectActionOption;
     private static  String[]  availableCategories;
-    private void loadData(){
+    private void loadData() throws SQLException {
 
         bSelectActionOption = PEC.NEW_BANK;
         anSelectActionOption = PEC.NEW_ACCOUNT;
