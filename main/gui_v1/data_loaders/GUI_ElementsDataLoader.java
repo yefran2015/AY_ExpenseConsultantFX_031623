@@ -2,6 +2,7 @@ package gui_v1.data_loaders;
 
 import gui_v1.help_utils.GUI_Routines;
 import main_logic.PEC;
+import main_logic.Result;
 
 
 public class GUI_ElementsDataLoader implements GUI_Routines {
@@ -57,12 +58,10 @@ public class GUI_ElementsDataLoader implements GUI_Routines {
         bSelectActionOption = PEC.NEW_BANK;
         anSelectActionOption = PEC.NEW_ACCOUNT;
         cSelectActionOption = PEC.OTHER;
-        String[] tmp = PEC.instance().downloadDropDownMenuEntries().getBankList();
-        availableBanks= sanitizeStrArr(tmp);
-        tmp = PEC.instance().downloadDropDownMenuEntries().getAcctList();
-        availableNicks= sanitizeStrArr(tmp);
-        tmp = PEC.instance().downloadDropDownMenuEntries().getCategoryList();
-        availableCategories= sanitizeStrArr(tmp);
+        Result res = PEC.instance().downloadDropDownMenuEntries();
+        availableBanks= res.getBankList();
+        availableNicks= res.getAcctList();
+        availableCategories= res.getCategoryList();
         GUI_ElementsOptionLists.setGuiRequiredData(bSelectActionOption,anSelectActionOption, cSelectActionOption);
         GUI_ElementsOptionLists.getInstance().addBanksToList(availableBanks);
         GUI_ElementsOptionLists.getInstance().addAccntNicksToList(availableNicks);

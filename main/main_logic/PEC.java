@@ -170,6 +170,16 @@ public class PEC {
 		return false;
 	}
 
+	public static String createAcctIdentifier(String acctNick, String acctNum, String bankName) {
+		String output = "";
+		if (acctNick.length()>0) output += acctNick;
+		if (acctNick.length()>0 && (acctNum.length()>4 || bankName.length()>0)) output += " ";
+		if (acctNum.length()>4) output += "…" + acctNum.substring(acctNum.length()-4, acctNum.length());
+		if (acctNum.length()>4 && bankName.length()>0) output += " ";
+		if (bankName.length()>0) output += "(" + bankName +")";
+		return output;
+	}
+
 	/**
 	 * Returns the account position in the allAccounts array,
 	 * searched either by accountNick (if accountNick!=""), or
@@ -236,11 +246,10 @@ public class PEC {
 			String[] tempAccounts = new String[(allAccounts.length+1)];
 			System.arraycopy(allAccounts, 0, tempAccounts, 0, allAccounts.length);
 			allAccounts = tempAccounts;
-			allAccounts[allAccounts.length-1] = "My "+OFXParser.getAcctType()+" …"+
-					acctNum.substring(acctNum.length()-4, acctNum.length());
-			if (OFXParser.getBankName().length()>0)
-				allAccounts[allAccounts.length-1] += " ("+ OFXParser.getBankName()+")";
-			activeAccount = "My "+OFXParser.getAcctType();
+			String newParsedNick = "My "+OFXParser.getAcctType();
+			allAccounts[allAccounts.length-1] = createAcctIdentifier(newParsedNick,
+					OFXParser.getAcctNumber(), OFXParser.getBankName());
+			activeAccount = newParsedNick;
 			Calendar[] tempBegin = new Calendar[acctBeginDate.length+1];
 			Calendar[] tempEnd = new Calendar[acctEndDate.length+1];
 			System.arraycopy(acctBeginDate, 0, tempBegin, 0, acctBeginDate.length);
@@ -269,6 +278,7 @@ public class PEC {
 	 */
 	private boolean mergeNewTList(TransactionList list) {
 		boolean change = false;
+		if (list==null) return change;
 		System.out.println("POTENTIALLY ADDING "+list.size()+", active acct: "+activeAccount);
 		for (int i = 0; i < allAccounts.length; i++) { System.out.println(allAccounts[i]); }
 		System.out.println("\n");
@@ -277,13 +287,13 @@ public class PEC {
 		TransactionList resultTList = new TransactionList();
 		if (list.getStartDate().compareTo(getAcctBeginDate(activeAccount))<=0) {
 			// fetch the first 3-or-less-month chunk of the db and load it in tList
-			int i = 0;
 			for (int j=0;j<tList.size();j++) resultTList.add(tList.get(j));
+			int i = list.size()-1;
 			// do this until the end of the parsedTList or beginning of the db
-			while (i< list.size() &&
+			while (i>=0 &&
 					list.get(i).getPostedDate().compareTo(getAcctBeginDate(activeAccount))<=0) {
 				if (resultTList.add(list.get(i))) change = true;
-				i++;
+				i--;
 			}
 			setAcctBeginDate(activeAccount, resultTList.getStartDate());
 			tList = resultTList;
@@ -323,11 +333,14 @@ public class PEC {
 		return rList.listIterator();
 	}
 
+
+	/*
 	/**
 	 * Fetches the Transaction list, sorts it by the active column criterion
 	 * and distinguishes whether the data are in descending or ascending order.
 	 * @return the Result object list with all Transaction fields filled out
 	 */
+	/*
 	private ListIterator<Result> getNewView() {
 		ListIterator<Transaction> it = tList.sort(sortedColumn);
 		ArrayList<Result> resIt = new ArrayList<Result>();
@@ -352,41 +365,9 @@ public class PEC {
 	 * Switches the view between descending and ascending order.
 	 * @return new IteratorList to view
 	 */
+	/*
 	public ListIterator<Result> sortingOrientationSwitched() {
 		descColumn[sortedColumn] = !descColumn[sortedColumn];
-		return getNewView();
-	}
-
-	/*
-	/**
-	 * Switches between the active columns and prepares a newly sorted view.
-	 * @param request Request object preloaded with the button (column header)
-	 *                pressed
-	 * @return new IteratorList to view
-	 */
-	/*
-	public ListIterator<Result> sortedColumnSwitched(Request request) {
-		switch (request.getButton()) {
-			case DATE:
-				sortedColumn = Transaction.POSTED_DATE;
-				break;
-			case REF:
-				sortedColumn = Transaction.REF_NUMBER;
-				break;
-			case NAME:
-				sortedColumn = Transaction.DESCRIPTION;
-				break;
-			case MEMO:
-				sortedColumn = Transaction.MEMO;
-				break;
-			case AMOUNT:
-				sortedColumn = Transaction.AMOUNT;
-				break;
-			case CAT:
-				sortedColumn = Transaction.CATEGORY;
-				break;
-			default: ;
-		}
 		return getNewView();
 	}
 	*/
@@ -398,13 +379,8 @@ public class PEC {
 			String[] tempAccounts = new String[(allAccounts.length+1)];
 			System.arraycopy(allAccounts, 0, tempAccounts, 0, allAccounts.length);
 			allAccounts = tempAccounts;
-			String acctNum = request.getAccountNumber();
-			if (acctNum.length()<4) acctNum = "    ";
-			allAccounts[allAccounts.length-1] = request.getAccountNick()+" …"+
-					acctNum.substring(acctNum.length()-4, acctNum.length());
-			if (request.getBankName().length()>0)
-				allAccounts[allAccounts.length-1] += " ("+ request.getBankName()+")";
-			System.out.println("NEW ACCT: "+allAccounts[allAccounts.length-1]);
+			allAccounts[allAccounts.length-1] =createAcctIdentifier(request.getAccountNick(),
+					request.getAccountNumber(), request.getBankName());
 			activeAccount = request.getAccountNick();
 			Calendar[] tempBegin = new Calendar[acctBeginDate.length+1];
 			Calendar[] tempEnd = new Calendar[acctEndDate.length+1];
@@ -440,18 +416,17 @@ public class PEC {
 		allAccounts = new String[accountCount];
 		for (int i = 0; i < accountCount; i++) {
 			String accountDescription = "";
-			// accountDescription= <account nick> + " …" + <last 4 digits of account number> +
-			//					  " (" + <bank name> + ")";
+			// accountDescription = createAcctIdentifier(<account nick>, <account number>, <bank name>);
 			allAccounts[i] = accountDescription;
 		}
 		allBanks = new String[bankCount];
 		for (int i = 0; i < bankCount; i++) {
 			allBanks[i] = ""; // allBanks[i] = <bank name>;
 		}
-		String[] bankTestingArr = new String[]{"Wells Fargo", "US Bank", "Bank Of America"};
+		String[] bankTestingArr = new String[]{"", "Wells Fargo", "US Bank", "Bank Of America"};
 		String[] accntNicksTestingArr = new String[]{ "", "Work Accnt …5147 (Wells Fargo)",
 				"Family Use Accnt …1440 (US Bank)","Secret Saving Accnt …4777 (Bank Of America)"};
-		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun", "<OTHER>"};
+		String[] trnsCategoriesTestingArr = new String[]{ "Food","Car Repair","Mortgage", "Car insurance", "Fun"};
 		output.setBankList(bankTestingArr);
 		output.setAcctList(accntNicksTestingArr);
 		output.setCategoryList(trnsCategoriesTestingArr);
@@ -459,11 +434,61 @@ public class PEC {
 	}
 
 	public ListIterator<Result> initialDBaseDownload() {
-		// set activeAccount = ...;
 		// for each account fetch begin date and end date and store in the
 		// arrays acctBeginDate and acctEndDate, in the order of accounts
+
+		// fetch the user's first account's last 3-month-block
+		// set activeAccount = ...;
+
 		return returnRListIterator();
 	}
+
+	public void uploadCurrentList() {
+		// if there's no record in database and the current list is smaller than 3 months,
+		// upload the current list, its start date, end date, check its categories against
+		// their list and update it, banks, account nicks, and account numbers
+
+		// if there's no record in database and the current list is longer than 3 months,
+		// SPLIT THE LIST, upload first 3 months + everything, keep going, 3-month increments
+		// until the whole list is uploaded, keep the last portion active
+
+		// if there IS record in database and the current list is goes BEFORE the record, download
+		// the first record below the current list, count backwards 3 months, SPLIT and upload INSTEAD
+		// the first record, keep splitting and uploading BEFORE the first record until done. Each
+		// time you upload do the begin-end date check, category check, bank, nick, and acct number check
+
+		// if there IS record in database and the current list is goes AFTER the record, download
+		// the last record above the current list, count onwards 3 months, SPLIT and upload INSTEAD
+		// the last record, keep splitting and uploading AFTER the last record until done. Each
+		// time you upload do the begin-end date check, category check, bank, nick, and acct number check
+	}
+
+	public ListIterator<Result> goFirst() {
+		// upload the current list
+		// fetch the first 3-month block from user's database and download it to tList
+		return returnRListIterator();
+	}
+
+	public ListIterator<Result> goPrevious() {
+		// upload the current list
+		// use tList.getStartDate() to figure out previous transaction_date,
+		// fetch that block from user's database and download it to tList
+		return returnRListIterator();
+	}
+
+	public ListIterator<Result> goNext() {
+		// upload the current list
+		// use tList.getStartDate() to figure out next transaction_date,
+		// fetch that block from user's database and download it to tList
+		return returnRListIterator();
+	}
+
+	public ListIterator<Result> goLast() {
+		// upload the current list
+		// fetch the last 3-month block from user's database and download it to tList
+		return returnRListIterator();
+	}
+
 
 	/*
 	public static void main(String[] args) {
